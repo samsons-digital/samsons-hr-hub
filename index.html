@@ -231,8 +231,13 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
 /* detail panel */
 .kpi-panel{background:var(--bgw);border:1px solid var(--border);border-radius:var(--radl);margin-bottom:14px;overflow:hidden}
 .kpi-phd{display:flex;align-items:center;gap:10px;padding:11px 15px;
-  border-bottom:1px solid var(--border);background:#faf9f7;flex-wrap:wrap}
+  border-bottom:1px solid var(--border);background:#faf9f7;flex-wrap:wrap;cursor:pointer;user-select:none}
+.kpi-phd:hover{background:#f5f3ee}
 .kpi-ptitle{font-size:13px;font-weight:600;color:var(--text);flex:1}
+.kpi-chevron{font-size:11px;color:var(--text3);transition:transform .2s;margin-left:2px;flex-shrink:0}
+.kpi-panel.collapsed .kpi-chevron{transform:rotate(-90deg)}
+.kpi-panel.collapsed .kpi-body{display:none}
+.kpi-panel.collapsed .kpi-phd{border-bottom:none}
 .score-badge{font-size:11px;font-weight:600;padding:3px 10px;border-radius:8px}
 .score-badge.good{background:var(--green3);color:var(--green)}
 .score-badge.warning{background:var(--amber2);color:var(--amber)}
@@ -567,13 +572,14 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
   </div>
 
   <!-- Leave Tracker detail panel -->
-  <div class="kpi-panel" id="panel-leave">
-    <div class="kpi-phd">
-      <div class="kpi-ptitle">Leave Tracker — KPI Detail</div>
+  <div class="kpi-panel collapsed" id="panel-leave">
+    <div class="kpi-phd" onclick="togglePanel('panel-leave')">
+      <div class="kpi-ptitle">Leave Tracker — KPI Detail</div><span class="kpi-chevron">▼</span>
       <span class="phase-pill live">Phase 1 — Live</span>
       <div class="score-badge loading" id="badge-leave">Loading...</div>
       <button class="kpi-refresh" onclick="fetchLeaveKpi()">↻ Refresh</button>
     </div>
+    <div class="kpi-body">
     <div class="kpi-rows" id="rows-leave">
       <div class="kpi-row">
         <div class="kpi-rdot pending"></div>
@@ -605,16 +611,18 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
     </div>
     <div id="fail-leave"></div>
     <div class="dept-grid" id="dept-leave" style="display:none"></div>
+    </div>
   </div>
 
   <!-- Warnings System detail panel -->
-  <div class="kpi-panel" id="panel-warnings">
-    <div class="kpi-phd">
-      <div class="kpi-ptitle">Warnings System — KPI Detail</div>
+  <div class="kpi-panel collapsed" id="panel-warnings">
+    <div class="kpi-phd" onclick="togglePanel('panel-warnings')">
+      <div class="kpi-ptitle">Warnings System — KPI Detail</div><span class="kpi-chevron">▼</span>
       <span class="phase-pill live">Phase 1 — Live</span>
       <div class="score-badge loading" id="badge-warnings">Loading...</div>
       <button class="kpi-refresh" onclick="fetchWarningsKpi()">↻ Refresh</button>
     </div>
+    <div class="kpi-body">
     <div class="kpi-rows" id="rows-warnings">
       <div class="kpi-row">
         <div class="kpi-rdot pending"></div>
@@ -637,16 +645,18 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
     </div>
     <div id="fail-warnings"></div>
     <div class="dept-grid" id="dept-warnings" style="display:none"></div>
+    </div>
   </div>
 
   <!-- Chairlift Checks detail panel -->
-  <div class="kpi-panel" id="panel-chairlift">
-    <div class="kpi-phd">
-      <div class="kpi-ptitle">Chairlift Daily Checks — KPI Detail</div>
+  <div class="kpi-panel collapsed" id="panel-chairlift">
+    <div class="kpi-phd" onclick="togglePanel('panel-chairlift')">
+      <div class="kpi-ptitle">Chairlift Daily Checks — KPI Detail</div><span class="kpi-chevron">▼</span>
       <span class="phase-pill live">Phase 2 — Live</span>
       <div class="score-badge loading" id="badge-chairlift">Loading...</div>
       <button class="kpi-refresh" onclick="fetchChairliftKpi()">↻ Refresh</button>
     </div>
+    <div class="kpi-body">
     <div class="kpi-rows" id="rows-chairlift">
       <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:180px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:280px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:40%"></div></div><div class="kpi-rscore pending">—</div></div>
       <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:160px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:240px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:60%"></div></div><div class="kpi-rscore pending">—</div></div>
@@ -654,16 +664,18 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
     </div>
     <div id="fail-chairlift"></div>
     <div class="dept-grid" id="dept-chairlift" style="display:none"></div>
+    </div>
   </div>
 
   <!-- Daily Readiness detail panel -->
-  <div class="kpi-panel" id="panel-readiness">
-    <div class="kpi-phd">
-      <div class="kpi-ptitle">Daily Readiness Checklist — KPI Detail</div>
+  <div class="kpi-panel collapsed" id="panel-readiness">
+    <div class="kpi-phd" onclick="togglePanel('panel-readiness')">
+      <div class="kpi-ptitle">Daily Readiness Checklist — KPI Detail</div><span class="kpi-chevron">▼</span>
       <span class="phase-pill live">Phase 2 — Live</span>
       <div class="score-badge loading" id="badge-readiness">Loading...</div>
       <button class="kpi-refresh" onclick="fetchReadinessKpi()">↻ Refresh</button>
     </div>
+    <div class="kpi-body">
     <div class="kpi-rows" id="rows-readiness">
       <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:180px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:280px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:40%"></div></div><div class="kpi-rscore pending">—</div></div>
       <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:160px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:240px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:60%"></div></div><div class="kpi-rscore pending">—</div></div>
@@ -671,16 +683,18 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
     </div>
     <div id="fail-readiness"></div>
     <div class="dept-grid" id="dept-readiness" style="display:none"></div>
+    </div>
   </div>
 
   <!-- PR Fund Tracker detail panel -->
-  <div class="kpi-panel" id="panel-prfund">
-    <div class="kpi-phd">
-      <div class="kpi-ptitle">PR Fund Tracker — KPI Detail</div>
+  <div class="kpi-panel collapsed" id="panel-prfund">
+    <div class="kpi-phd" onclick="togglePanel('panel-prfund')">
+      <div class="kpi-ptitle">PR Fund Tracker — KPI Detail</div><span class="kpi-chevron">▼</span>
       <span class="phase-pill live">Phase 3 — Live</span>
       <div class="score-badge loading" id="badge-prfund">Loading...</div>
       <button class="kpi-refresh" onclick="fetchPrFundKpi()">↻ Refresh</button>
     </div>
+    <div class="kpi-body">
     <div class="kpi-rows" id="rows-prfund">
       <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:200px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:300px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:50%"></div></div><div class="kpi-rscore pending">—</div></div>
       <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:160px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:240px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:70%"></div></div><div class="kpi-rscore pending">—</div></div>
@@ -688,16 +702,18 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
     </div>
     <div id="fail-prfund"></div>
     <div class="dept-grid" id="dept-prfund" style="display:none"></div>
+    </div>
   </div>
 
   <!-- Procurement Hub detail panel -->
-  <div class="kpi-panel" id="panel-procurement">
-    <div class="kpi-phd">
-      <div class="kpi-ptitle">Procurement Hub — KPI Detail</div>
+  <div class="kpi-panel collapsed" id="panel-procurement">
+    <div class="kpi-phd" onclick="togglePanel('panel-procurement')">
+      <div class="kpi-ptitle">Procurement Hub — KPI Detail</div><span class="kpi-chevron">▼</span>
       <span class="phase-pill live">Phase 3 — Live</span>
       <div class="score-badge loading" id="badge-procurement">Loading...</div>
       <button class="kpi-refresh" onclick="fetchProcurementKpi()">↻ Refresh</button>
     </div>
+    <div class="kpi-body">
     <div class="kpi-rows" id="rows-procurement">
       <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:180px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:300px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:40%"></div></div><div class="kpi-rscore pending">—</div></div>
       <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:200px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:260px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:65%"></div></div><div class="kpi-rscore pending">—</div></div>
@@ -705,16 +721,18 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
     </div>
     <div id="fail-procurement"></div>
     <div class="dept-grid" id="dept-procurement" style="display:none"></div>
+    </div>
   </div>
 
   <!-- Adventure Checks detail panel -->
-  <div class="kpi-panel" id="panel-adventure">
-    <div class="kpi-phd">
-      <div class="kpi-ptitle">Adventure Checks — KPI Detail</div>
+  <div class="kpi-panel collapsed" id="panel-adventure">
+    <div class="kpi-phd" onclick="togglePanel('panel-adventure')">
+      <div class="kpi-ptitle">Adventure Checks — KPI Detail</div><span class="kpi-chevron">▼</span>
       <span class="phase-pill live">Phase 2 — Live</span>
       <div class="score-badge loading" id="badge-adventure">Loading...</div>
       <button class="kpi-refresh" onclick="fetchAdventureKpi()">↻ Refresh</button>
     </div>
+    <div class="kpi-body">
     <div class="kpi-rows" id="rows-adventure">
       <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:200px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:280px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:50%"></div></div><div class="kpi-rscore pending">—</div></div>
       <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:160px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:240px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:70%"></div></div><div class="kpi-rscore pending">—</div></div>
@@ -722,16 +740,18 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
     </div>
     <div id="fail-adventure"></div>
     <div class="dept-grid" id="dept-adventure" style="display:none"></div>
+    </div>
   </div>
 
   <!-- PistenBully detail panel -->
-  <div class="kpi-panel" id="panel-pistenbully">
-    <div class="kpi-phd">
-      <div class="kpi-ptitle">PistenBully 400 W — KPI Detail</div>
+  <div class="kpi-panel collapsed" id="panel-pistenbully">
+    <div class="kpi-phd" onclick="togglePanel('panel-pistenbully')">
+      <div class="kpi-ptitle">PistenBully 400 W — KPI Detail</div><span class="kpi-chevron">▼</span>
       <span class="phase-pill live">Phase 4 — Live</span>
       <div class="score-badge loading" id="badge-pistenbully">Loading...</div>
       <button class="kpi-refresh" onclick="fetchPistenBullyKpi()">↻ Refresh</button>
     </div>
+    <div class="kpi-body">
     <div class="kpi-rows" id="rows-pistenbully">
       <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:220px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:300px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:60%"></div></div><div class="kpi-rscore pending">—</div></div>
       <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:180px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:260px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:40%"></div></div><div class="kpi-rscore pending">—</div></div>
@@ -739,6 +759,7 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
     </div>
     <div id="fail-pistenbully"></div>
     <div class="dept-grid" id="dept-pistenbully" style="display:none"></div>
+    </div>
   </div>
 
   <div class="last-up" id="kpi-ts">Not yet loaded</div>
@@ -1109,9 +1130,17 @@ function fmtTime(iso) {
   try { return new Date(iso).toLocaleTimeString('en-PK', { timeZone:'Asia/Karachi', hour:'2-digit', minute:'2-digit' }); }
   catch(e) { return ''; }
 }
+// ── COLLAPSIBLE KPI PANELS ────────────────────────────────
+function togglePanel(id) {
+  const panel = document.getElementById(id);
+  if (panel) panel.classList.toggle('collapsed');
+}
+
 function scrollTo(id) {
   const el = document.getElementById(id);
-  if (el) el.scrollIntoView({ behavior:'smooth', block:'start' });
+  if (!el) return;
+  el.classList.remove('collapsed'); // auto-expand when clicked from source card
+  el.scrollIntoView({ behavior:'smooth', block:'start' });
 }
 // ── WARNINGS KPI FETCH ────────────────────────────────────
 async function fetchWarningsKpi() {
