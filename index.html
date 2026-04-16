@@ -336,7 +336,7 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
   <div class="si" data-pg="sops"><span class="ic">≡</span>Policies &amp; SOPs<span class="sbadge a">4</span></div>
 
   <div class="sg">Intelligence</div>
-  <div class="si" data-pg="kpi"><span class="ic">◈</span>KPI Dashboard<span class="sbadge b" id="sb-kpi">1</span></div>
+  <div class="si" data-pg="kpi"><span class="ic">◈</span>KPI Dashboard<span class="sbadge b" id="sb-kpi">2</span></div>
 
   <div class="sg">Admin</div>
   <div class="si" data-pg="fy_close"><span class="ic">◑</span>FY Close</div>
@@ -433,6 +433,7 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
       <div style="font-size:11px;color:var(--text3);margin-bottom:7px">Connected sources</div>
       <div class="kpp-srcs">
         <div class="kpp-src"><div class="kpp-dot" id="dot-leave"></div>Leave Tracker <span class="phase-pill live" style="margin-left:4px">Phase 1</span></div>
+        <div class="kpp-src"><div class="kpp-dot" id="dot-warnings"></div>Warnings System <span class="phase-pill live" style="margin-left:4px">Phase 1</span></div>
         <div class="kpp-src" style="opacity:.4"><div class="kpp-dot"></div>Adventure Checks <span class="phase-pill" style="margin-left:4px">P2</span></div>
         <div class="kpp-src" style="opacity:.4"><div class="kpp-dot"></div>Chairlift Checks <span class="phase-pill" style="margin-left:4px">P2</span></div>
         <div class="kpp-src" style="opacity:.4"><div class="kpp-dot"></div>Daily Readiness <span class="phase-pill" style="margin-left:4px">P2</span></div>
@@ -449,6 +450,11 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
       <div class="ksc-hd"><div class="ksc-name">Leave Tracker</div><div class="ksc-score loading" id="ksc-score-leave">...</div></div>
       <div class="ksc-track"><div class="ksc-fill loading" id="ksc-bar-leave" style="width:25%"></div></div>
       <div class="ksc-meta" id="ksc-meta-leave">Fetching live data...</div>
+    </div>
+    <div class="ksc" id="ksc-warnings" style="border-left-color:#c96a10" onclick="scrollTo('panel-warnings')">
+      <div class="ksc-hd"><div class="ksc-name">Warnings System</div><div class="ksc-score loading" id="ksc-score-warnings">...</div></div>
+      <div class="ksc-track"><div class="ksc-fill loading" id="ksc-bar-warnings" style="width:25%"></div></div>
+      <div class="ksc-meta" id="ksc-meta-warnings">Fetching live data...</div>
     </div>
     <div class="ksc dim" style="border-left-color:#ddd">
       <div class="ksc-hd"><div class="ksc-name">Adventure Checks</div><span class="phase-pill">Phase 2</span></div>
@@ -523,6 +529,38 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
     <div class="dept-grid" id="dept-leave" style="display:none"></div>
   </div>
 
+  <!-- Warnings System detail panel -->
+  <div class="kpi-panel" id="panel-warnings">
+    <div class="kpi-phd">
+      <div class="kpi-ptitle">Warnings System — KPI Detail</div>
+      <span class="phase-pill live">Phase 1 — Live</span>
+      <div class="score-badge loading" id="badge-warnings">Loading...</div>
+      <button class="kpi-refresh" onclick="fetchWarningsKpi()">↻ Refresh</button>
+    </div>
+    <div class="kpi-rows" id="rows-warnings">
+      <div class="kpi-row">
+        <div class="kpi-rdot pending"></div>
+        <div class="kpi-rinner">
+          <div class="skel" style="height:12px;width:160px;margin-bottom:6px"></div>
+          <div class="skel" style="height:10px;width:240px"></div>
+        </div>
+        <div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:40%"></div></div>
+        <div class="kpi-rscore pending">—</div>
+      </div>
+      <div class="kpi-row">
+        <div class="kpi-rdot pending"></div>
+        <div class="kpi-rinner">
+          <div class="skel" style="height:12px;width:140px;margin-bottom:6px"></div>
+          <div class="skel" style="height:10px;width:200px"></div>
+        </div>
+        <div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:60%"></div></div>
+        <div class="kpi-rscore pending">—</div>
+      </div>
+    </div>
+    <div id="fail-warnings"></div>
+    <div class="dept-grid" id="dept-warnings" style="display:none"></div>
+  </div>
+
   <div class="last-up" id="kpi-ts">Not yet loaded</div>
 </div>
 
@@ -574,8 +612,9 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
 </div><!-- end shell -->
 
 <script>
-// ── CONFIG — UPDATE THIS URL ──────────────────────────────
-const LEAVE_URL = 'https://script.google.com/macros/s/AKfycbybU2ee__bYCfvONE0BxcH0q2_bNeInCyyGG-eD00xGUauPCf8pXAiUdoCB8pErwFKH/exec';
+// ── CONFIG — HARDCODED URLS ───────────────────────────────
+const LEAVE_URL    = 'https://script.google.com/macros/s/AKfycbybU2ee__bYCfvONE0BxcH0q2_bNeInCyyGG-eD00xGUauPCf8pXAiUdoCB8pErwFKH/exec';
+const WARNINGS_URL = 'https://script.google.com/macros/s/AKfycbw_H3UcaZXWLfs6PbrDRMoNeD-L5QkCopul0yDnpHOcY586FTO7rVAUmlZNAcyRPn6x/exec';
 // ─────────────────────────────────────────────────────────
 
 // ── NAV ───────────────────────────────────────────────────
@@ -586,7 +625,8 @@ function nav(id) {
   if (pg) pg.classList.add('on');
   const si = document.querySelector('.si[data-pg="' + id + '"]');
   if (si) si.classList.add('on');
-  if (id === 'kpi' && kpiState.leave.status === 'idle') fetchLeaveKpi();
+  if (id === 'kpi' && kpiState.leave.status === 'idle')    fetchLeaveKpi();
+  if (id === 'kpi' && kpiState.warnings.status === 'idle') fetchWarningsKpi();
 }
 
 document.querySelectorAll('.si[data-pg]').forEach(el => {
@@ -613,7 +653,8 @@ function fyTick(el) {
 
 // ── KPI STATE ─────────────────────────────────────────────
 const kpiState = {
-  leave: { status: 'idle', score: null, data: null }
+  leave:    { status: 'idle', score: null, data: null },
+  warnings: { status: 'idle', score: null, data: null }
 };
 
 // ── KPI FETCH ─────────────────────────────────────────────
@@ -788,6 +829,132 @@ function fmtTime(iso) {
 function scrollTo(id) {
   const el = document.getElementById(id);
   if (el) el.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+// ── WARNINGS KPI FETCH ────────────────────────────────────
+async function fetchWarningsKpi() {
+  setWarningsLoading();
+  try {
+    const res  = await fetch(WARNINGS_URL, {
+      method:  'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body:    JSON.stringify({ action: 'getKpiData' })
+    });
+    const data = await res.json();
+    if (data.status !== 'ok') throw new Error(data.message || 'Script returned error');
+    kpiState.warnings = { status: 'loaded', score: data.overallScore, data: data };
+    renderWarningsKpi(data);
+    updatePortfolioScore();
+  } catch (err) {
+    kpiState.warnings.status = 'error';
+    setWarningsError(err.message);
+  }
+}
+
+function renderWarningsKpi(d) {
+  const cls = scoreClass(d.overallScore);
+
+  // Source card
+  const sc = document.getElementById('ksc-score-warnings');
+  sc.textContent = d.overallScore;
+  sc.className   = 'ksc-score ' + cls;
+  const bar = document.getElementById('ksc-bar-warnings');
+  bar.style.width = d.overallScore + '%';
+  bar.className   = 'ksc-fill ' + cls;
+  document.getElementById('ksc-meta-warnings').textContent =
+    d.totalWarnings + ' total · ' + d.activeWarnings + ' active · ' + fmtTime(d.asOf);
+  document.getElementById('dot-warnings').style.background = dotColor(cls);
+
+  // Score badge
+  const badge = document.getElementById('badge-warnings');
+  badge.textContent = d.overallScore + ' / 100';
+  badge.className   = 'score-badge ' + cls;
+
+  // KPI rows
+  let html = '';
+  d.kpis.forEach(k => {
+    const c = k.score === null ? 'pending' : k.status;
+    html += `<div class="kpi-row">
+      <div class="kpi-rdot ${c}"></div>
+      <div class="kpi-rinner">
+        <div class="kpi-rlbl">${k.label}</div>
+        <div class="kpi-rdetail">${k.detail}</div>
+      </div>
+      <div class="kpi-rtrack"><div class="kpi-rfill ${c}" style="width:${k.score||0}%"></div></div>
+      <div class="kpi-rscore ${c}">${k.score !== null ? k.score : '—'}</div>
+    </div>`;
+  });
+  document.getElementById('rows-warnings').innerHTML = html;
+
+  // Failures — what was NOT done / needs action
+  const fails = [];
+  d.kpis.forEach(k => {
+    if (k.status === 'critical' || k.status === 'warning') {
+      fails.push({ name: k.label, reason: k.detail, level: k.status });
+    }
+  });
+  // Add repeat offenders with active warnings
+  if (d.repeatOffenders && d.repeatOffenders.length) {
+    d.repeatOffenders.forEach(r => {
+      if (r.hasActive) {
+        fails.push({
+          name:   r.name,
+          reason: r.total + ' total warnings on record — currently has an active warning',
+          level:  'warning'
+        });
+      }
+    });
+  }
+  renderFails('fail-warnings', fails);
+
+  // Dept breakdown
+  if (d.deptBreakdown && d.deptBreakdown.length) {
+    const dg = document.getElementById('dept-warnings');
+    dg.style.display = 'grid';
+    dg.innerHTML = d.deptBreakdown.map(dep => {
+      const actCls  = dep.active > 1 ? 'c' : dep.active === 1 ? 'w' : 'g';
+      const finCls  = dep.final  > 0 ? 'c' : 'g';
+      return `<div class="dept-card">
+        <div class="dept-name">${dep.dept}</div>
+        <div class="dept-row"><span>Total warnings</span><span class="dv">${dep.total}</span></div>
+        <div class="dept-row"><span>Active</span><span class="dv ${actCls}">${dep.active}</span></div>
+        <div class="dept-row"><span>Final written</span><span class="dv ${finCls}">${dep.final}</span></div>
+      </div>`;
+    }).join('');
+  }
+
+  document.getElementById('kpi-ts').textContent =
+    'Last refreshed: ' + new Date().toLocaleString('en-PK', {
+      timeZone:'Asia/Karachi', day:'numeric', month:'short',
+      year:'numeric', hour:'2-digit', minute:'2-digit'
+    });
+}
+
+function setWarningsLoading() {
+  document.getElementById('ksc-score-warnings').textContent = '...';
+  document.getElementById('ksc-score-warnings').className   = 'ksc-score loading';
+  document.getElementById('ksc-bar-warnings').className     = 'ksc-fill loading';
+  document.getElementById('ksc-bar-warnings').style.width   = '25%';
+  document.getElementById('ksc-meta-warnings').textContent  = 'Fetching live data...';
+  document.getElementById('badge-warnings').textContent     = 'Loading...';
+  document.getElementById('badge-warnings').className       = 'score-badge loading';
+}
+
+function setWarningsError(msg) {
+  document.getElementById('ksc-score-warnings').textContent = 'Error';
+  document.getElementById('ksc-score-warnings').className   = 'ksc-score critical';
+  document.getElementById('ksc-bar-warnings').style.width   = '0%';
+  document.getElementById('ksc-bar-warnings').className     = 'ksc-fill critical';
+  document.getElementById('ksc-meta-warnings').textContent  = 'Connection failed';
+  document.getElementById('badge-warnings').textContent     = 'Connection error';
+  document.getElementById('badge-warnings').className       = 'score-badge critical';
+  document.getElementById('dot-warnings').style.background  = '#b93328';
+  document.getElementById('rows-warnings').innerHTML =
+    `<div class="kpi-error">
+      <strong>Could not connect to Warnings System script.</strong><br>
+      ${msg}<br><br>
+      Check that the GAS deployment is set to <em>Execute as: Me</em> and <em>Anyone</em> can access.
+      Then click ↻ Refresh above.
+    </div>`;
 }
 </script>
 </body>
