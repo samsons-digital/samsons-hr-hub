@@ -62,6 +62,18 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
 .si.on{background:var(--green3);color:var(--green);border-left-color:var(--green);font-weight:600}
 .si.dim{opacity:.45;pointer-events:none;cursor:default}
 .si.dim .ic{opacity:.5}
+.sop-cov-row{display:flex;align-items:center;gap:7px;padding:5px 8px;border-radius:5px;font-size:12px}
+.sop-cov-row.sop-has{background:var(--green3);color:var(--green)}
+.sop-cov-row.sop-missing-live{background:#fef0f0;color:#b93328}
+.sop-cov-row.sop-missing-pend{background:#fff8ec;color:#8a5a00}
+.sop-cov-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.sop-cov-dot.g{background:var(--green)}
+.sop-cov-dot.r{background:#b93328}
+.sop-cov-dot.a{background:#e8a020}
+.sop-cov-row span:nth-child(2){flex:1}
+.sop-cov-tag{font-size:9px;font-weight:700;padding:1px 5px;border-radius:8px;flex-shrink:0}
+.sop-cov-tag.live{background:rgba(22,96,160,.12);color:#1660a0}
+.sop-cov-tag.pend{background:rgba(184,146,46,.12);color:#8a5a00}
 .si .ic{width:16px;text-align:center;font-size:12px;flex-shrink:0;opacity:.7}
 .si.on .ic{opacity:1}
 .sbadge{margin-left:auto;font-size:10px;font-weight:600;padding:1px 6px;
@@ -743,6 +755,49 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
     <p>Document register — all systems · opens directly from Google Drive</p>
   </div>
 
+  <!-- SOP Coverage Summary -->
+  <div class="card" style="margin-bottom:16px;padding:16px 20px">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:14px">
+      <div style="font-size:13px;font-weight:600;color:var(--text)">SOP Coverage — KPI Dashboard Systems</div>
+      <div style="display:flex;gap:10px;font-size:11px">
+        <span style="display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:50%;background:var(--green);display:inline-block"></span>SOP exists</span>
+        <span style="display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:50%;background:#b93328;display:inline-block"></span>Missing — live system</span>
+        <span style="display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:50%;background:#e8a020;display:inline-block"></span>Missing — pending system</span>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px" id="sop-coverage-grid">
+      <!-- Live systems -->
+      <div class="sop-cov-row sop-has"><span class="sop-cov-dot g"></span><span>Leave Tracker</span><span class="sop-cov-tag live">Live</span></div>
+      <div class="sop-cov-row sop-missing-live"><span class="sop-cov-dot r"></span><span>Warnings System</span><span class="sop-cov-tag live">Live</span></div>
+      <div class="sop-cov-row sop-missing-live"><span class="sop-cov-dot r"></span><span>Chairlift Checks</span><span class="sop-cov-tag live">Live</span></div>
+      <div class="sop-cov-row sop-has"><span class="sop-cov-dot g"></span><span>Daily Readiness</span><span class="sop-cov-tag live">Live</span></div>
+      <div class="sop-cov-row sop-has"><span class="sop-cov-dot g"></span><span>PR Fund Tracker</span><span class="sop-cov-tag live">Live</span></div>
+      <div class="sop-cov-row sop-missing-live"><span class="sop-cov-dot r"></span><span>Procurement Hub</span><span class="sop-cov-tag live">Live</span></div>
+      <div class="sop-cov-row sop-has"><span class="sop-cov-dot g"></span><span>Adventure Checks</span><span class="sop-cov-tag live">Live</span></div>
+      <div class="sop-cov-row sop-has"><span class="sop-cov-dot g"></span><span>F&amp;F Benefits Portal</span><span class="sop-cov-tag live">Live</span></div>
+      <div class="sop-cov-row sop-has"><span class="sop-cov-dot g"></span><span>Tourist Count</span><span class="sop-cov-tag live">Live</span></div>
+      <!-- Pending systems -->
+      <div class="sop-cov-row sop-has"><span class="sop-cov-dot g"></span><span>PistenBully</span><span class="sop-cov-tag pend">Pending</span></div>
+      <div class="sop-cov-row sop-has"><span class="sop-cov-dot g"></span><span>Technical Store</span><span class="sop-cov-tag pend">Pending</span></div>
+      <div class="sop-cov-row sop-has"><span class="sop-cov-dot g"></span><span>Fire Ext Compliance</span><span class="sop-cov-tag pend">Pending</span></div>
+      <div class="sop-cov-row sop-has"><span class="sop-cov-dot g"></span><span>Heavy Machine Checks</span><span class="sop-cov-tag pend">Pending</span></div>
+      <div class="sop-cov-row sop-has"><span class="sop-cov-dot g"></span><span>Samsons Inn</span><span class="sop-cov-tag pend">Pending</span></div>
+      <div class="sop-cov-row sop-has"><span class="sop-cov-dot g"></span><span>Snowmaking</span><span class="sop-cov-tag pend">Pending</span></div>
+      <div class="sop-cov-row sop-missing-pend"><span class="sop-cov-dot a"></span><span>Medical Stock</span><span class="sop-cov-tag pend">Pending</span></div>
+      <div class="sop-cov-row sop-missing-pend"><span class="sop-cov-dot a"></span><span>Vehicle &amp; Machinery</span><span class="sop-cov-tag pend">Pending</span></div>
+      <div class="sop-cov-row sop-missing-pend"><span class="sop-cov-dot a"></span><span>Fixed Asset Compliance</span><span class="sop-cov-tag pend">Pending</span></div>
+      <div class="sop-cov-row sop-missing-pend"><span class="sop-cov-dot a"></span><span>GV Activity Checks</span><span class="sop-cov-tag pend">Pending</span></div>
+      <div class="sop-cov-row sop-missing-pend"><span class="sop-cov-dot a"></span><span>F&amp;B Stock Controls</span><span class="sop-cov-tag pend">Pending</span></div>
+    </div>
+    <!-- Totals bar -->
+    <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);display:flex;gap:20px;flex-wrap:wrap;font-size:12px">
+      <span><strong style="color:var(--green)">13</strong> SOPs uploaded</span>
+      <span><strong style="color:#b93328">3</strong> missing — live systems</span>
+      <span><strong style="color:#e8a020">5</strong> missing — pending systems</span>
+      <span style="color:var(--text3)">21 systems total</span>
+    </div>
+  </div>
+
   <!-- Toolbar -->
   <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px">
     <input id="sop-search" type="text" placeholder="Search SOPs..." oninput="filterSops()"
@@ -762,9 +817,7 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
   <div id="sop-stats" style="font-size:12px;color:var(--text3);margin-bottom:14px">Loading documents...</div>
 
   <!-- SOP grid -->
-  <div id="sop-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px">
-    <!-- Populated by JS -->
-  </div>
+  <div id="sop-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px"></div>
 
   <!-- Empty state -->
   <div id="sop-empty" style="display:none;text-align:center;padding:60px 20px;color:var(--text3)">
@@ -777,9 +830,7 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
   <div id="sop-error" style="display:none" class="card">
     <div style="color:#b93328;font-weight:600;margin-bottom:6px">Could not load SOPs</div>
     <div id="sop-error-msg" style="font-size:12px;color:var(--text3)"></div>
-    <div style="font-size:11px;color:var(--text3);margin-top:8px">
-      Check the SOP Index GAS script is deployed and accessible.
-    </div>
+    <div style="font-size:11px;color:var(--text3);margin-top:8px">Check the SOP Index GAS script is deployed and accessible.</div>
   </div>
 </div>
 <div class="pg" id="pg-fy_close"><div class="ph"><h1>FY Close Checklist</h1><p>FY 2025–26 · Snapshot: 30 Jun 2026</p></div>
