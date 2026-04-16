@@ -737,7 +737,51 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
 <div class="pg" id="pg-bonus"><div class="ph"><h1>Bonus Eligibility</h1><p>FY 2025–26 · Snapshot: 30 Jun 2026</p></div><div class="card"><div class="ct">8 of 11 staff eligible · 1 GM override (Muhammad Saeed)</div></div></div>
 <div class="pg" id="pg-certs"><div class="ph"><h1>Certifications</h1><p>Safety certs and operator licences</p></div><div class="card"><div class="ct">3 alerts — Kids Climbing Wall expired, 2 expiring within 60 days</div></div></div>
 <div class="pg" id="pg-disciplinary"><div class="ph"><h1>Disciplinary Log</h1><p>Formal actions beyond warnings</p></div><div class="card"><div class="ct">0 dismissals this FY · Escalation triggers: all OK</div></div></div>
-<div class="pg" id="pg-sops"><div class="ph"><h1>Policies &amp; SOPs</h1><p>Document register — all 7 entities</p></div><div class="card"><div class="ct">47 documents · 4 overdue · 5 reviews due within 60 days</div></div></div>
+<div class="pg" id="pg-sops">
+  <div class="ph">
+    <h1>Policies &amp; SOPs</h1>
+    <p>Document register — all systems · opens directly from Google Drive</p>
+  </div>
+
+  <!-- Toolbar -->
+  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px">
+    <input id="sop-search" type="text" placeholder="Search SOPs..." oninput="filterSops()"
+      style="flex:1;min-width:200px;padding:8px 12px;border:1px solid var(--border);border-radius:6px;font-size:13px;background:var(--surface);color:var(--text)">
+    <select id="sop-filter-system" onchange="filterSops()"
+      style="padding:8px 12px;border:1px solid var(--border);border-radius:6px;font-size:13px;background:var(--surface);color:var(--text)">
+      <option value="">All Systems</option>
+    </select>
+    <select id="sop-filter-dept" onchange="filterSops()"
+      style="padding:8px 12px;border:1px solid var(--border);border-radius:6px;font-size:13px;background:var(--surface);color:var(--text)">
+      <option value="">All Departments</option>
+    </select>
+    <button class="btn" onclick="loadSops()" style="white-space:nowrap">↻ Refresh</button>
+  </div>
+
+  <!-- Stats bar -->
+  <div id="sop-stats" style="font-size:12px;color:var(--text3);margin-bottom:14px">Loading documents...</div>
+
+  <!-- SOP grid -->
+  <div id="sop-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px">
+    <!-- Populated by JS -->
+  </div>
+
+  <!-- Empty state -->
+  <div id="sop-empty" style="display:none;text-align:center;padding:60px 20px;color:var(--text3)">
+    <div style="font-size:32px;margin-bottom:12px">≡</div>
+    <div style="font-size:14px;font-weight:600;margin-bottom:6px">No SOPs found</div>
+    <div style="font-size:12px">Try adjusting your search or filters</div>
+  </div>
+
+  <!-- Error state -->
+  <div id="sop-error" style="display:none" class="card">
+    <div style="color:#b93328;font-weight:600;margin-bottom:6px">Could not load SOPs</div>
+    <div id="sop-error-msg" style="font-size:12px;color:var(--text3)"></div>
+    <div style="font-size:11px;color:var(--text3);margin-top:8px">
+      Check the SOP Index GAS script is deployed and accessible.
+    </div>
+  </div>
+</div>
 <div class="pg" id="pg-fy_close"><div class="ph"><h1>FY Close Checklist</h1><p>FY 2025–26 · Snapshot: 30 Jun 2026</p></div>
   <div class="card">
     <div class="ch"><div class="ct">MJSR Warnings System — FY Close</div><span id="fy-prog" style="font-size:11px;color:var(--text3)">0 of 10</span></div>
@@ -1857,6 +1901,128 @@ function setAdventureError(msg) {
       ${msg}<br><br>
       Check GAS deployment is set to <em>Execute as: Me</em> and <em>Anyone</em> can access.
     </div>`;
+}
+const SOP_URL = 'https://script.google.com/macros/s/AKfycby41Z-4TJt0SHjDpvlYb8hwLi_CTjQ-ru7mukMMlJLS1xSpr3uAx1Nps7xwkojx8YvD/exec';
+
+// ── SOP STATE ─────────────────────────────────────────────
+let sopData = [];
+
+// ── Auto-load when SOPs page is opened ────────────────────
+// Hooked into the existing nav() function via the page show event
+const _origNav = nav;
+function nav(id) {
+  _origNav(id);
+  if (id === 'sops' && sopData.length === 0) loadSops();
+}
+
+async function loadSops() {
+  if (!SOP_URL) {
+    document.getElementById('sop-error').style.display = 'block';
+    document.getElementById('sop-error-msg').textContent = 'SOP_URL not configured — paste the GAS exec URL into index.html.';
+    document.getElementById('sop-stats').textContent = '';
+    return;
+  }
+  document.getElementById('sop-stats').textContent = 'Loading...';
+  document.getElementById('sop-error').style.display  = 'none';
+  document.getElementById('sop-empty').style.display  = 'none';
+  document.getElementById('sop-grid').innerHTML = `
+    <div class="card" style="animation:pulse 1.5s infinite"><div class="skel" style="height:14px;width:60%;margin-bottom:8px"></div><div class="skel" style="height:10px;width:40%"></div></div>
+    <div class="card" style="animation:pulse 1.5s infinite"><div class="skel" style="height:14px;width:70%;margin-bottom:8px"></div><div class="skel" style="height:10px;width:50%"></div></div>
+    <div class="card" style="animation:pulse 1.5s infinite"><div class="skel" style="height:14px;width:55%;margin-bottom:8px"></div><div class="skel" style="height:10px;width:45%"></div></div>`;
+  try {
+    const res  = await fetch(SOP_URL, {
+      method:  'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body:    JSON.stringify({ action: 'getSops' })
+    });
+    const data = await res.json();
+    if (data.status !== 'ok') throw new Error(data.message || 'Script error');
+    sopData = data.sops || [];
+
+    // Populate filter dropdowns
+    const sysSel  = document.getElementById('sop-filter-system');
+    const deptSel = document.getElementById('sop-filter-dept');
+    sysSel.innerHTML  = '<option value="">All Systems</option>';
+    deptSel.innerHTML = '<option value="">All Departments</option>';
+    (data.systems || []).forEach(s => { sysSel.innerHTML  += `<option value="${s}">${s}</option>`; });
+    (data.depts   || []).forEach(d => { deptSel.innerHTML += `<option value="${d}">${d}</option>`; });
+
+    filterSops();
+  } catch(err) {
+    document.getElementById('sop-grid').innerHTML = '';
+    document.getElementById('sop-error').style.display = 'block';
+    document.getElementById('sop-error-msg').textContent = err.message;
+    document.getElementById('sop-stats').textContent = '';
+  }
+}
+
+function filterSops() {
+  const q       = (document.getElementById('sop-search').value || '').toLowerCase().trim();
+  const system  = document.getElementById('sop-filter-system').value;
+  const dept    = document.getElementById('sop-filter-dept').value;
+
+  const filtered = sopData.filter(s => {
+    const matchQ = !q ||
+      s.title.toLowerCase().includes(q) ||
+      s.system.toLowerCase().includes(q) ||
+      s.dept.toLowerCase().includes(q) ||
+      s.desc.toLowerCase().includes(q);
+    const matchSys  = !system || s.system === system;
+    const matchDept = !dept   || s.dept   === dept;
+    return matchQ && matchSys && matchDept;
+  });
+
+  document.getElementById('sop-stats').textContent =
+    filtered.length + ' of ' + sopData.length + ' document' + (sopData.length !== 1 ? 's' : '') +
+    (q || system || dept ? ' (filtered)' : '');
+
+  const grid = document.getElementById('sop-grid');
+  const empty = document.getElementById('sop-empty');
+
+  if (filtered.length === 0) {
+    grid.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  // Group by system
+  const grouped = {};
+  filtered.forEach(s => {
+    const key = s.system || 'General';
+    if (!grouped[key]) grouped[key] = [];
+    grouped[key].push(s);
+  });
+
+  let html = '';
+  Object.keys(grouped).sort().forEach(sys => {
+    grouped[sys].forEach(s => {
+      const hasFile = !!s.fileId;
+      html += `
+        <div class="card" style="padding:14px 16px;display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
+            <div style="font-size:13px;font-weight:600;color:var(--text);line-height:1.3">${s.title}</div>
+            <span style="flex-shrink:0;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;background:var(--green3);color:var(--green)">${s.version || '—'}</span>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            ${s.system ? `<span style="font-size:10px;padding:2px 8px;border-radius:10px;background:#eff6ff;color:#1660a0;font-weight:600">${s.system}</span>` : ''}
+            ${s.dept   ? `<span style="font-size:10px;padding:2px 8px;border-radius:10px;background:var(--surface2);color:var(--text2)">${s.dept}</span>` : ''}
+          </div>
+          ${s.desc ? `<div style="font-size:11px;color:var(--text3);line-height:1.4">${s.desc}</div>` : ''}
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px">
+            <div style="font-size:10px;color:var(--text3)">${s.date || ''}</div>
+            <div style="display:flex;gap:6px">
+              ${hasFile
+                ? `<a href="${s.viewUrl}" target="_blank" style="font-size:11px;font-weight:600;padding:4px 10px;border-radius:5px;background:var(--green);color:#fff;text-decoration:none">Open ↗</a>
+                   <a href="${s.downloadUrl}" target="_blank" style="font-size:11px;font-weight:600;padding:4px 10px;border-radius:5px;background:var(--surface2);color:var(--text2);text-decoration:none">↓</a>`
+                : `<span style="font-size:11px;color:var(--text3);font-style:italic">No file linked</span>`
+              }
+            </div>
+          </div>
+        </div>`;
+    });
+  });
+  grid.innerHTML = html;
 }
 </script>
 </body>
