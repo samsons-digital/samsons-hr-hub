@@ -336,7 +336,7 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
   <div class="si" data-pg="sops"><span class="ic">≡</span>Policies &amp; SOPs<span class="sbadge a">4</span></div>
 
   <div class="sg">Intelligence</div>
-  <div class="si" data-pg="kpi"><span class="ic">◈</span>KPI Dashboard<span class="sbadge b" id="sb-kpi">2</span></div>
+  <div class="si" data-pg="kpi"><span class="ic">◈</span>KPI Dashboard<span class="sbadge b" id="sb-kpi">3</span></div>
 
   <div class="sg">Admin</div>
   <div class="si" data-pg="fy_close"><span class="ic">◑</span>FY Close</div>
@@ -434,6 +434,7 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
       <div class="kpp-srcs">
         <div class="kpp-src"><div class="kpp-dot" id="dot-leave"></div>Leave Tracker <span class="phase-pill live" style="margin-left:4px">Phase 1</span></div>
         <div class="kpp-src"><div class="kpp-dot" id="dot-warnings"></div>Warnings System <span class="phase-pill live" style="margin-left:4px">Phase 1</span></div>
+        <div class="kpp-src"><div class="kpp-dot" id="dot-chairlift"></div>Chairlift Checks <span class="phase-pill live" style="margin-left:4px">Phase 2</span></div>
         <div class="kpp-src" style="opacity:.4"><div class="kpp-dot"></div>Adventure Checks <span class="phase-pill" style="margin-left:4px">P2</span></div>
         <div class="kpp-src" style="opacity:.4"><div class="kpp-dot"></div>Chairlift Checks <span class="phase-pill" style="margin-left:4px">P2</span></div>
         <div class="kpp-src" style="opacity:.4"><div class="kpp-dot"></div>Daily Readiness <span class="phase-pill" style="margin-left:4px">P2</span></div>
@@ -461,10 +462,10 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
       <div class="ksc-track"><div class="ksc-fill loading" style="width:0%"></div></div>
       <div class="ksc-meta">GV + MJSR activities</div>
     </div>
-    <div class="ksc dim" style="border-left-color:#ddd">
-      <div class="ksc-hd"><div class="ksc-name">Chairlift Checks</div><span class="phase-pill">Phase 2</span></div>
-      <div class="ksc-track"><div class="ksc-fill loading" style="width:0%"></div></div>
-      <div class="ksc-meta">Start, close, maintenance</div>
+    <div class="ksc" id="ksc-chairlift" style="border-left-color:#553c9a" onclick="scrollTo('panel-chairlift')">
+      <div class="ksc-hd"><div class="ksc-name">Chairlift Checks</div><div class="ksc-score loading" id="ksc-score-chairlift">...</div></div>
+      <div class="ksc-track"><div class="ksc-fill loading" id="ksc-bar-chairlift" style="width:25%"></div></div>
+      <div class="ksc-meta" id="ksc-meta-chairlift">Fetching live data...</div>
     </div>
     <div class="ksc dim" style="border-left-color:#ddd">
       <div class="ksc-hd"><div class="ksc-name">Daily Readiness</div><span class="phase-pill">Phase 2</span></div>
@@ -561,6 +562,23 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
     <div class="dept-grid" id="dept-warnings" style="display:none"></div>
   </div>
 
+  <!-- Chairlift Checks detail panel -->
+  <div class="kpi-panel" id="panel-chairlift">
+    <div class="kpi-phd">
+      <div class="kpi-ptitle">Chairlift Daily Checks — KPI Detail</div>
+      <span class="phase-pill live">Phase 2 — Live</span>
+      <div class="score-badge loading" id="badge-chairlift">Loading...</div>
+      <button class="kpi-refresh" onclick="fetchChairliftKpi()">↻ Refresh</button>
+    </div>
+    <div class="kpi-rows" id="rows-chairlift">
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:180px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:280px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:40%"></div></div><div class="kpi-rscore pending">—</div></div>
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:160px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:240px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:60%"></div></div><div class="kpi-rscore pending">—</div></div>
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:200px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:260px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:75%"></div></div><div class="kpi-rscore pending">—</div></div>
+    </div>
+    <div id="fail-chairlift"></div>
+    <div class="dept-grid" id="dept-chairlift" style="display:none"></div>
+  </div>
+
   <div class="last-up" id="kpi-ts">Not yet loaded</div>
 </div>
 
@@ -613,8 +631,9 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
 
 <script>
 // ── CONFIG — HARDCODED URLS ───────────────────────────────
-const LEAVE_URL    = 'https://script.google.com/macros/s/AKfycbybU2ee__bYCfvONE0BxcH0q2_bNeInCyyGG-eD00xGUauPCf8pXAiUdoCB8pErwFKH/exec';
-const WARNINGS_URL = 'https://script.google.com/macros/s/AKfycbw_H3UcaZXWLfs6PbrDRMoNeD-L5QkCopul0yDnpHOcY586FTO7rVAUmlZNAcyRPn6x/exec';
+const LEAVE_URL      = 'https://script.google.com/macros/s/AKfycbybU2ee__bYCfvONE0BxcH0q2_bNeInCyyGG-eD00xGUauPCf8pXAiUdoCB8pErwFKH/exec';
+const WARNINGS_URL   = 'https://script.google.com/macros/s/AKfycbw_H3UcaZXWLfs6PbrDRMoNeD-L5QkCopul0yDnpHOcY586FTO7rVAUmlZNAcyRPn6x/exec';
+const CHAIRLIFT_URL  = 'https://script.google.com/macros/s/AKfycbx6pT2xPiXZ4ZPK2G_ipRYVoMdWvTYO9aWiO2q75PIea1UZQCGKjXB1hOfXiArzVlC7qw/exec';
 // ─────────────────────────────────────────────────────────
 
 // ── NAV ───────────────────────────────────────────────────
@@ -625,8 +644,9 @@ function nav(id) {
   if (pg) pg.classList.add('on');
   const si = document.querySelector('.si[data-pg="' + id + '"]');
   if (si) si.classList.add('on');
-  if (id === 'kpi' && kpiState.leave.status === 'idle')    fetchLeaveKpi();
-  if (id === 'kpi' && kpiState.warnings.status === 'idle') fetchWarningsKpi();
+  if (id === 'kpi' && kpiState.leave.status === 'idle')     fetchLeaveKpi();
+  if (id === 'kpi' && kpiState.warnings.status === 'idle')  fetchWarningsKpi();
+  if (id === 'kpi' && kpiState.chairlift.status === 'idle') fetchChairliftKpi();
 }
 
 document.querySelectorAll('.si[data-pg]').forEach(el => {
@@ -653,8 +673,9 @@ function fyTick(el) {
 
 // ── KPI STATE ─────────────────────────────────────────────
 const kpiState = {
-  leave:    { status: 'idle', score: null, data: null },
-  warnings: { status: 'idle', score: null, data: null }
+  leave:     { status: 'idle', score: null, data: null },
+  warnings:  { status: 'idle', score: null, data: null },
+  chairlift: { status: 'idle', score: null, data: null }
 };
 
 // ── KPI FETCH ─────────────────────────────────────────────
@@ -954,6 +975,153 @@ function setWarningsError(msg) {
       ${msg}<br><br>
       Check that the GAS deployment is set to <em>Execute as: Me</em> and <em>Anyone</em> can access.
       Then click ↻ Refresh above.
+    </div>`;
+}
+// ── CHAIRLIFT KPI FETCH ───────────────────────────────────
+async function fetchChairliftKpi() {
+  setChairliftLoading();
+  try {
+    const res  = await fetch(CHAIRLIFT_URL, {
+      method:  'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body:    JSON.stringify({ action: 'getKpiData' })
+    });
+    const data = await res.json();
+    if (data.status !== 'ok') throw new Error(data.message || 'Script returned error');
+    kpiState.chairlift = { status: 'loaded', score: data.overallScore, data: data };
+    renderChairliftKpi(data);
+    updatePortfolioScore();
+  } catch (err) {
+    kpiState.chairlift.status = 'error';
+    setChairliftError(err.message);
+  }
+}
+
+function renderChairliftKpi(d) {
+  const cls = scoreClass(d.overallScore);
+
+  // Source card
+  const sc = document.getElementById('ksc-score-chairlift');
+  sc.textContent = d.overallScore;
+  sc.className   = 'ksc-score ' + cls;
+  const bar = document.getElementById('ksc-bar-chairlift');
+  bar.style.width = d.overallScore + '%';
+  bar.className   = 'ksc-fill ' + cls;
+  const todayStatus = d.todayStart && d.todayClose ? 'Both checks done today'
+                    : d.todayStart ? 'Start done — close pending'
+                    : 'No checks today';
+  document.getElementById('ksc-meta-chairlift').textContent =
+    d.operatingDays + ' days · ' + todayStatus + ' · ' + fmtTime(d.asOf);
+  document.getElementById('dot-chairlift').style.background = dotColor(cls);
+
+  // Score badge
+  const badge = document.getElementById('badge-chairlift');
+  badge.textContent = d.overallScore + ' / 100';
+  badge.className   = 'score-badge ' + cls;
+
+  // KPI rows
+  let html = '';
+  d.kpis.forEach(k => {
+    const c = k.score === null ? 'pending' : k.status;
+    const pct = k.pct !== undefined ? k.pct : (k.score || 0);
+    html += `<div class="kpi-row">
+      <div class="kpi-rdot ${c}"></div>
+      <div class="kpi-rinner">
+        <div class="kpi-rlbl">${k.label}</div>
+        <div class="kpi-rdetail">${k.detail}</div>
+      </div>
+      <div class="kpi-rtrack"><div class="kpi-rfill ${c}" style="width:${Math.min(pct,100)}%"></div></div>
+      <div class="kpi-rscore ${c}">${k.score !== null ? k.score : '—'}</div>
+    </div>`;
+  });
+  document.getElementById('rows-chairlift').innerHTML = html;
+
+  // Failure list — show what was NOT done or flagged
+  const fails = [];
+  if (d.failures && d.failures.length) {
+    d.failures.forEach(f => fails.push({ name: f.label, reason: f.reason, level: f.level }));
+  }
+  // Also surface late days
+  if (d.lateDays && d.lateDays.length) {
+    d.lateDays.forEach(l => {
+      fails.push({
+        name:   l.type + ' — ' + l.date,
+        reason: 'Submitted at ' + l.submittedAt + ' (cutoff: ' + l.cutoff + ')',
+        level:  'warning'
+      });
+    });
+  }
+  // Surface duplicate days
+  if (d.duplicateDays && d.duplicateDays.length) {
+    d.duplicateDays.forEach(dup => {
+      fails.push({
+        name:   'Duplicate: ' + dup.type + ' check — ' + dup.date,
+        reason: dup.count + ' submissions on same date — only first counts, score penalised',
+        level:  'warning'
+      });
+    });
+  }
+  renderFails('fail-chairlift', fails);
+
+  // Maintenance breakdown tile
+  const mxKpi = d.kpis.find(k => k.id === 'chairlift_maintenance');
+  if (mxKpi && mxKpi.total > 0) {
+    const dg = document.getElementById('dept-chairlift');
+    dg.style.display = 'grid';
+    dg.innerHTML = `
+      <div class="dept-card">
+        <div class="dept-name">Maintenance Schedule</div>
+        <div class="dept-row"><span>Total tasks</span><span class="dv">${mxKpi.total}</span></div>
+        <div class="dept-row"><span>OK</span><span class="dv g">${mxKpi.value}</span></div>
+        <div class="dept-row"><span>Due soon</span><span class="dv w">${mxKpi.dueSoon}</span></div>
+        <div class="dept-row"><span>Overdue</span><span class="dv ${mxKpi.overdue > 0 ? 'c' : 'g'}">${mxKpi.overdue}</span></div>
+      </div>
+      <div class="dept-card">
+        <div class="dept-name">Today's Checks</div>
+        <div class="dept-row"><span>Start check</span><span class="dv ${d.todayStart ? 'g' : 'c'}">${d.todayStart ? 'Done' : 'Missing'}</span></div>
+        <div class="dept-row"><span>Start on time</span><span class="dv ${d.todayStartOnTime ? 'g' : 'w'}">${d.todayStart ? (d.todayStartOnTime ? 'Yes' : 'Late') : '—'}</span></div>
+        <div class="dept-row"><span>Close check</span><span class="dv ${d.todayClose ? 'g' : 'w'}">${d.todayClose ? 'Done' : 'Pending'}</span></div>
+        <div class="dept-row"><span>Close on time</span><span class="dv ${d.todayCloseOnTime ? 'g' : 'w'}">${d.todayClose ? (d.todayCloseOnTime ? 'Yes' : 'Late') : '—'}</span></div>
+      </div>
+      <div class="dept-card">
+        <div class="dept-name">Submission Quality</div>
+        <div class="dept-row"><span>Duplicates (30d)</span><span class="dv ${d.duplicatesLast30 > 0 ? 'w' : 'g'}">${d.duplicatesLast30}</span></div>
+        <div class="dept-row"><span>Operating days</span><span class="dv">${d.operatingDays}</span></div>
+        <div class="dept-row"><span>Meter hours</span><span class="dv">${d.currentMeterHrs}</span></div>
+      </div>`;
+  }
+
+  document.getElementById('kpi-ts').textContent =
+    'Last refreshed: ' + new Date().toLocaleString('en-PK', {
+      timeZone:'Asia/Karachi', day:'numeric', month:'short',
+      year:'numeric', hour:'2-digit', minute:'2-digit'
+    });
+}
+
+function setChairliftLoading() {
+  document.getElementById('ksc-score-chairlift').textContent = '...';
+  document.getElementById('ksc-score-chairlift').className   = 'ksc-score loading';
+  document.getElementById('ksc-bar-chairlift').className     = 'ksc-fill loading';
+  document.getElementById('ksc-bar-chairlift').style.width   = '25%';
+  document.getElementById('ksc-meta-chairlift').textContent  = 'Fetching live data...';
+  document.getElementById('badge-chairlift').textContent     = 'Loading...';
+  document.getElementById('badge-chairlift').className       = 'score-badge loading';
+}
+
+function setChairliftError(msg) {
+  document.getElementById('ksc-score-chairlift').textContent = 'Error';
+  document.getElementById('ksc-score-chairlift').className   = 'ksc-score critical';
+  document.getElementById('ksc-bar-chairlift').style.width   = '0%';
+  document.getElementById('ksc-bar-chairlift').className     = 'ksc-fill critical';
+  document.getElementById('ksc-meta-chairlift').textContent  = 'Connection failed';
+  document.getElementById('badge-chairlift').textContent     = 'Connection error';
+  document.getElementById('badge-chairlift').className       = 'score-badge critical';
+  document.getElementById('dot-chairlift').style.background  = '#b93328';
+  document.getElementById('rows-chairlift').innerHTML =
+    `<div class="kpi-error">
+      <strong>Could not connect to Chairlift Checks script.</strong><br>
+      ${msg}<br><br>
+      Check the GAS deployment is set to <em>Execute as: Me</em> and <em>Anyone</em> can access.
     </div>`;
 }
 </script>
