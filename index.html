@@ -336,7 +336,7 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
   <div class="si" data-pg="sops"><span class="ic">≡</span>Policies &amp; SOPs<span class="sbadge a">4</span></div>
 
   <div class="sg">Intelligence</div>
-  <div class="si" data-pg="kpi"><span class="ic">◈</span>KPI Dashboard<span class="sbadge b" id="sb-kpi">4</span></div>
+  <div class="si" data-pg="kpi"><span class="ic">◈</span>KPI Dashboard<span class="sbadge b" id="sb-kpi">5</span></div>
 
   <div class="sg">Admin</div>
   <div class="si" data-pg="fy_close"><span class="ic">◑</span>FY Close</div>
@@ -436,6 +436,7 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
         <div class="kpp-src"><div class="kpp-dot" id="dot-warnings"></div>Warnings System <span class="phase-pill live" style="margin-left:4px">Phase 1</span></div>
         <div class="kpp-src"><div class="kpp-dot" id="dot-chairlift"></div>Chairlift Checks <span class="phase-pill live" style="margin-left:4px">Phase 2</span></div>
         <div class="kpp-src"><div class="kpp-dot" id="dot-readiness"></div>Daily Readiness <span class="phase-pill live" style="margin-left:4px">Phase 2</span></div>
+        <div class="kpp-src"><div class="kpp-dot" id="dot-prfund"></div>PR Fund Tracker <span class="phase-pill live" style="margin-left:4px">Phase 3</span></div>
         <div class="kpp-src" style="opacity:.4"><div class="kpp-dot"></div>Adventure Checks <span class="phase-pill" style="margin-left:4px">P2</span></div>
         <div class="kpp-src" style="opacity:.4"><div class="kpp-dot"></div>Chairlift Checks <span class="phase-pill" style="margin-left:4px">P2</span></div>
         <div class="kpp-src" style="opacity:.4"><div class="kpp-dot"></div>Daily Readiness <span class="phase-pill" style="margin-left:4px">P2</span></div>
@@ -473,10 +474,10 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
       <div class="ksc-track"><div class="ksc-fill loading" id="ksc-bar-readiness" style="width:25%"></div></div>
       <div class="ksc-meta" id="ksc-meta-readiness">Fetching live data...</div>
     </div>
-    <div class="ksc dim" style="border-left-color:#ddd">
-      <div class="ksc-hd"><div class="ksc-name">PR Fund Tracker</div><span class="phase-pill">Phase 3</span></div>
-      <div class="ksc-track"><div class="ksc-fill loading" style="width:0%"></div></div>
-      <div class="ksc-meta">Budget vs cap, IOU</div>
+    <div class="ksc" id="ksc-prfund" style="border-left-color:#b8922e" onclick="scrollTo('panel-prfund')">
+      <div class="ksc-hd"><div class="ksc-name">PR Fund Tracker</div><div class="ksc-score loading" id="ksc-score-prfund">...</div></div>
+      <div class="ksc-track"><div class="ksc-fill loading" id="ksc-bar-prfund" style="width:25%"></div></div>
+      <div class="ksc-meta" id="ksc-meta-prfund">Fetching live data...</div>
     </div>
     <div class="ksc dim" style="border-left-color:#ddd">
       <div class="ksc-hd"><div class="ksc-name">Procurement Hub</div><span class="phase-pill">Phase 3</span></div>
@@ -597,6 +598,23 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
     <div class="dept-grid" id="dept-readiness" style="display:none"></div>
   </div>
 
+  <!-- PR Fund Tracker detail panel -->
+  <div class="kpi-panel" id="panel-prfund">
+    <div class="kpi-phd">
+      <div class="kpi-ptitle">PR Fund Tracker — KPI Detail</div>
+      <span class="phase-pill live">Phase 3 — Live</span>
+      <div class="score-badge loading" id="badge-prfund">Loading...</div>
+      <button class="kpi-refresh" onclick="fetchPrFundKpi()">↻ Refresh</button>
+    </div>
+    <div class="kpi-rows" id="rows-prfund">
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:200px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:300px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:50%"></div></div><div class="kpi-rscore pending">—</div></div>
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:160px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:240px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:70%"></div></div><div class="kpi-rscore pending">—</div></div>
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:180px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:260px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:60%"></div></div><div class="kpi-rscore pending">—</div></div>
+    </div>
+    <div id="fail-prfund"></div>
+    <div class="dept-grid" id="dept-prfund" style="display:none"></div>
+  </div>
+
   <div class="last-up" id="kpi-ts">Not yet loaded</div>
 </div>
 
@@ -653,6 +671,7 @@ const LEAVE_URL      = 'https://script.google.com/macros/s/AKfycbybU2ee__bYCfvON
 const WARNINGS_URL   = 'https://script.google.com/macros/s/AKfycbw_H3UcaZXWLfs6PbrDRMoNeD-L5QkCopul0yDnpHOcY586FTO7rVAUmlZNAcyRPn6x/exec';
 const CHAIRLIFT_URL  = 'https://script.google.com/macros/s/AKfycbx6pT2xPiXZ4ZPK2G_ipRYVoMdWvTYO9aWiO2q75PIea1UZQCGKjXB1hOfXiArzVlC7qw/exec';
 const READINESS_URL  = 'https://script.google.com/macros/s/AKfycbx8loQIr9DFz8q1Pe_8gLYVzecRLk_RVl6Y1wM9agzFYdrbXcdDaPochMw0lINkfw3y/exec';
+const PRFUND_URL     = 'https://script.google.com/macros/s/AKfycbxWqdyPxJ-mYOY3BZTPp2rur8JiqeyBhANuWeJJBxCYk6MBymNJfqpFJLynKRLXaJk/exec';
 // ─────────────────────────────────────────────────────────
 
 // ── NAV ───────────────────────────────────────────────────
@@ -667,6 +686,7 @@ function nav(id) {
   if (id === 'kpi' && kpiState.warnings.status === 'idle')  fetchWarningsKpi();
   if (id === 'kpi' && kpiState.chairlift.status === 'idle') fetchChairliftKpi();
   if (id === 'kpi' && kpiState.readiness.status === 'idle') fetchReadinessKpi();
+  if (id === 'kpi' && kpiState.prfund.status === 'idle')    fetchPrFundKpi();
 }
 
 document.querySelectorAll('.si[data-pg]').forEach(el => {
@@ -696,7 +716,8 @@ const kpiState = {
   leave:     { status: 'idle', score: null, data: null },
   warnings:  { status: 'idle', score: null, data: null },
   chairlift: { status: 'idle', score: null, data: null },
-  readiness: { status: 'idle', score: null, data: null }
+  readiness: { status: 'idle', score: null, data: null },
+  prfund:    { status: 'idle', score: null, data: null }
 };
 
 // ── KPI FETCH ─────────────────────────────────────────────
@@ -1285,6 +1306,156 @@ function setReadinessError(msg) {
       <strong>Could not connect to Daily Readiness script.</strong><br>
       ${msg}<br><br>
       Check the GAS deployment is set to <em>Execute as: Me</em> and <em>Anyone</em> can access.
+    </div>`;
+}
+// ── PR FUND KPI FETCH ─────────────────────────────────────
+async function fetchPrFundKpi() {
+  setPrFundLoading();
+  try {
+    const res  = await fetch(PRFUND_URL, {
+      method:  'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body:    JSON.stringify({ action: 'getKpiData' })
+    });
+    const data = await res.json();
+    if (data.status !== 'ok') throw new Error(data.message || 'Script returned error');
+    kpiState.prfund = { status: 'loaded', score: data.overallScore, data: data };
+    renderPrFundKpi(data);
+    updatePortfolioScore();
+  } catch (err) {
+    kpiState.prfund.status = 'error';
+    setPrFundError(err.message);
+  }
+}
+
+function renderPrFundKpi(d) {
+  const cls = scoreClass(d.overallScore);
+
+  // Source card
+  const sc = document.getElementById('ksc-score-prfund');
+  sc.textContent = d.overallScore;
+  sc.className   = 'ksc-score ' + cls;
+  const bar = document.getElementById('ksc-bar-prfund');
+  bar.style.width = d.overallScore + '%';
+  bar.className   = 'ksc-fill ' + cls;
+  document.getElementById('ksc-meta-prfund').textContent =
+    'PKR ' + (d.currentSpend || 0).toLocaleString() + ' of ' + (d.cap || 0).toLocaleString() +
+    ' · ' + d.currentPct + '% used · ' + fmtTime(d.asOf);
+  document.getElementById('dot-prfund').style.background = dotColor(cls);
+
+  // Score badge
+  const badge = document.getElementById('badge-prfund');
+  badge.textContent = d.overallScore + ' / 100';
+  badge.className   = 'score-badge ' + cls;
+
+  // KPI rows
+  let html = '';
+  d.kpis.forEach(k => {
+    const c   = k.score === null ? 'pending' : k.status;
+    const pct = k.pct !== undefined ? k.pct : Math.min(k.score || 0, 100);
+    html += `<div class="kpi-row">
+      <div class="kpi-rdot ${c}"></div>
+      <div class="kpi-rinner">
+        <div class="kpi-rlbl">${k.label}</div>
+        <div class="kpi-rdetail">${k.detail}</div>
+      </div>
+      <div class="kpi-rtrack"><div class="kpi-rfill ${c}" style="width:${Math.min(pct,100)}%"></div></div>
+      <div class="kpi-rscore ${c}">${k.score !== null ? k.score : '—'}</div>
+    </div>`;
+  });
+  document.getElementById('rows-prfund').innerHTML = html;
+
+  // Failure list
+  renderFails('fail-prfund', (d.failures || []).map(f => ({
+    name: f.label, reason: f.reason, level: f.level
+  })));
+
+  // Breakdown tiles — spend history + ISB IOU
+  const dg = document.getElementById('dept-prfund');
+  dg.style.display = 'grid';
+
+  // Spend history rows
+  let histRows = '';
+  if (d.spendHistory && d.spendHistory.length) {
+    d.spendHistory.slice(-4).forEach(h => {
+      const pctCls = h.isOver ? 'c' : h.pct >= 90 ? 'w' : 'g';
+      histRows += `<div class="dept-row">
+        <span>${h.label}</span>
+        <span class="dv ${pctCls}">PKR ${(h.spend || 0).toLocaleString()} <span style="font-weight:400;font-size:10px">(${h.pct}%)</span></span>
+      </div>`;
+    });
+  }
+
+  // IOU status
+  const iouKpi = d.kpis ? d.kpis.find(k => k.id === 'pr_isb_iou') : null;
+  let iouRows = '';
+  if (iouKpi && iouKpi.unpaidMonths && iouKpi.unpaidMonths.length) {
+    iouKpi.unpaidMonths.forEach(u => {
+      iouRows += `<div class="dept-row"><span>${u.label}</span><span class="dv c">PKR ${(u.amount||0).toLocaleString()}</span></div>`;
+    });
+  } else {
+    iouRows = '<div class="dept-row"><span style="color:var(--text3)">All ISB bills paid</span></div>';
+  }
+
+  // Late submissions
+  const timingKpi = d.kpis ? d.kpis.find(k => k.id === 'pr_submission_timing') : null;
+  let lateRows = '';
+  if (timingKpi && timingKpi.lateEntries && timingKpi.lateEntries.length) {
+    timingKpi.lateEntries.slice(0, 3).forEach(le => {
+      lateRows += `<div class="dept-row">
+        <span>${le.requester || le.prRef || '—'} (${le.entryDate})</span>
+        <span class="dv w">${Math.abs(le.gapDays)}d late</span>
+      </div>`;
+    });
+  } else {
+    lateRows = '<div class="dept-row"><span style="color:var(--text3)">All entries submitted on time</span></div>';
+  }
+
+  dg.innerHTML = `
+    <div class="dept-card">
+      <div class="dept-name">Spend History (last 4 months)</div>
+      ${histRows || '<div class="dept-row"><span style="color:var(--text3)">No data</span></div>'}
+    </div>
+    <div class="dept-card">
+      <div class="dept-name">ISB IOU Outstanding</div>
+      ${iouRows}
+    </div>
+    <div class="dept-card">
+      <div class="dept-name">Late Submissions</div>
+      ${lateRows}
+    </div>`;
+
+  document.getElementById('kpi-ts').textContent =
+    'Last refreshed: ' + new Date().toLocaleString('en-PK', {
+      timeZone:'Asia/Karachi', day:'numeric', month:'short',
+      year:'numeric', hour:'2-digit', minute:'2-digit'
+    });
+}
+
+function setPrFundLoading() {
+  document.getElementById('ksc-score-prfund').textContent = '...';
+  document.getElementById('ksc-score-prfund').className   = 'ksc-score loading';
+  document.getElementById('ksc-bar-prfund').className     = 'ksc-fill loading';
+  document.getElementById('ksc-bar-prfund').style.width   = '25%';
+  document.getElementById('ksc-meta-prfund').textContent  = 'Fetching live data...';
+  document.getElementById('badge-prfund').textContent     = 'Loading...';
+  document.getElementById('badge-prfund').className       = 'score-badge loading';
+}
+
+function setPrFundError(msg) {
+  document.getElementById('ksc-score-prfund').textContent = 'Error';
+  document.getElementById('ksc-score-prfund').className   = 'ksc-score critical';
+  document.getElementById('ksc-bar-prfund').style.width   = '0%';
+  document.getElementById('ksc-bar-prfund').className     = 'ksc-fill critical';
+  document.getElementById('ksc-meta-prfund').textContent  = 'Connection failed';
+  document.getElementById('badge-prfund').textContent     = 'Connection error';
+  document.getElementById('badge-prfund').className       = 'score-badge critical';
+  document.getElementById('dot-prfund').style.background  = '#b93328';
+  document.getElementById('rows-prfund').innerHTML =
+    `<div class="kpi-error">
+      <strong>Could not connect to PR Fund script.</strong><br>
+      ${msg}<br><br>
+      Check GAS deployment is set to <em>Execute as: Me</em> and <em>Anyone</em> can access.
     </div>`;
 }
 </script>
