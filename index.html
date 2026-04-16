@@ -336,7 +336,7 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
   <div class="si" data-pg="sops"><span class="ic">≡</span>Policies &amp; SOPs<span class="sbadge a">4</span></div>
 
   <div class="sg">Intelligence</div>
-  <div class="si" data-pg="kpi"><span class="ic">◈</span>KPI Dashboard<span class="sbadge b" id="sb-kpi">5</span></div>
+  <div class="si" data-pg="kpi"><span class="ic">◈</span>KPI Dashboard<span class="sbadge b" id="sb-kpi">6</span></div>
 
   <div class="sg">Admin</div>
   <div class="si" data-pg="fy_close"><span class="ic">◑</span>FY Close</div>
@@ -437,6 +437,7 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
         <div class="kpp-src"><div class="kpp-dot" id="dot-chairlift"></div>Chairlift Checks <span class="phase-pill live" style="margin-left:4px">Phase 2</span></div>
         <div class="kpp-src"><div class="kpp-dot" id="dot-readiness"></div>Daily Readiness <span class="phase-pill live" style="margin-left:4px">Phase 2</span></div>
         <div class="kpp-src"><div class="kpp-dot" id="dot-prfund"></div>PR Fund Tracker <span class="phase-pill live" style="margin-left:4px">Phase 3</span></div>
+        <div class="kpp-src"><div class="kpp-dot" id="dot-procurement"></div>Procurement Hub <span class="phase-pill live" style="margin-left:4px">Phase 3</span></div>
         <div class="kpp-src" style="opacity:.4"><div class="kpp-dot"></div>Adventure Checks <span class="phase-pill" style="margin-left:4px">P2</span></div>
         <div class="kpp-src" style="opacity:.4"><div class="kpp-dot"></div>Chairlift Checks <span class="phase-pill" style="margin-left:4px">P2</span></div>
         <div class="kpp-src" style="opacity:.4"><div class="kpp-dot"></div>Daily Readiness <span class="phase-pill" style="margin-left:4px">P2</span></div>
@@ -479,10 +480,10 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
       <div class="ksc-track"><div class="ksc-fill loading" id="ksc-bar-prfund" style="width:25%"></div></div>
       <div class="ksc-meta" id="ksc-meta-prfund">Fetching live data...</div>
     </div>
-    <div class="ksc dim" style="border-left-color:#ddd">
-      <div class="ksc-hd"><div class="ksc-name">Procurement Hub</div><span class="phase-pill">Phase 3</span></div>
-      <div class="ksc-track"><div class="ksc-fill loading" style="width:0%"></div></div>
-      <div class="ksc-meta">PRF cycle, open GRNs</div>
+    <div class="ksc" id="ksc-procurement" style="border-left-color:#2c5282" onclick="scrollTo('panel-procurement')">
+      <div class="ksc-hd"><div class="ksc-name">Procurement Hub</div><div class="ksc-score loading" id="ksc-score-procurement">...</div></div>
+      <div class="ksc-track"><div class="ksc-fill loading" id="ksc-bar-procurement" style="width:25%"></div></div>
+      <div class="ksc-meta" id="ksc-meta-procurement">Fetching live data...</div>
     </div>
     <div class="ksc dim" style="border-left-color:#ddd">
       <div class="ksc-hd"><div class="ksc-name">PistenBully</div><span class="phase-pill">Phase 4</span></div>
@@ -615,6 +616,23 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
     <div class="dept-grid" id="dept-prfund" style="display:none"></div>
   </div>
 
+  <!-- Procurement Hub detail panel -->
+  <div class="kpi-panel" id="panel-procurement">
+    <div class="kpi-phd">
+      <div class="kpi-ptitle">Procurement Hub — KPI Detail</div>
+      <span class="phase-pill live">Phase 3 — Live</span>
+      <div class="score-badge loading" id="badge-procurement">Loading...</div>
+      <button class="kpi-refresh" onclick="fetchProcurementKpi()">↻ Refresh</button>
+    </div>
+    <div class="kpi-rows" id="rows-procurement">
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:180px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:300px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:40%"></div></div><div class="kpi-rscore pending">—</div></div>
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:200px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:260px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:65%"></div></div><div class="kpi-rscore pending">—</div></div>
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:160px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:240px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:80%"></div></div><div class="kpi-rscore pending">—</div></div>
+    </div>
+    <div id="fail-procurement"></div>
+    <div class="dept-grid" id="dept-procurement" style="display:none"></div>
+  </div>
+
   <div class="last-up" id="kpi-ts">Not yet loaded</div>
 </div>
 
@@ -671,7 +689,8 @@ const LEAVE_URL      = 'https://script.google.com/macros/s/AKfycbybU2ee__bYCfvON
 const WARNINGS_URL   = 'https://script.google.com/macros/s/AKfycbw_H3UcaZXWLfs6PbrDRMoNeD-L5QkCopul0yDnpHOcY586FTO7rVAUmlZNAcyRPn6x/exec';
 const CHAIRLIFT_URL  = 'https://script.google.com/macros/s/AKfycbx6pT2xPiXZ4ZPK2G_ipRYVoMdWvTYO9aWiO2q75PIea1UZQCGKjXB1hOfXiArzVlC7qw/exec';
 const READINESS_URL  = 'https://script.google.com/macros/s/AKfycbx8loQIr9DFz8q1Pe_8gLYVzecRLk_RVl6Y1wM9agzFYdrbXcdDaPochMw0lINkfw3y/exec';
-const PRFUND_URL     = 'https://script.google.com/macros/s/AKfycbxWqdyPxJ-mYOY3BZTPp2rur8JiqeyBhANuWeJJBxCYk6MBymNJfqpFJLynKRLXaJk/exec';
+const PRFUND_URL      = 'https://script.google.com/macros/s/AKfycbxWqdyPxJ-mYOY3BZTPp2rur8JiqeyBhANuWeJJBxCYk6MBymNJfqpFJLynKRLXaJk/exec';
+const PROCUREMENT_URL = 'https://script.google.com/macros/s/AKfycby_M0NW85JpZBvJXCAoIM0p70V4YmD_ohwO1maXYjWme6_49rRKBp5JbSSPFiR0cQno/exec';
 // ─────────────────────────────────────────────────────────
 
 // ── NAV ───────────────────────────────────────────────────
@@ -686,7 +705,8 @@ function nav(id) {
   if (id === 'kpi' && kpiState.warnings.status === 'idle')  fetchWarningsKpi();
   if (id === 'kpi' && kpiState.chairlift.status === 'idle') fetchChairliftKpi();
   if (id === 'kpi' && kpiState.readiness.status === 'idle') fetchReadinessKpi();
-  if (id === 'kpi' && kpiState.prfund.status === 'idle')    fetchPrFundKpi();
+  if (id === 'kpi' && kpiState.prfund.status === 'idle')       fetchPrFundKpi();
+  if (id === 'kpi' && kpiState.procurement.status === 'idle')  fetchProcurementKpi();
 }
 
 document.querySelectorAll('.si[data-pg]').forEach(el => {
@@ -713,11 +733,12 @@ function fyTick(el) {
 
 // ── KPI STATE ─────────────────────────────────────────────
 const kpiState = {
-  leave:     { status: 'idle', score: null, data: null },
-  warnings:  { status: 'idle', score: null, data: null },
-  chairlift: { status: 'idle', score: null, data: null },
-  readiness: { status: 'idle', score: null, data: null },
-  prfund:    { status: 'idle', score: null, data: null }
+  leave:        { status: 'idle', score: null, data: null },
+  warnings:     { status: 'idle', score: null, data: null },
+  chairlift:    { status: 'idle', score: null, data: null },
+  readiness:    { status: 'idle', score: null, data: null },
+  prfund:       { status: 'idle', score: null, data: null },
+  procurement:  { status: 'idle', score: null, data: null }
 };
 
 // ── KPI FETCH ─────────────────────────────────────────────
@@ -1454,6 +1475,140 @@ function setPrFundError(msg) {
   document.getElementById('rows-prfund').innerHTML =
     `<div class="kpi-error">
       <strong>Could not connect to PR Fund script.</strong><br>
+      ${msg}<br><br>
+      Check GAS deployment is set to <em>Execute as: Me</em> and <em>Anyone</em> can access.
+    </div>`;
+}
+// ── PROCUREMENT KPI FETCH ─────────────────────────────────
+async function fetchProcurementKpi() {
+  setProcurementLoading();
+  try {
+    const res  = await fetch(PROCUREMENT_URL, {
+      method:  'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body:    JSON.stringify({ action: 'getKpiData' })
+    });
+    const data = await res.json();
+    if (data.status !== 'ok') throw new Error(data.message || 'Script returned error');
+    kpiState.procurement = { status: 'loaded', score: data.overallScore, data: data };
+    renderProcurementKpi(data);
+    updatePortfolioScore();
+  } catch (err) {
+    kpiState.procurement.status = 'error';
+    setProcurementError(err.message);
+  }
+}
+
+function renderProcurementKpi(d) {
+  const cls = scoreClass(d.overallScore);
+
+  // Source card
+  const sc = document.getElementById('ksc-score-procurement');
+  sc.textContent = d.overallScore;
+  sc.className   = 'ksc-score ' + cls;
+  const bar = document.getElementById('ksc-bar-procurement');
+  bar.style.width = d.overallScore + '%';
+  bar.className   = 'ksc-fill ' + cls;
+  document.getElementById('ksc-meta-procurement').textContent =
+    (d.totalPrfs || 0) + ' PRFs · ' + (d.totalGrns || 0) + ' GRNs · ' +
+    (d.openPrfs || 0) + ' open · ' + fmtTime(d.asOf);
+  document.getElementById('dot-procurement').style.background = dotColor(cls);
+
+  // Score badge
+  const badge = document.getElementById('badge-procurement');
+  badge.textContent = d.overallScore + ' / 100';
+  badge.className   = 'score-badge ' + cls;
+
+  // KPI rows
+  let html = '';
+  d.kpis.forEach(k => {
+    const c   = k.score === null ? 'pending' : k.status;
+    const pct = k.pct !== undefined ? k.pct : Math.min(k.score || 0, 100);
+    html += `<div class="kpi-row">
+      <div class="kpi-rdot ${c}"></div>
+      <div class="kpi-rinner">
+        <div class="kpi-rlbl">${k.label}</div>
+        <div class="kpi-rdetail">${k.detail}</div>
+      </div>
+      <div class="kpi-rtrack"><div class="kpi-rfill ${c}" style="width:${Math.min(pct,100)}%"></div></div>
+      <div class="kpi-rscore ${c}">${k.score !== null ? k.score : '—'}</div>
+    </div>`;
+  });
+  document.getElementById('rows-procurement').innerHTML = html;
+
+  // Failure list
+  renderFails('fail-procurement', (d.failures || []).map(f => ({
+    name: f.label, reason: f.reason, level: f.level
+  })));
+
+  // Entity breakdown tiles
+  const dg = document.getElementById('dept-procurement');
+  dg.style.display = 'grid';
+
+  let entityRows = '';
+  if (d.entitySummary) {
+    Object.keys(d.entitySummary).forEach(ent => {
+      const e = d.entitySummary[ent];
+      const openCls = (e.openPrfs + e.openGrns) > 3 ? 'c' : (e.openPrfs + e.openGrns) > 0 ? 'w' : 'g';
+      entityRows += `<div class="dept-card">
+        <div class="dept-name">${ent}</div>
+        <div class="dept-row"><span>PRFs total</span><span class="dv">${e.prfs}</span></div>
+        <div class="dept-row"><span>GRNs total</span><span class="dv">${e.grns}</span></div>
+        <div class="dept-row"><span>Open PRFs</span><span class="dv ${e.openPrfs > 0 ? 'w' : 'g'}">${e.openPrfs}</span></div>
+        <div class="dept-row"><span>Open GRNs</span><span class="dv ${e.openGrns > 0 ? 'w' : 'g'}">${e.openGrns}</span></div>
+      </div>`;
+    });
+  }
+
+  // Late submissions summary
+  const timingKpi = d.kpis ? d.kpis.find(k => k.id === 'proc_submission_timing') : null;
+  let lateRows = '';
+  if (timingKpi && timingKpi.lateEntries && timingKpi.lateEntries.length) {
+    timingKpi.lateEntries.slice(0, 4).forEach(le => {
+      lateRows += `<div class="dept-row">
+        <span>${le.type}: ${le.ref} — ${le.name || '—'} (${le.dept || '—'})</span>
+        <span class="dv ${Math.abs(le.gapDays) >= 3 ? 'c' : 'w'}">${Math.abs(le.gapDays)}d late</span>
+      </div>`;
+    });
+  } else {
+    lateRows = '<div class="dept-row"><span style="color:var(--text3)">All documents submitted on time</span></div>';
+  }
+
+  dg.innerHTML = (entityRows || '<div class="dept-card"><div class="dept-name" style="color:var(--text3)">No entity data</div></div>') +
+    `<div class="dept-card" style="grid-column:1/-1">
+      <div class="dept-name">Late Submissions (by Person / Dept)</div>
+      ${lateRows}
+    </div>`;
+
+  document.getElementById('kpi-ts').textContent =
+    'Last refreshed: ' + new Date().toLocaleString('en-PK', {
+      timeZone:'Asia/Karachi', day:'numeric', month:'short',
+      year:'numeric', hour:'2-digit', minute:'2-digit'
+    });
+}
+
+function setProcurementLoading() {
+  document.getElementById('ksc-score-procurement').textContent = '...';
+  document.getElementById('ksc-score-procurement').className   = 'ksc-score loading';
+  document.getElementById('ksc-bar-procurement').className     = 'ksc-fill loading';
+  document.getElementById('ksc-bar-procurement').style.width   = '25%';
+  document.getElementById('ksc-meta-procurement').textContent  = 'Fetching live data...';
+  document.getElementById('badge-procurement').textContent     = 'Loading...';
+  document.getElementById('badge-procurement').className       = 'score-badge loading';
+}
+
+function setProcurementError(msg) {
+  document.getElementById('ksc-score-procurement').textContent = 'Error';
+  document.getElementById('ksc-score-procurement').className   = 'ksc-score critical';
+  document.getElementById('ksc-bar-procurement').style.width   = '0%';
+  document.getElementById('ksc-bar-procurement').className     = 'ksc-fill critical';
+  document.getElementById('ksc-meta-procurement').textContent  = 'Connection failed';
+  document.getElementById('badge-procurement').textContent     = 'Connection error';
+  document.getElementById('badge-procurement').className       = 'score-badge critical';
+  document.getElementById('dot-procurement').style.background  = '#b93328';
+  document.getElementById('rows-procurement').innerHTML =
+    `<div class="kpi-error">
+      <strong>Could not connect to Procurement Hub script.</strong><br>
       ${msg}<br><br>
       Check GAS deployment is set to <em>Execute as: Me</em> and <em>Anyone</em> can access.
     </div>`;
