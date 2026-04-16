@@ -825,13 +825,14 @@ function nav(id) {
   if (pg) pg.classList.add('on');
   const si = document.querySelector('.si[data-pg="' + id + '"]');
   if (si) si.classList.add('on');
-  if (id === 'kpi' && kpiState.leave.status === 'idle')     fetchLeaveKpi();
-  if (id === 'kpi' && kpiState.warnings.status === 'idle')  fetchWarningsKpi();
-  if (id === 'kpi' && kpiState.chairlift.status === 'idle') fetchChairliftKpi();
-  if (id === 'kpi' && kpiState.readiness.status === 'idle') fetchReadinessKpi();
+  if (id === 'kpi' && kpiState.leave.status === 'idle')        fetchLeaveKpi();
+  if (id === 'kpi' && kpiState.warnings.status === 'idle')     fetchWarningsKpi();
+  if (id === 'kpi' && kpiState.chairlift.status === 'idle')    fetchChairliftKpi();
+  if (id === 'kpi' && kpiState.readiness.status === 'idle')    fetchReadinessKpi();
   if (id === 'kpi' && kpiState.prfund.status === 'idle')       fetchPrFundKpi();
   if (id === 'kpi' && kpiState.procurement.status === 'idle')  fetchProcurementKpi();
   if (id === 'kpi' && kpiState.adventure.status === 'idle')    fetchAdventureKpi();
+  if (id === 'sops' && sopData.length === 0)                   loadSops();
 }
 
 document.querySelectorAll('.si[data-pg]').forEach(el => {
@@ -1906,14 +1907,6 @@ const SOP_URL = 'https://script.google.com/macros/s/AKfycby41Z-4TJt0SHjDpvlYb8hw
 
 // ── SOP STATE ─────────────────────────────────────────────
 let sopData = [];
-
-// ── Auto-load when SOPs page is opened ────────────────────
-// Hooked into the existing nav() function via the page show event
-const _origNav = nav;
-function nav(id) {
-  _origNav(id);
-  if (id === 'sops' && sopData.length === 0) loadSops();
-}
 
 async function loadSops() {
   if (!SOP_URL) {
