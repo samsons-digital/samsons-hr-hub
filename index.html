@@ -60,6 +60,8 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
   text-decoration:none;user-select:none}
 .si:hover{background:#f5f3ef;color:var(--text)}
 .si.on{background:var(--green3);color:var(--green);border-left-color:var(--green);font-weight:600}
+.si.dim{opacity:.45;pointer-events:none;cursor:default}
+.si.dim .ic{opacity:.5}
 .si .ic{width:16px;text-align:center;font-size:12px;flex-shrink:0;opacity:.7}
 .si.on .ic{opacity:1}
 .sbadge{margin-left:auto;font-size:10px;font-weight:600;padding:1px 6px;
@@ -332,11 +334,17 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
   <div class="si" data-pg="certs"><span class="ic">◻</span>Certifications<span class="sbadge r">3</span></div>
   <div class="si" data-pg="disciplinary"><span class="ic">▣</span>Disciplinary</div>
 
+  <div class="sg">Training &amp; Certificates</div>
+  <div class="si dim" data-pg="training_schedule"><span class="ic">◷</span>Training Schedule</div>
+  <div class="si dim" data-pg="activity_certs"><span class="ic">◻</span>Activity Certifications</div>
+  <div class="si dim" data-pg="first_aid"><span class="ic">✚</span>First Aid &amp; Safety</div>
+  <div class="si dim" data-pg="operator_quals"><span class="ic">◎</span>Operator Qualifications</div>
+
   <div class="sg">Documentation</div>
   <div class="si" data-pg="sops"><span class="ic">≡</span>Policies &amp; SOPs<span class="sbadge a">4</span></div>
 
   <div class="sg">Intelligence</div>
-  <div class="si" data-pg="kpi"><span class="ic">◈</span>KPI Dashboard<span class="sbadge b" id="sb-kpi">6</span></div>
+  <div class="si" data-pg="kpi"><span class="ic">◈</span>KPI Dashboard<span class="sbadge b" id="sb-kpi">7</span></div>
 
   <div class="sg">Admin</div>
   <div class="si" data-pg="fy_close"><span class="ic">◑</span>FY Close</div>
@@ -438,7 +446,7 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
         <div class="kpp-src"><div class="kpp-dot" id="dot-readiness"></div>Daily Readiness <span class="phase-pill live" style="margin-left:4px">Phase 2</span></div>
         <div class="kpp-src"><div class="kpp-dot" id="dot-prfund"></div>PR Fund Tracker <span class="phase-pill live" style="margin-left:4px">Phase 3</span></div>
         <div class="kpp-src"><div class="kpp-dot" id="dot-procurement"></div>Procurement Hub <span class="phase-pill live" style="margin-left:4px">Phase 3</span></div>
-        <div class="kpp-src" style="opacity:.4"><div class="kpp-dot"></div>Adventure Checks <span class="phase-pill" style="margin-left:4px">P2</span></div>
+        <div class="kpp-src"><div class="kpp-dot" id="dot-adventure"></div>Adventure Checks <span class="phase-pill live" style="margin-left:4px">Phase 2</span></div>
         <div class="kpp-src" style="opacity:.4"><div class="kpp-dot"></div>Chairlift Checks <span class="phase-pill" style="margin-left:4px">P2</span></div>
         <div class="kpp-src" style="opacity:.4"><div class="kpp-dot"></div>Daily Readiness <span class="phase-pill" style="margin-left:4px">P2</span></div>
         <div class="kpp-src" style="opacity:.4"><div class="kpp-dot"></div>PR Fund <span class="phase-pill" style="margin-left:4px">P3</span></div>
@@ -466,10 +474,10 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
       <div class="ksc-track"><div class="ksc-fill loading" id="ksc-bar-warnings" style="width:25%"></div></div>
       <div class="ksc-meta" id="ksc-meta-warnings">Fetching live data...</div>
     </div>
-    <div class="ksc dim" style="border-left-color:#ddd">
-      <div class="ksc-hd"><div class="ksc-name">Adventure Checks</div><span class="phase-pill">Phase 2</span></div>
-      <div class="ksc-track"><div class="ksc-fill loading" style="width:0%"></div></div>
-      <div class="ksc-meta">GV + MJSR activities</div>
+    <div class="ksc" id="ksc-adventure" style="border-left-color:#276749" onclick="scrollTo('panel-adventure')">
+      <div class="ksc-hd"><div class="ksc-name">Adventure Checks</div><div class="ksc-score loading" id="ksc-score-adventure">...</div></div>
+      <div class="ksc-track"><div class="ksc-fill loading" id="ksc-bar-adventure" style="width:25%"></div></div>
+      <div class="ksc-meta" id="ksc-meta-adventure">Fetching live data...</div>
     </div>
     <div class="ksc" id="ksc-chairlift" style="border-left-color:#553c9a" onclick="scrollTo('panel-chairlift')">
       <div class="ksc-hd"><div class="ksc-name">Chairlift Checks</div><div class="ksc-score loading" id="ksc-score-chairlift">...</div></div>
@@ -669,6 +677,23 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
     <div class="dept-grid" id="dept-procurement" style="display:none"></div>
   </div>
 
+  <!-- Adventure Checks detail panel -->
+  <div class="kpi-panel" id="panel-adventure">
+    <div class="kpi-phd">
+      <div class="kpi-ptitle">Adventure Checks — KPI Detail</div>
+      <span class="phase-pill live">Phase 2 — Live</span>
+      <div class="score-badge loading" id="badge-adventure">Loading...</div>
+      <button class="kpi-refresh" onclick="fetchAdventureKpi()">↻ Refresh</button>
+    </div>
+    <div class="kpi-rows" id="rows-adventure">
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:200px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:280px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:50%"></div></div><div class="kpi-rscore pending">—</div></div>
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:160px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:240px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:70%"></div></div><div class="kpi-rscore pending">—</div></div>
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:180px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:260px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:40%"></div></div><div class="kpi-rscore pending">—</div></div>
+    </div>
+    <div id="fail-adventure"></div>
+    <div class="dept-grid" id="dept-adventure" style="display:none"></div>
+  </div>
+
   <div class="last-up" id="kpi-ts">Not yet loaded</div>
 </div>
 
@@ -727,6 +752,7 @@ const CHAIRLIFT_URL  = 'https://script.google.com/macros/s/AKfycbx6pT2xPiXZ4ZPK2
 const READINESS_URL  = 'https://script.google.com/macros/s/AKfycbx8loQIr9DFz8q1Pe_8gLYVzecRLk_RVl6Y1wM9agzFYdrbXcdDaPochMw0lINkfw3y/exec';
 const PRFUND_URL      = 'https://script.google.com/macros/s/AKfycbxWqdyPxJ-mYOY3BZTPp2rur8JiqeyBhANuWeJJBxCYk6MBymNJfqpFJLynKRLXaJk/exec';
 const PROCUREMENT_URL = 'https://script.google.com/macros/s/AKfycby_M0NW85JpZBvJXCAoIM0p70V4YmD_ohwO1maXYjWme6_49rRKBp5JbSSPFiR0cQno/exec';
+const ADVENTURE_URL   = 'https://script.google.com/macros/s/AKfycbz5Ul6VqHbwlkUg16ymnVpQaukjVh30NTokPceAafmPnjhHnsOZSGw70PMzdESLN3KE2g/exec';
 // ─────────────────────────────────────────────────────────
 
 // ── NAV ───────────────────────────────────────────────────
@@ -743,6 +769,7 @@ function nav(id) {
   if (id === 'kpi' && kpiState.readiness.status === 'idle') fetchReadinessKpi();
   if (id === 'kpi' && kpiState.prfund.status === 'idle')       fetchPrFundKpi();
   if (id === 'kpi' && kpiState.procurement.status === 'idle')  fetchProcurementKpi();
+  if (id === 'kpi' && kpiState.adventure.status === 'idle')    fetchAdventureKpi();
 }
 
 document.querySelectorAll('.si[data-pg]').forEach(el => {
@@ -774,7 +801,8 @@ const kpiState = {
   chairlift:    { status: 'idle', score: null, data: null },
   readiness:    { status: 'idle', score: null, data: null },
   prfund:       { status: 'idle', score: null, data: null },
-  procurement:  { status: 'idle', score: null, data: null }
+  procurement:  { status: 'idle', score: null, data: null },
+  adventure:    { status: 'idle', score: null, data: null }
 };
 
 // ── KPI FETCH ─────────────────────────────────────────────
@@ -1645,6 +1673,169 @@ function setProcurementError(msg) {
   document.getElementById('rows-procurement').innerHTML =
     `<div class="kpi-error">
       <strong>Could not connect to Procurement Hub script.</strong><br>
+      ${msg}<br><br>
+      Check GAS deployment is set to <em>Execute as: Me</em> and <em>Anyone</em> can access.
+    </div>`;
+}
+// ── ADVENTURE CHECKS KPI FETCH ────────────────────────────
+async function fetchAdventureKpi() {
+  setAdventureLoading();
+  try {
+    const res  = await fetch(ADVENTURE_URL, {
+      method:  'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body:    JSON.stringify({ action: 'getKpiData' })
+    });
+    const data = await res.json();
+    if (data.status !== 'ok') throw new Error(data.message || 'Script returned error');
+    kpiState.adventure = { status: 'loaded', score: data.overallScore, data: data };
+    renderAdventureKpi(data);
+    updatePortfolioScore();
+  } catch (err) {
+    kpiState.adventure.status = 'error';
+    setAdventureError(err.message);
+  }
+}
+
+function renderAdventureKpi(d) {
+  const cls = scoreClass(d.overallScore);
+
+  // Source card
+  const sc = document.getElementById('ksc-score-adventure');
+  sc.textContent = d.overallScore;
+  sc.className   = 'ksc-score ' + cls;
+  const bar = document.getElementById('ksc-bar-adventure');
+  bar.style.width = d.overallScore + '%';
+  bar.className   = 'ksc-fill ' + cls;
+  document.getElementById('ksc-meta-adventure').textContent =
+    (d.submittedToday || 0) + '/4 today · ' +
+    (d.certValid || 0) + '/' + (d.certTotal || 30) + ' certs valid · ' +
+    fmtTime(d.asOf);
+  document.getElementById('dot-adventure').style.background = dotColor(cls);
+
+  // Score badge
+  const badge = document.getElementById('badge-adventure');
+  badge.textContent = d.overallScore + ' / 100';
+  badge.className   = 'score-badge ' + cls;
+
+  // KPI rows
+  let html = '';
+  d.kpis.forEach(k => {
+    const c   = k.score === null ? 'pending' : k.status;
+    const pct = k.pct !== undefined ? k.pct : Math.min(k.score || 0, 100);
+    html += `<div class="kpi-row">
+      <div class="kpi-rdot ${c}"></div>
+      <div class="kpi-rinner">
+        <div class="kpi-rlbl">${k.label}</div>
+        <div class="kpi-rdetail">${k.detail}</div>
+      </div>
+      <div class="kpi-rtrack"><div class="kpi-rfill ${c}" style="width:${Math.min(pct,100)}%"></div></div>
+      <div class="kpi-rscore ${c}">${k.score !== null ? k.score : '—'}</div>
+    </div>`;
+  });
+  document.getElementById('rows-adventure').innerHTML = html;
+
+  // Failure list
+  renderFails('fail-adventure', (d.failures || []).map(f => ({
+    name: f.label, reason: f.reason, level: f.level
+  })));
+
+  // Breakdown tiles
+  const dg = document.getElementById('dept-adventure');
+  dg.style.display = 'grid';
+
+  // Activity pass rates
+  const rateKpi = d.kpis ? d.kpis.find(k => k.id === 'adv_pass_rate') : null;
+  let actRows = '';
+  if (rateKpi && rateKpi.activityRates) {
+    rateKpi.activityRates.forEach(a => {
+      const rateCls = a.rate === null ? '' : a.rate >= 90 ? 'g' : a.rate >= 70 ? 'w' : 'c';
+      actRows += `<div class="dept-row">
+        <span>${a.label}</span>
+        <span class="dv ${rateCls}">${a.rate !== null ? a.rate + '%' : '—'} <span style="font-weight:400;font-size:10px">(${a.clear}/${a.total})</span></span>
+      </div>`;
+    });
+  }
+
+  // Cert status
+  const certKpi = d.kpis ? d.kpis.find(k => k.id === 'adv_cert_compliance') : null;
+  let certRows = '';
+  if (certKpi) {
+    if (certKpi.expiredList && certKpi.expiredList.length) {
+      certKpi.expiredList.forEach(c => {
+        certRows += `<div class="dept-row"><span>${c.activity} — ${c.component}</span><span class="dv c">EXPIRED</span></div>`;
+      });
+    }
+    if (certKpi.criticalList && certKpi.criticalList.length) {
+      certKpi.criticalList.forEach(c => {
+        certRows += `<div class="dept-row"><span>${c.activity} — ${c.component}</span><span class="dv c">${c.days}d left</span></div>`;
+      });
+    }
+    if (certKpi.dueSoonList && certKpi.dueSoonList.length) {
+      certKpi.dueSoonList.slice(0,3).forEach(c => {
+        certRows += `<div class="dept-row"><span>${c.activity} — ${c.component}</span><span class="dv w">${c.days}d left</span></div>`;
+      });
+    }
+    if (!certRows) certRows = `<div class="dept-row"><span style="color:var(--text3)">${certKpi.pending === certKpi.total ? 'Expiry dates not yet entered' : certKpi.value + ' of ' + certKpi.total + ' certs valid'}</span></div>`;
+  }
+
+  // Today status per activity
+  const todayKpi = d.kpis ? d.kpis.find(k => k.id === 'adv_today_completion') : null;
+  const actionKpi = d.kpis ? d.kpis.find(k => k.id === 'adv_action_required') : null;
+  let todayRows = '';
+  const actLabels = ['Zipline','Giant Swing','Slingshot','Chairlift Rescue'];
+  const notSub = todayKpi ? (todayKpi.notSubmitted || []) : [];
+  actLabels.forEach(a => {
+    const isNot = notSub.includes(a);
+    const actionItem = actionKpi ? (actionKpi.actionRequired || []).find(x => x.label === a) : null;
+    const cls = isNot ? 'c' : actionItem ? 'w' : 'g';
+    const label = isNot ? 'Not submitted' : actionItem ? 'ACTION REQUIRED' : 'ALL CLEAR';
+    todayRows += `<div class="dept-row"><span>${a}</span><span class="dv ${cls}">${label}</span></div>`;
+  });
+
+  dg.innerHTML = `
+    <div class="dept-card">
+      <div class="dept-name">Pass Rate by Activity</div>
+      ${actRows || '<div class="dept-row"><span style="color:var(--text3)">No data</span></div>'}
+    </div>
+    <div class="dept-card">
+      <div class="dept-name">Certification Alerts</div>
+      ${certRows}
+    </div>
+    <div class="dept-card" style="grid-column:1/-1">
+      <div class="dept-name">Today's Status — All Activities</div>
+      ${todayRows}
+    </div>`;
+
+  document.getElementById('kpi-ts').textContent =
+    'Last refreshed: ' + new Date().toLocaleString('en-PK', {
+      timeZone:'Asia/Karachi', day:'numeric', month:'short',
+      year:'numeric', hour:'2-digit', minute:'2-digit'
+    });
+}
+
+function setAdventureLoading() {
+  document.getElementById('ksc-score-adventure').textContent = '...';
+  document.getElementById('ksc-score-adventure').className   = 'ksc-score loading';
+  document.getElementById('ksc-bar-adventure').className     = 'ksc-fill loading';
+  document.getElementById('ksc-bar-adventure').style.width   = '25%';
+  document.getElementById('ksc-meta-adventure').textContent  = 'Fetching live data...';
+  document.getElementById('badge-adventure').textContent     = 'Loading...';
+  document.getElementById('badge-adventure').className       = 'score-badge loading';
+}
+
+function setAdventureError(msg) {
+  document.getElementById('ksc-score-adventure').textContent = 'Error';
+  document.getElementById('ksc-score-adventure').className   = 'ksc-score critical';
+  document.getElementById('ksc-bar-adventure').style.width   = '0%';
+  document.getElementById('ksc-bar-adventure').className     = 'ksc-fill critical';
+  document.getElementById('ksc-meta-adventure').textContent  = 'Connection failed';
+  document.getElementById('badge-adventure').textContent     = 'Connection error';
+  document.getElementById('badge-adventure').className       = 'score-badge critical';
+  document.getElementById('dot-adventure').style.background  = '#b93328';
+  document.getElementById('rows-adventure').innerHTML =
+    `<div class="kpi-error">
+      <strong>Could not connect to Adventure Checks script.</strong><br>
       ${msg}<br><br>
       Check GAS deployment is set to <em>Execute as: Me</em> and <em>Anyone</em> can access.
     </div>`;
