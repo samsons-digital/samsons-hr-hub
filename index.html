@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Samsons HR Hub — Northern Pakistan</title>
+<style>
+/* ── RESET & BASE ─────────────────────────────────────────── */
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --green:#1b5e3b;--green2:#26825a;--green3:#e6f2ec;--green4:#d0e9da;
+  --gold:#b8922e;--gold2:#faf3e0;--gold3:#f0e4c0;
+  --red:#b93328;--red2:#fdecea;
+  --amber:#c96a10;--amber2:#fef3e8;
+  --blue:#1660a0;--blue2:#e6f1fb;
+  --slate:#2c3e50;
+  --bg:#f7f6f3;--bgw:#ffffff;
+  --border:#e2dfd8;--border2:#d0cdc6;
+  --text:#1a1917;--text2:#5a5854;--text3:#9a9690;
+  --nav:52px;--side:210px;
+  --rad:8px;--radl:12px;
+}
+html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px;color:var(--text);background:var(--bg)}
+
+/* ── TOP NAV ─────────────────────────────────────────────── */
+.topnav{
+  position:fixed;top:0;left:0;right:0;height:var(--nav);
+  background:var(--green);display:flex;align-items:center;
+  padding:0 20px;gap:14px;z-index:100;
+}
+.tn-logo{width:34px;height:34px;background:var(--gold);border-radius:7px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;color:#fff;flex-shrink:0;letter-spacing:.5px}
+.tn-brand{color:#fff}
+.tn-brand strong{font-size:15px;font-weight:600;display:block;line-height:1.2}
+.tn-brand span{font-size:11px;color:rgba(255,255,255,.6)}
+.tn-sp{flex:1}
+.tn-pill{background:rgba(255,255,255,.12);border:0.5px solid rgba(255,255,255,.2);
+  color:rgba(255,255,255,.8);font-size:11px;padding:3px 11px;border-radius:10px}
+.tn-date{font-size:11px;color:rgba(255,255,255,.55)}
+.tn-av{width:30px;height:30px;background:var(--gold);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:600;color:#fff;margin-left:6px;cursor:pointer}
+
+/* ── LAYOUT ──────────────────────────────────────────────── */
+.shell{display:flex;padding-top:var(--nav);min-height:100vh}
+
+/* ── SIDEBAR ─────────────────────────────────────────────── */
+.sidebar{
+  width:var(--side);flex-shrink:0;
+  background:var(--bgw);border-right:1px solid var(--border);
+  position:fixed;top:var(--nav);bottom:0;overflow-y:auto;
+  padding:10px 0 20px;
+}
+.sg{padding:5px 15px 3px;font-size:10px;font-weight:600;
+  color:var(--text3);text-transform:uppercase;letter-spacing:.7px;margin-top:8px}
+.si{display:flex;align-items:center;gap:9px;padding:7px 15px;
+  font-size:12.5px;color:var(--text2);cursor:pointer;
+  border-left:2.5px solid transparent;transition:all .12s;line-height:1.2;
+  text-decoration:none;user-select:none}
+.si:hover{background:#f5f3ef;color:var(--text)}
+.si.on{background:var(--green3);color:var(--green);border-left-color:var(--green);font-weight:600}
+.si .ic{width:16px;text-align:center;font-size:12px;flex-shrink:0;opacity:.7}
+.si.on .ic{opacity:1}
+.sbadge{margin-left:auto;font-size:10px;font-weight:600;padding:1px 6px;
+  border-radius:8px;min-width:18px;text-align:center;color:#fff}
+.sbadge.r{background:var(--red)}.sbadge.a{background:var(--amber)}
+.sbadge.g{background:var(--green2)}.sbadge.b{background:var(--blue)}
+
+/* ── MAIN ────────────────────────────────────────────────── */
+.main{margin-left:var(--side);flex:1;padding:22px;max-width:1100px}
+
+/* ── PAGE ────────────────────────────────────────────────── */
+.pg{display:none}.pg.on{display:block}
+.ph{margin-bottom:16px}
+.ph h1{font-size:18px;font-weight:600;color:var(--text);margin-bottom:3px}
+.ph p{font-size:12px;color:var(--text2)}
+
+/* ── ENTITY STRIP ────────────────────────────────────────── */
+.estrip{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.ep{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;
+  border-radius:10px;font-size:11px;font-weight:500;
+  background:var(--gold2);color:#7a5e1a;border:0.5px solid #e0c96a}
+.ed{width:7px;height:7px;border-radius:50%}
+
+/* ── STAT CARDS ──────────────────────────────────────────── */
+.sr{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:9px;margin-bottom:16px}
+.sc{background:var(--bgw);border:1px solid var(--border);border-radius:var(--rad);padding:13px 15px}
+.sc .lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+.sc .val{font-size:24px;font-weight:600;color:var(--text);line-height:1}
+.sc .sub{font-size:10px;color:var(--text3);margin-top:3px}
+.sc.ga{background:var(--green3);border-color:var(--green4)}.sc.ga .val{color:var(--green)}
+.sc.ra{background:var(--red2);border-color:#f5c8c4}.sc.ra .val{color:var(--red)}
+.sc.aa{background:var(--amber2);border-color:#f5d8b8}.sc.aa .val{color:var(--amber)}
+.sc.ba{background:var(--blue2);border-color:#c8ddf5}.sc.ba .val{color:var(--blue)}
+.sc.goa{background:var(--gold2);border-color:var(--gold3)}.sc.goa .val{color:var(--gold)}
+
+/* ── CARD ─────────────────────────────────────────────────── */
+.card{background:var(--bgw);border:1px solid var(--border);border-radius:var(--radl);padding:16px;margin-bottom:14px}
+.ch{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.ct{font-size:13px;font-weight:600;color:var(--text)}
+.cs{font-size:11px;color:var(--text3);margin-top:2px}
+
+/* ── TABLE ────────────────────────────────────────────────── */
+.tbl{width:100%;border-collapse:collapse;font-size:12px}
+.tbl th{text-align:left;font-size:10px;font-weight:600;color:var(--text3);
+  padding:6px 10px;border-bottom:1px solid var(--border);
+  background:#faf9f7;text-transform:uppercase;letter-spacing:.4px}
+.tbl td{padding:8px 10px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:#faf9f7}
+
+/* ── BADGES ───────────────────────────────────────────────── */
+.b{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:7px;white-space:nowrap}
+.bf{background:var(--red2);color:#8a2118}
+.bw{background:var(--amber2);color:#8a4a0a}
+.bv{background:var(--blue2);color:#0f4a7a}
+.ba{background:var(--green3);color:#1b5e3b}
+.be{background:var(--amber2);color:#8a4a0a}
+.bex{background:#f0f0ee;color:#555}
+.by{background:var(--green3);color:#1b5e3b}
+.bn{background:var(--red2);color:#8a2118}
+.bent{background:var(--gold2);color:#7a5e1a;border:0.5px solid #e0c96a}
+
+/* ── GRID ─────────────────────────────────────────────────── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+/* ── BARS ─────────────────────────────────────────────────── */
+.br{display:flex;align-items:center;gap:9px;margin-bottom:9px;font-size:11px}
+.bl{width:130px;color:var(--text2);flex-shrink:0}
+.bt{flex:1;height:6px;background:#f0ede8;border-radius:3px;overflow:hidden}
+.bf2{height:100%;border-radius:3px;transition:width .7s ease}
+.bf2.g{background:var(--green)}.bf2.go{background:var(--gold)}
+.bf2.a{background:var(--amber)}.bf2.r{background:var(--red)}.bf2.gr{background:#ccc}
+.bcount{width:28px;text-align:right;color:var(--text3)}
+
+/* ── BUTTONS ──────────────────────────────────────────────── */
+.btn{padding:5px 12px;font-size:11px;border:1px solid var(--border2);
+  border-radius:var(--rad);cursor:pointer;background:var(--bgw);color:var(--text);
+  font-family:inherit;transition:all .12s}
+.btn:hover{background:#f5f3ef}
+.btn.p{background:var(--green);color:#fff;border-color:var(--green)}
+.btn.p:hover{background:var(--green2)}
+.btn.gold{background:var(--gold);color:#fff;border-color:var(--gold)}
+
+/* ── FILTER CHIPS ─────────────────────────────────────────── */
+.fr{display:flex;gap:6px;margin-bottom:13px;flex-wrap:wrap;align-items:center}
+.fc{padding:4px 11px;border-radius:10px;font-size:11px;
+  border:1px solid var(--border2);cursor:pointer;
+  background:var(--bgw);color:var(--text2);transition:all .12s;font-family:inherit}
+.fc:hover{background:#f5f3ef}
+.fc.on{background:var(--green);color:#fff;border-color:var(--green)}
+.si-in{padding:6px 11px;border:1px solid var(--border2);border-radius:var(--rad);
+  font-size:12px;background:var(--bgw);color:var(--text);outline:none;font-family:inherit}
+.si-in:focus{border-color:var(--green)}
+
+/* ── CHECKLIST ────────────────────────────────────────────── */
+.ci{display:flex;align-items:center;gap:9px;padding:8px 0;
+  border-bottom:1px solid var(--border);font-size:12px}
+.ci:last-child{border-bottom:none}
+.cb{width:16px;height:16px;border-radius:4px;border:1.5px solid var(--border2);
+  cursor:pointer;flex-shrink:0;display:flex;align-items:center;
+  justify-content:center;font-size:10px;transition:all .12s}
+.cb.on{background:var(--green);border-color:var(--green);color:#fff}
+
+/* ── DONUT ────────────────────────────────────────────────── */
+.dw{display:flex;align-items:center;gap:18px}
+.dl .lr{display:flex;align-items:center;gap:7px;margin-bottom:7px;
+  font-size:11px;color:var(--text2)}
+.ld{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+
+/* ── TIMELINE ─────────────────────────────────────────────── */
+.tli{display:flex;gap:10px;margin-bottom:12px}
+.tld{width:9px;height:9px;border-radius:50%;margin-top:4px;flex-shrink:0}
+.tlln{width:1px;background:var(--border);flex-shrink:0;align-self:stretch;margin:0 4px}
+.tlt{font-size:12px;font-weight:600;color:var(--text)}
+.tlm{font-size:11px;color:var(--text3);margin-top:2px}
+
+/* ────────────────────────────────────────────────────────────
+   KPI PAGE STYLES
+   ──────────────────────────────────────────────────────────── */
+.kpi-portfolio{
+  display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+  background:var(--bgw);border:1px solid var(--border);
+  border-radius:var(--radl);padding:14px 18px;margin-bottom:16px;
+}
+.kpp-score{font-size:32px;font-weight:700;line-height:1}
+.kpp-score.good{color:var(--green)}.kpp-score.warning{color:var(--amber)}.kpp-score.critical{color:var(--red)}
+.kpp-lbl{font-size:11px;color:var(--text3);margin-bottom:3px}
+.kpp-sub{font-size:11px;color:var(--text3);margin-top:2px}
+.kpp-div{width:1px;height:44px;background:var(--border);flex-shrink:0}
+.kpp-srcs{display:flex;gap:10px;flex-wrap:wrap}
+.kpp-src{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2)}
+.kpp-dot{width:8px;height:8px;border-radius:50%;background:#ccc;transition:background .3s}
+.phase-pill{display:inline-block;font-size:9px;font-weight:600;
+  padding:1px 6px;border-radius:5px;
+  background:#f0ede8;color:var(--text3);border:0.5px solid var(--border)}
+.phase-pill.live{background:var(--green3);color:var(--green);border-color:var(--green4)}
+
+/* source cards */
+.kpi-src-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:9px;margin-bottom:16px}
+.ksc{background:var(--bgw);border:1px solid var(--border);border-radius:var(--radl);
+  padding:11px 13px;border-left-width:3px;cursor:pointer;transition:background .12s}
+.ksc:hover{background:#faf9f7}
+.ksc.dim{opacity:.42;cursor:default}
+.ksc-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+.ksc-name{font-size:12px;font-weight:600;color:var(--text)}
+.ksc-score{font-size:20px;font-weight:700;line-height:1}
+.ksc-score.good{color:var(--green)}.ksc-score.warning{color:var(--amber)}
+.ksc-score.critical{color:var(--red)}.ksc-score.loading{color:var(--text3);font-size:12px}
+.ksc-track{height:5px;background:#f0ede8;border-radius:3px;overflow:hidden;margin-bottom:5px}
+.ksc-fill{height:100%;border-radius:3px;transition:width .8s ease}
+.ksc-fill.good{background:var(--green)}.ksc-fill.warning{background:var(--amber)}
+.ksc-fill.critical{background:var(--red)}.ksc-fill.loading{background:#ddd;width:25%!important}
+.ksc-meta{font-size:10px;color:var(--text3)}
+
+/* detail panel */
+.kpi-panel{background:var(--bgw);border:1px solid var(--border);border-radius:var(--radl);margin-bottom:14px;overflow:hidden}
+.kpi-phd{display:flex;align-items:center;gap:10px;padding:11px 15px;
+  border-bottom:1px solid var(--border);background:#faf9f7;flex-wrap:wrap}
+.kpi-ptitle{font-size:13px;font-weight:600;color:var(--text);flex:1}
+.score-badge{font-size:11px;font-weight:600;padding:3px 10px;border-radius:8px}
+.score-badge.good{background:var(--green3);color:var(--green)}
+.score-badge.warning{background:var(--amber2);color:var(--amber)}
+.score-badge.critical{background:var(--red2);color:var(--red)}
+.score-badge.loading{background:#f0ede8;color:var(--text3)}
+.kpi-refresh{font-size:11px;color:var(--text2);cursor:pointer;
+  padding:3px 9px;border:1px solid var(--border2);border-radius:var(--rad);
+  background:var(--bgw);font-family:inherit}
+.kpi-refresh:hover{background:#f5f3ef}
+
+/* kpi rows */
+.kpi-rows{padding:2px 0}
+.kpi-row{display:flex;align-items:center;gap:11px;padding:10px 15px;
+  border-bottom:1px solid var(--border)}
+.kpi-row:last-child{border-bottom:none}
+.kpi-rdot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.kpi-rdot.good{background:var(--green)}.kpi-rdot.warning{background:var(--amber)}
+.kpi-rdot.critical{background:var(--red)}.kpi-rdot.info{background:var(--blue)}
+.kpi-rdot.pending{background:#ccc}
+.kpi-rinner{flex:1;min-width:0}
+.kpi-rlbl{font-size:12px;font-weight:600;color:var(--text)}
+.kpi-rdetail{font-size:11px;color:var(--text3);margin-top:2px}
+.kpi-rtrack{width:110px;height:5px;background:#f0ede8;border-radius:3px;overflow:hidden;flex-shrink:0}
+.kpi-rfill{height:100%;border-radius:3px;transition:width .9s ease}
+.kpi-rfill.good{background:var(--green)}.kpi-rfill.warning{background:var(--amber)}
+.kpi-rfill.critical{background:var(--red)}.kpi-rfill.info{background:var(--blue)}
+.kpi-rfill.pending{background:#ccc}
+.kpi-rscore{font-size:12px;font-weight:700;width:34px;text-align:right;flex-shrink:0}
+.kpi-rscore.good{color:var(--green)}.kpi-rscore.warning{color:var(--amber)}
+.kpi-rscore.critical{color:var(--red)}.kpi-rscore.pending{color:var(--text3)}
+
+/* failure list */
+.fail-wrap{margin:0 15px 13px;border:1px solid var(--border);border-radius:var(--rad);overflow:hidden}
+.fail-hd{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;
+  letter-spacing:.5px;padding:5px 11px;background:#faf9f7;border-bottom:1px solid var(--border)}
+.fail-row{display:flex;align-items:flex-start;gap:9px;padding:7px 11px;
+  border-bottom:1px solid var(--border);font-size:11px}
+.fail-row:last-child{border-bottom:none}
+.fail-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:3px}
+.fail-dot.c{background:var(--red)}.fail-dot.w{background:var(--amber)}
+.fail-name{font-weight:600;width:150px;flex-shrink:0;color:var(--text)}
+.fail-reason{color:var(--text2);flex:1}
+.fail-age{color:var(--amber);font-weight:600;white-space:nowrap}
+
+/* dept mini */
+.dept-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:13px 15px}
+.dept-card{background:#faf9f7;border-radius:var(--rad);padding:9px 11px;border:1px solid var(--border)}
+.dept-name{font-size:11px;font-weight:600;color:var(--text);margin-bottom:5px}
+.dept-row{display:flex;justify-content:space-between;font-size:10px;color:var(--text3);margin-bottom:3px}
+.dv{font-weight:600;color:var(--text)}.dv.c{color:var(--red)}.dv.w{color:var(--amber)}.dv.g{color:var(--green)}
+
+/* skeleton */
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:.9}}
+.skel{background:#f0ede8;border-radius:4px;animation:pulse 1.4s ease-in-out infinite}
+
+/* connection error */
+.kpi-error{padding:16px 15px;font-size:12px;color:var(--red);background:var(--red2);
+  margin:0;border-top:1px solid #f5c8c4}
+
+/* ── ENTITY CARDS ─────────────────────────────────────────── */
+.enc{background:var(--bgw);border:1px solid var(--border);
+  border-radius:var(--radl);padding:14px;border-left-width:3px}
+
+/* ── PROGRESS BAR ─────────────────────────────────────────── */
+.prog-track{height:8px;background:#f0ede8;border-radius:4px;overflow:hidden;margin-top:10px}
+.prog-fill{height:100%;background:var(--green);border-radius:4px;transition:width .4s ease}
+
+/* ── LAST UPDATED ─────────────────────────────────────────── */
+.last-up{font-size:10px;color:var(--text3);text-align:right;margin-top:6px}
+
+/* ── RESPONSIVE ───────────────────────────────────────────── */
+@media(max-width:640px){
+  .sidebar{display:none}
+  .main{margin-left:0}
+  .g2{grid-template-columns:1fr}
+  .dept-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ── TOP NAV ───────────────────────────────────────────── -->
+<div class="topnav">
+  <div class="tn-logo">SG</div>
+  <div class="tn-brand">
+    <strong>Samsons HR Hub</strong>
+    <span>Northern Pakistan Portfolio</span>
+  </div>
+  <div class="tn-sp"></div>
+  <div class="tn-pill">FY 2025–26</div>
+  <div class="tn-date" id="tn-date" style="margin-left:10px"></div>
+  <div class="tn-av" title="Admin">AB</div>
+</div>
+
+<!-- ── SIDEBAR ────────────────────────────────────────────── -->
+<div class="shell">
+<div class="sidebar">
+  <div class="sg">Overview</div>
+  <div class="si on" data-pg="dashboard"><span class="ic">◈</span>Dashboard</div>
+  <div class="si" data-pg="entities"><span class="ic">⬡</span>Entities</div>
+
+  <div class="sg">Workforce</div>
+  <div class="si" data-pg="headcount"><span class="ic">⊕</span>Headcount</div>
+  <div class="si" data-pg="leave"><span class="ic">◷</span>Leave Tracker</div>
+  <div class="si" data-pg="recruitment"><span class="ic">◎</span>Recruitment</div>
+  <div class="si" data-pg="performance"><span class="ic">▲</span>Performance</div>
+
+  <div class="sg">Compliance</div>
+  <div class="si" data-pg="warnings"><span class="ic">⚐</span>Warnings<span class="sbadge a">8</span></div>
+  <div class="si" data-pg="bonus"><span class="ic">◐</span>Bonus Eligibility<span class="sbadge g">8</span></div>
+  <div class="si" data-pg="certs"><span class="ic">◻</span>Certifications<span class="sbadge r">3</span></div>
+  <div class="si" data-pg="disciplinary"><span class="ic">▣</span>Disciplinary</div>
+
+  <div class="sg">Documentation</div>
+  <div class="si" data-pg="sops"><span class="ic">≡</span>Policies &amp; SOPs<span class="sbadge a">4</span></div>
+
+  <div class="sg">Intelligence</div>
+  <div class="si" data-pg="kpi"><span class="ic">◈</span>KPI Dashboard<span class="sbadge b" id="sb-kpi">1</span></div>
+
+  <div class="sg">Admin</div>
+  <div class="si" data-pg="fy_close"><span class="ic">◑</span>FY Close</div>
+  <div class="si" data-pg="reports"><span class="ic">⋮</span>Reports</div>
+  <div class="si" data-pg="log"><span class="ic">⊙</span>Audit Log</div>
+</div>
+
+<!-- ── MAIN ───────────────────────────────────────────────── -->
+<div class="main">
+
+<!-- ════════════════════════════════════════════════════════
+     DASHBOARD
+════════════════════════════════════════════════════════ -->
+<div class="pg on" id="pg-dashboard">
+  <div class="ph"><h1>Portfolio Overview</h1><p>Senior HR Manager — Northern Pakistan | All 7 entities</p></div>
+  <div class="estrip">
+    <span class="ep"><span class="ed" style="background:#1b5e3b"></span>MJSR</span>
+    <span class="ep"><span class="ed" style="background:#b8922e"></span>Green Valley</span>
+    <span class="ep"><span class="ed" style="background:#1660a0"></span>Samsons Inn</span>
+    <span class="ep"><span class="ed" style="background:#7b3f9e"></span>Healthcare</span>
+    <span class="ep"><span class="ed" style="background:#c96a10"></span>ALIF School</span>
+    <span class="ep"><span class="ed" style="background:#b93328"></span>Construction</span>
+    <span class="ep"><span class="ed" style="background:#666"></span>CORA</span>
+  </div>
+  <div class="sr">
+    <div class="sc ga"><div class="lbl">Total Headcount</div><div class="val">247</div><div class="sub">7 entities</div></div>
+    <div class="sc aa"><div class="lbl">Active Warnings</div><div class="val">8</div><div class="sub">All entities</div></div>
+    <div class="sc ra"><div class="lbl">Expiring &lt;30d</div><div class="val">2</div><div class="sub">F&B dept</div></div>
+    <div class="sc goa"><div class="lbl">Bonus Eligible</div><div class="val">8/11</div><div class="sub">FY2026</div></div>
+    <div class="sc ba"><div class="lbl">Leave Pending</div><div class="val">4</div><div class="sub">Awaiting approval</div></div>
+    <div class="sc ra"><div class="lbl">Cert Alerts</div><div class="val">3</div><div class="sub">Renew required</div></div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="ch"><div><div class="ct">Warnings by Department</div><div class="cs">MJSR active only</div></div>
+        <button class="btn" onclick="nav('warnings')">View all →</button></div>
+      <div class="br"><div class="bl">Administration</div><div class="bt"><div class="bf2 r" style="width:100%"></div></div><div class="bcount">2</div></div>
+      <div class="br"><div class="bl">Sales</div><div class="bt"><div class="bf2 a" style="width:100%"></div></div><div class="bcount">2</div></div>
+      <div class="br"><div class="bl">F&B</div><div class="bt"><div class="bf2 g" style="width:100%"></div></div><div class="bcount">2</div></div>
+      <div class="br"><div class="bl">Samsons Inn</div><div class="bt"><div class="bf2 go" style="width:50%"></div></div><div class="bcount">1</div></div>
+      <div class="br"><div class="bl">Technical</div><div class="bt"><div class="bf2 gr" style="width:25%"></div></div><div class="bcount">1*</div></div>
+      <div style="font-size:10px;color:var(--text3);margin-top:4px">* Verbal — expired Feb 2026</div>
+    </div>
+    <div class="card">
+      <div class="ch"><div class="ct">Headcount by Entity</div></div>
+      <div class="dw">
+        <svg width="90" height="90" viewBox="0 0 90 90">
+          <circle cx="45" cy="45" r="33" fill="none" stroke="#f0ede8" stroke-width="14"/>
+          <circle cx="45" cy="45" r="33" fill="none" stroke="#1b5e3b" stroke-width="14" stroke-dasharray="82 125" stroke-dashoffset="-8"/>
+          <circle cx="45" cy="45" r="33" fill="none" stroke="#b8922e" stroke-width="14" stroke-dasharray="28 179" stroke-dashoffset="-90"/>
+          <circle cx="45" cy="45" r="33" fill="none" stroke="#1660a0" stroke-width="14" stroke-dasharray="23 184" stroke-dashoffset="-118"/>
+          <circle cx="45" cy="45" r="33" fill="none" stroke="#7b3f9e" stroke-width="14" stroke-dasharray="19 188" stroke-dashoffset="-141"/>
+          <circle cx="45" cy="45" r="33" fill="none" stroke="#c96a10" stroke-width="14" stroke-dasharray="16 191" stroke-dashoffset="-160"/>
+          <circle cx="45" cy="45" r="33" fill="none" stroke="#b93328" stroke-width="14" stroke-dasharray="27 180" stroke-dashoffset="-176"/>
+          <text x="45" y="49" text-anchor="middle" style="font-size:13px;font-weight:700;fill:var(--text)">247</text>
+        </svg>
+        <div class="dl">
+          <div class="lr"><span class="ld" style="background:#1b5e3b"></span>MJSR — 76</div>
+          <div class="lr"><span class="ld" style="background:#b8922e"></span>Green Valley — 30</div>
+          <div class="lr"><span class="ld" style="background:#1660a0"></span>Samsons Inn — 28</div>
+          <div class="lr"><span class="ld" style="background:#7b3f9e"></span>Healthcare — 24</div>
+          <div class="lr"><span class="ld" style="background:#c96a10"></span>ALIF — 18</div>
+          <div class="lr"><span class="ld" style="background:#b93328"></span>Con / CORA — 71</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ch"><div class="ct">Recent Activity</div>
+      <button class="btn gold" onclick="nav('kpi')">View KPI Dashboard →</button>
+    </div>
+    <div class="tli"><div style="display:flex;flex-direction:column;align-items:center"><div class="tld" style="background:var(--amber)"></div><div class="tlln"></div></div><div><div class="tlt">Warning expiring — Rashid Ali &amp; Jamal Ahmed (F&B)</div><div class="tlm">Written Warning · expires 1 May 2026 — 16 days remaining</div></div></div>
+    <div class="tli"><div style="display:flex;flex-direction:column;align-items:center"><div class="tld" style="background:var(--green)"></div><div class="tlln"></div></div><div><div class="tlt">Bonus override approved — Muhammad Saeed, Sales</div><div class="tlm">GM override by Martin Schultz · Jan 6, 2026</div></div></div>
+    <div class="tli"><div style="display:flex;flex-direction:column;align-items:center"><div class="tld" style="background:var(--red)"></div><div class="tlln"></div></div><div><div class="tlt">Final Written Warning — Ashfaq &amp; Abid Nawaz (Admin)</div><div class="tlm">Issued Oct 31, 2025 · Active until Oct 31, 2026</div></div></div>
+    <div class="tli"><div style="align-items:center"><div class="tld" style="background:#bbb"></div></div><div><div class="tlt">2 verbal warnings expired — Muhammad Bilal &amp; Adnan Khan (Technical)</div><div class="tlm">3-month verbals lapsed · Feb 1, 2026</div></div></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     KPI DASHBOARD — LIVE DATA
+════════════════════════════════════════════════════════ -->
+<div class="pg" id="pg-kpi">
+  <div class="ph"><h1>KPI Dashboard</h1><p>Live performance indicators — Northern Pakistan Portfolio</p></div>
+
+  <!-- Portfolio score -->
+  <div class="kpi-portfolio">
+    <div>
+      <div class="kpp-lbl">Portfolio health score</div>
+      <div class="kpp-score loading" id="portfolio-score">—</div>
+      <div class="kpp-sub" id="portfolio-sub">Connecting to data sources...</div>
+    </div>
+    <div class="kpp-div"></div>
+    <div>
+      <div style="font-size:11px;color:var(--text3);margin-bottom:7px">Connected sources</div>
+      <div class="kpp-srcs">
+        <div class="kpp-src"><div class="kpp-dot" id="dot-leave"></div>Leave Tracker <span class="phase-pill live" style="margin-left:4px">Phase 1</span></div>
+        <div class="kpp-src" style="opacity:.4"><div class="kpp-dot"></div>Adventure Checks <span class="phase-pill" style="margin-left:4px">P2</span></div>
+        <div class="kpp-src" style="opacity:.4"><div class="kpp-dot"></div>Chairlift Checks <span class="phase-pill" style="margin-left:4px">P2</span></div>
+        <div class="kpp-src" style="opacity:.4"><div class="kpp-dot"></div>Daily Readiness <span class="phase-pill" style="margin-left:4px">P2</span></div>
+        <div class="kpp-src" style="opacity:.4"><div class="kpp-dot"></div>PR Fund <span class="phase-pill" style="margin-left:4px">P3</span></div>
+        <div class="kpp-src" style="opacity:.4"><div class="kpp-dot"></div>Procurement <span class="phase-pill" style="margin-left:4px">P3</span></div>
+        <div class="kpp-src" style="opacity:.4"><div class="kpp-dot"></div>PistenBully <span class="phase-pill" style="margin-left:4px">P4</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Source cards -->
+  <div class="kpi-src-grid">
+    <div class="ksc" id="ksc-leave" style="border-left-color:#1b5e3b" onclick="scrollTo('panel-leave')">
+      <div class="ksc-hd"><div class="ksc-name">Leave Tracker</div><div class="ksc-score loading" id="ksc-score-leave">...</div></div>
+      <div class="ksc-track"><div class="ksc-fill loading" id="ksc-bar-leave" style="width:25%"></div></div>
+      <div class="ksc-meta" id="ksc-meta-leave">Fetching live data...</div>
+    </div>
+    <div class="ksc dim" style="border-left-color:#ddd">
+      <div class="ksc-hd"><div class="ksc-name">Adventure Checks</div><span class="phase-pill">Phase 2</span></div>
+      <div class="ksc-track"><div class="ksc-fill loading" style="width:0%"></div></div>
+      <div class="ksc-meta">GV + MJSR activities</div>
+    </div>
+    <div class="ksc dim" style="border-left-color:#ddd">
+      <div class="ksc-hd"><div class="ksc-name">Chairlift Checks</div><span class="phase-pill">Phase 2</span></div>
+      <div class="ksc-track"><div class="ksc-fill loading" style="width:0%"></div></div>
+      <div class="ksc-meta">Start, close, maintenance</div>
+    </div>
+    <div class="ksc dim" style="border-left-color:#ddd">
+      <div class="ksc-hd"><div class="ksc-name">Daily Readiness</div><span class="phase-pill">Phase 2</span></div>
+      <div class="ksc-track"><div class="ksc-fill loading" style="width:0%"></div></div>
+      <div class="ksc-meta">11 activities, booths, e-gates</div>
+    </div>
+    <div class="ksc dim" style="border-left-color:#ddd">
+      <div class="ksc-hd"><div class="ksc-name">PR Fund Tracker</div><span class="phase-pill">Phase 3</span></div>
+      <div class="ksc-track"><div class="ksc-fill loading" style="width:0%"></div></div>
+      <div class="ksc-meta">Budget vs cap, IOU</div>
+    </div>
+    <div class="ksc dim" style="border-left-color:#ddd">
+      <div class="ksc-hd"><div class="ksc-name">Procurement Hub</div><span class="phase-pill">Phase 3</span></div>
+      <div class="ksc-track"><div class="ksc-fill loading" style="width:0%"></div></div>
+      <div class="ksc-meta">PRF cycle, open GRNs</div>
+    </div>
+    <div class="ksc dim" style="border-left-color:#ddd">
+      <div class="ksc-hd"><div class="ksc-name">PistenBully</div><span class="phase-pill">Phase 4</span></div>
+      <div class="ksc-track"><div class="ksc-fill loading" style="width:0%"></div></div>
+      <div class="ksc-meta">Service compliance, hours</div>
+    </div>
+  </div>
+
+  <!-- Leave Tracker detail panel -->
+  <div class="kpi-panel" id="panel-leave">
+    <div class="kpi-phd">
+      <div class="kpi-ptitle">Leave Tracker — KPI Detail</div>
+      <span class="phase-pill live">Phase 1 — Live</span>
+      <div class="score-badge loading" id="badge-leave">Loading...</div>
+      <button class="kpi-refresh" onclick="fetchLeaveKpi()">↻ Refresh</button>
+    </div>
+    <div class="kpi-rows" id="rows-leave">
+      <div class="kpi-row">
+        <div class="kpi-rdot pending"></div>
+        <div class="kpi-rinner">
+          <div class="skel" style="height:12px;width:160px;margin-bottom:6px"></div>
+          <div class="skel" style="height:10px;width:240px"></div>
+        </div>
+        <div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:40%"></div></div>
+        <div class="kpi-rscore pending">—</div>
+      </div>
+      <div class="kpi-row">
+        <div class="kpi-rdot pending"></div>
+        <div class="kpi-rinner">
+          <div class="skel" style="height:12px;width:140px;margin-bottom:6px"></div>
+          <div class="skel" style="height:10px;width:200px"></div>
+        </div>
+        <div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:60%"></div></div>
+        <div class="kpi-rscore pending">—</div>
+      </div>
+      <div class="kpi-row">
+        <div class="kpi-rdot pending"></div>
+        <div class="kpi-rinner">
+          <div class="skel" style="height:12px;width:180px;margin-bottom:6px"></div>
+          <div class="skel" style="height:10px;width:220px"></div>
+        </div>
+        <div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:75%"></div></div>
+        <div class="kpi-rscore pending">—</div>
+      </div>
+    </div>
+    <div id="fail-leave"></div>
+    <div class="dept-grid" id="dept-leave" style="display:none"></div>
+  </div>
+
+  <div class="last-up" id="kpi-ts">Not yet loaded</div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     STUB PAGES — all other sections
+════════════════════════════════════════════════════════ -->
+<div class="pg" id="pg-entities"><div class="ph"><h1>Entities</h1><p>7 entities — Northern Pakistan Portfolio</p></div>
+  <div class="g2">
+    <div class="enc" style="border-left-color:#1b5e3b"><div class="ch"><div class="ct">MJSR</div><span class="b bent">Malam Jabba Ski Resort</span></div><div class="sr" style="grid-template-columns:repeat(3,1fr);margin-bottom:6px"><div class="sc"><div class="lbl">Staff</div><div class="val" style="font-size:18px">76</div></div><div class="sc aa"><div class="lbl">Warnings</div><div class="val" style="font-size:18px">8</div></div><div class="sc"><div class="lbl">Depts</div><div class="val" style="font-size:18px">11</div></div></div><div style="font-size:11px;color:var(--text3)">Swat Valley, KPK · GM: Martin Schultz</div></div>
+    <div class="enc" style="border-left-color:#b8922e"><div class="ch"><div class="ct">Green Valley</div><span class="b bent">GV Adventure Park</span></div><div class="sr" style="grid-template-columns:repeat(3,1fr);margin-bottom:6px"><div class="sc"><div class="lbl">Staff</div><div class="val" style="font-size:18px">30</div></div><div class="sc ga"><div class="lbl">Warnings</div><div class="val" style="font-size:18px">0</div></div><div class="sc"><div class="lbl">Depts</div><div class="val" style="font-size:18px">4</div></div></div><div style="font-size:11px;color:var(--text3)">Swat Valley, KPK</div></div>
+    <div class="enc" style="border-left-color:#1660a0"><div class="ch"><div class="ct">Samsons Inn</div><span class="b bent">Lodge &amp; Hospitality</span></div><div class="sr" style="grid-template-columns:repeat(3,1fr);margin-bottom:6px"><div class="sc"><div class="lbl">Staff</div><div class="val" style="font-size:18px">28</div></div><div class="sc aa"><div class="lbl">Warnings</div><div class="val" style="font-size:18px">1</div></div><div class="sc"><div class="lbl">Depts</div><div class="val" style="font-size:18px">5</div></div></div><div style="font-size:11px;color:var(--text3)">On-mountain accommodation</div></div>
+    <div class="enc" style="border-left-color:#7b3f9e"><div class="ch"><div class="ct">Healthcare</div><span class="b bent">PIN: 1999</span></div><div class="sr" style="grid-template-columns:repeat(3,1fr);margin-bottom:6px"><div class="sc"><div class="lbl">Staff</div><div class="val" style="font-size:18px">24</div></div><div class="sc ga"><div class="lbl">Warnings</div><div class="val" style="font-size:18px">0</div></div><div class="sc"><div class="lbl">Depts</div><div class="val" style="font-size:18px">3</div></div></div><div style="font-size:11px;color:var(--text3)">Healthcare services</div></div>
+    <div class="enc" style="border-left-color:#c96a10"><div class="ch"><div class="ct">ALIF School</div><span class="b bent">PIN: 2000</span></div><div class="sr" style="grid-template-columns:repeat(3,1fr);margin-bottom:6px"><div class="sc"><div class="lbl">Staff</div><div class="val" style="font-size:18px">18</div></div><div class="sc ga"><div class="lbl">Warnings</div><div class="val" style="font-size:18px">0</div></div><div class="sc"><div class="lbl">Depts</div><div class="val" style="font-size:18px">3</div></div></div><div style="font-size:11px;color:var(--text3)">Education entity</div></div>
+    <div class="enc" style="border-left-color:#b93328"><div class="ch"><div class="ct">Construction &amp; CORA</div><span class="b bent">PIN: 2100 / 2200</span></div><div class="sr" style="grid-template-columns:repeat(3,1fr);margin-bottom:6px"><div class="sc"><div class="lbl">Staff</div><div class="val" style="font-size:18px">71</div></div><div class="sc ga"><div class="lbl">Warnings</div><div class="val" style="font-size:18px">0</div></div><div class="sc"><div class="lbl">Depts</div><div class="val" style="font-size:18px">7</div></div></div><div style="font-size:11px;color:var(--text3)">Civil &amp; operations</div></div>
+  </div>
+</div>
+
+<div class="pg" id="pg-headcount"><div class="ph"><h1>Headcount</h1><p>All permanent staff — 7 entities</p></div><div class="card"><div class="ct" style="margin-bottom:10px">Coming soon — will pull live from MJSR Leave Tracker employee list</div></div></div>
+<div class="pg" id="pg-leave"><div class="ph"><h1>Leave Tracker</h1><p>MJSR — 76 staff · 1.16 days accrual on 25th</p></div><div class="card"><div class="ch"><div class="ct">Live leave data</div><a href="https://samsons-digital.github.io/mjsr-leave-tracker/" target="_blank" class="btn p">Open Leave Portal →</a></div><div style="font-size:12px;color:var(--text2)">Full leave management is live at the MJSR Leave Tracker portal. KPI summary visible in the KPI Dashboard tab.</div></div></div>
+<div class="pg" id="pg-recruitment"><div class="ph"><h1>Recruitment</h1><p>Active positions and pipeline</p></div><div class="card"><div class="ct" style="margin-bottom:8px">Security &amp; PR Manager — MJSR</div><div style="font-size:12px;color:var(--text2)">4 candidates evaluated · Recommended: Hashim Naqvi (84/100)</div></div></div>
+<div class="pg" id="pg-performance"><div class="ph"><h1>Performance</h1><p>Appraisals and KPIs</p></div><div class="card"><div class="ct">Q4 FY2026 appraisals due June 2026</div></div></div>
+<div class="pg" id="pg-warnings"><div class="ph"><h1>Warnings Tracker</h1><p>All entities</p></div><div class="card"><div class="ct">8 active warnings — see KPI Dashboard for live scores</div></div></div>
+<div class="pg" id="pg-bonus"><div class="ph"><h1>Bonus Eligibility</h1><p>FY 2025–26 · Snapshot: 30 Jun 2026</p></div><div class="card"><div class="ct">8 of 11 staff eligible · 1 GM override (Muhammad Saeed)</div></div></div>
+<div class="pg" id="pg-certs"><div class="ph"><h1>Certifications</h1><p>Safety certs and operator licences</p></div><div class="card"><div class="ct">3 alerts — Kids Climbing Wall expired, 2 expiring within 60 days</div></div></div>
+<div class="pg" id="pg-disciplinary"><div class="ph"><h1>Disciplinary Log</h1><p>Formal actions beyond warnings</p></div><div class="card"><div class="ct">0 dismissals this FY · Escalation triggers: all OK</div></div></div>
+<div class="pg" id="pg-sops"><div class="ph"><h1>Policies &amp; SOPs</h1><p>Document register — all 7 entities</p></div><div class="card"><div class="ct">47 documents · 4 overdue · 5 reviews due within 60 days</div></div></div>
+<div class="pg" id="pg-fy_close"><div class="ph"><h1>FY Close Checklist</h1><p>FY 2025–26 · Snapshot: 30 Jun 2026</p></div>
+  <div class="card">
+    <div class="ch"><div class="ct">MJSR Warnings System — FY Close</div><span id="fy-prog" style="font-size:11px;color:var(--text3)">0 of 10</span></div>
+    <div id="fy-items">
+      <div class="ci"><div class="cb" onclick="fyTick(this)"></div>Confirm all warnings entered via Form</div>
+      <div class="ci"><div class="cb" onclick="fyTick(this)"></div>Confirm no pending incidents outside system</div>
+      <div class="ci"><div class="cb" onclick="fyTick(this)"></div>Verify FY End Snapshot Date (30 Jun 2026)</div>
+      <div class="ci"><div class="cb" onclick="fyTick(this)"></div>Verify Grace Months (currently 3)</div>
+      <div class="ci"><div class="cb" onclick="fyTick(this)"></div>Review all Active Warnings vs employee list</div>
+      <div class="ci"><div class="cb" onclick="fyTick(this)"></div>Review Bonus Eligibility Snapshot for all staff</div>
+      <div class="ci"><div class="cb" onclick="fyTick(this)"></div>Review and ratify all GM Overrides</div>
+      <div class="ci"><div class="cb" onclick="fyTick(this)"></div>Lock FY Snapshot — no further changes</div>
+      <div class="ci"><div class="cb" onclick="fyTick(this)"></div>Export Finance Bonus Export file for FY2026</div>
+      <div class="ci"><div class="cb" onclick="fyTick(this)"></div>Archive file with version history notation</div>
+    </div>
+    <div class="prog-track"><div class="prog-fill" id="fy-bar" style="width:0%"></div></div>
+  </div>
+</div>
+<div class="pg" id="pg-reports"><div class="ph"><h1>Reports</h1><p>On-demand HR reports</p></div><div class="card"><div class="ct">Report generation coming in next build phase</div></div></div>
+<div class="pg" id="pg-log"><div class="ph"><h1>Audit Log</h1><p>All HR system actions</p></div><div class="card"><div class="ct">Connected to Leave Tracker and Warnings System logs</div></div></div>
+
+</div><!-- end main -->
+</div><!-- end shell -->
+
+<script>
+// ── CONFIG — UPDATE THIS URL ──────────────────────────────
+const LEAVE_URL = 'https://script.google.com/macros/s/AKfycbybU2ee__bYCfvONE0BxcH0q2_bNeInCyyGG-eD00xGUauPCf8pXAiUdoCB8pErwFKH/exec';
+// ─────────────────────────────────────────────────────────
+
+// ── NAV ───────────────────────────────────────────────────
+function nav(id) {
+  document.querySelectorAll('.si').forEach(s => s.classList.remove('on'));
+  document.querySelectorAll('.pg').forEach(p => p.classList.remove('on'));
+  const pg = document.getElementById('pg-' + id);
+  if (pg) pg.classList.add('on');
+  const si = document.querySelector('.si[data-pg="' + id + '"]');
+  if (si) si.classList.add('on');
+  if (id === 'kpi' && kpiState.leave.status === 'idle') fetchLeaveKpi();
+}
+
+document.querySelectorAll('.si[data-pg]').forEach(el => {
+  el.addEventListener('click', () => nav(el.dataset.pg));
+});
+
+// ── DATE ──────────────────────────────────────────────────
+function updateDate() {
+  const d = new Date();
+  document.getElementById('tn-date').textContent =
+    d.toLocaleDateString('en-PK', { weekday:'short', day:'numeric', month:'short', year:'numeric', timeZone:'Asia/Karachi' });
+}
+updateDate();
+
+// ── CHECKLIST ─────────────────────────────────────────────
+function fyTick(el) {
+  el.classList.toggle('on');
+  el.textContent = el.classList.contains('on') ? '✓' : '';
+  const done  = document.querySelectorAll('#fy-items .cb.on').length;
+  const total = document.querySelectorAll('#fy-items .cb').length;
+  document.getElementById('fy-prog').textContent = done + ' of ' + total;
+  document.getElementById('fy-bar').style.width  = Math.round(done / total * 100) + '%';
+}
+
+// ── KPI STATE ─────────────────────────────────────────────
+const kpiState = {
+  leave: { status: 'idle', score: null, data: null }
+};
+
+// ── KPI FETCH ─────────────────────────────────────────────
+async function fetchLeaveKpi() {
+  setLeaveLoading();
+  try {
+    const res  = await fetch(LEAVE_URL, {
+      method:  'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body:    JSON.stringify({ action: 'getKpiData' })
+    });
+    const data = await res.json();
+    if (data.status !== 'ok') throw new Error(data.message || 'Script returned error');
+    kpiState.leave = { status: 'loaded', score: data.overallScore, data: data };
+    renderLeaveKpi(data);
+    updatePortfolioScore();
+  } catch (err) {
+    kpiState.leave.status = 'error';
+    setLeaveError(err.message);
+  }
+}
+
+// ── RENDER LEAVE KPI ──────────────────────────────────────
+function renderLeaveKpi(d) {
+  const cls = scoreClass(d.overallScore);
+
+  // Source card
+  const sc = document.getElementById('ksc-score-leave');
+  sc.textContent = d.overallScore;
+  sc.className   = 'ksc-score ' + cls;
+  const bar = document.getElementById('ksc-bar-leave');
+  bar.style.width  = d.overallScore + '%';
+  bar.className    = 'ksc-fill ' + cls;
+  document.getElementById('ksc-meta-leave').textContent =
+    d.totalStaff + ' staff · updated ' + fmtTime(d.asOf);
+  document.getElementById('dot-leave').style.background = dotColor(cls);
+
+  // Score badge
+  const badge = document.getElementById('badge-leave');
+  badge.textContent = d.overallScore + ' / 100';
+  badge.className   = 'score-badge ' + cls;
+
+  // KPI rows
+  let html = '';
+  d.kpis.forEach(k => {
+    const c = k.status;
+    html += `<div class="kpi-row">
+      <div class="kpi-rdot ${c}"></div>
+      <div class="kpi-rinner">
+        <div class="kpi-rlbl">${k.label}</div>
+        <div class="kpi-rdetail">${k.detail}</div>
+      </div>
+      <div class="kpi-rtrack"><div class="kpi-rfill ${c}" style="width:${k.score||0}%"></div></div>
+      <div class="kpi-rscore ${c}">${k.score !== null ? k.score : '—'}</div>
+    </div>`;
+  });
+  document.getElementById('rows-leave').innerHTML = html;
+
+  // Failures — what was NOT done
+  const fails = [];
+  d.kpis.forEach(k => {
+    if (k.status === 'critical' || k.status === 'warning') {
+      fails.push({ name: k.label, reason: k.detail, level: k.status });
+    }
+  });
+  if (d.kpis[1] && d.kpis[1].queue) {
+    d.kpis[1].queue.forEach(q => {
+      if (q.ageDays > 3) {
+        fails.push({
+          name:   q.name + ' (' + q.dept + ')',
+          reason: q.type + ' · ' + q.days + ' days · submitted ' + q.ageDays + 'd ago',
+          level:  q.ageDays > 7 ? 'critical' : 'warning',
+          age:    q.ageDays + 'd'
+        });
+      }
+    });
+  }
+  renderFails('fail-leave', fails);
+
+  // Dept breakdown
+  if (d.deptBreakdown && d.deptBreakdown.length) {
+    const dg = document.getElementById('dept-leave');
+    dg.style.display = 'grid';
+    dg.innerHTML = d.deptBreakdown.slice(0,6).map(dep => {
+      const avgCls = dep.avgBal < 0 ? 'c' : dep.avgBal < 3 ? 'w' : 'g';
+      const ovCls  = dep.overspent > 0 ? (dep.overspent > 1 ? 'c' : 'w') : 'g';
+      return `<div class="dept-card">
+        <div class="dept-name">${dep.dept}</div>
+        <div class="dept-row"><span>Staff</span><span class="dv">${dep.staff}</span></div>
+        <div class="dept-row"><span>Avg balance</span><span class="dv ${avgCls}">${dep.avgBal}d</span></div>
+        <div class="dept-row"><span>Overspent</span><span class="dv ${ovCls}">${dep.overspent}</span></div>
+      </div>`;
+    }).join('');
+  }
+
+  document.getElementById('kpi-ts').textContent =
+    'Last refreshed: ' + new Date().toLocaleString('en-PK', { timeZone:'Asia/Karachi', day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
+}
+
+// ── PORTFOLIO SCORE ───────────────────────────────────────
+function updatePortfolioScore() {
+  const scores = Object.values(kpiState)
+    .filter(s => s.score !== null)
+    .map(s => s.score);
+  if (!scores.length) return;
+  const avg = Math.round(scores.reduce((a,b)=>a+b,0) / scores.length);
+  const el  = document.getElementById('portfolio-score');
+  el.textContent = avg;
+  el.className   = 'kpp-score ' + scoreClass(avg);
+  document.getElementById('portfolio-sub').textContent =
+    scores.length + ' of 12 sources connected · Phase 1 of 4';
+}
+
+// ── FAILURES RENDERER ─────────────────────────────────────
+function renderFails(elId, fails) {
+  const el = document.getElementById(elId);
+  if (!fails || !fails.length) { el.innerHTML = ''; return; }
+  let h = '<div class="fail-wrap"><div class="fail-hd">Action required — not done</div>';
+  fails.forEach(f => {
+    h += `<div class="fail-row">
+      <div class="fail-dot ${f.level === 'warning' ? 'w' : 'c'}"></div>
+      <div class="fail-name">${f.name}</div>
+      <div class="fail-reason">${f.reason}</div>
+      ${f.age ? `<div class="fail-age">${f.age}</div>` : ''}
+    </div>`;
+  });
+  h += '</div>';
+  el.innerHTML = h;
+}
+
+// ── LOADING / ERROR STATES ────────────────────────────────
+function setLeaveLoading() {
+  document.getElementById('ksc-score-leave').textContent = '...';
+  document.getElementById('ksc-score-leave').className   = 'ksc-score loading';
+  document.getElementById('ksc-bar-leave').className     = 'ksc-fill loading';
+  document.getElementById('ksc-bar-leave').style.width   = '25%';
+  document.getElementById('ksc-meta-leave').textContent  = 'Fetching live data...';
+  document.getElementById('badge-leave').textContent     = 'Loading...';
+  document.getElementById('badge-leave').className       = 'score-badge loading';
+}
+
+function setLeaveError(msg) {
+  document.getElementById('ksc-score-leave').textContent = 'Error';
+  document.getElementById('ksc-score-leave').className   = 'ksc-score critical';
+  document.getElementById('ksc-bar-leave').style.width   = '0%';
+  document.getElementById('ksc-bar-leave').className     = 'ksc-fill critical';
+  document.getElementById('ksc-meta-leave').textContent  = 'Connection failed';
+  document.getElementById('badge-leave').textContent     = 'Connection error';
+  document.getElementById('badge-leave').className       = 'score-badge critical';
+  document.getElementById('dot-leave').style.background  = '#b93328';
+  document.getElementById('rows-leave').innerHTML =
+    `<div class="kpi-error">
+      <strong>Could not connect to Leave Tracker script.</strong><br>
+      ${msg}<br><br>
+      Check that the GAS deployment is set to <em>Execute as: Me</em> and <em>Anyone</em> can access.
+      Then click ↻ Refresh above.
+    </div>`;
+}
+
+// ── HELPERS ───────────────────────────────────────────────
+function scoreClass(s) {
+  if (s === null || s === undefined) return 'loading';
+  return s >= 75 ? 'good' : s >= 50 ? 'warning' : 'critical';
+}
+function dotColor(cls) {
+  return cls === 'good' ? '#1b5e3b' : cls === 'warning' ? '#c96a10' : '#b93328';
+}
+function fmtTime(iso) {
+  try { return new Date(iso).toLocaleTimeString('en-PK', { timeZone:'Asia/Karachi', hour:'2-digit', minute:'2-digit' }); }
+  catch(e) { return ''; }
+}
+function scrollTo(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+</script>
+</body>
+</html>
