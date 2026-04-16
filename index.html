@@ -356,7 +356,7 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
   <div class="si" data-pg="sops"><span class="ic">≡</span>Policies &amp; SOPs<span class="sbadge a">4</span></div>
 
   <div class="sg">Intelligence</div>
-  <div class="si" data-pg="kpi"><span class="ic">◈</span>KPI Dashboard<span class="sbadge b" id="sb-kpi">7</span></div>
+  <div class="si" data-pg="kpi"><span class="ic">◈</span>KPI Dashboard<span class="sbadge b" id="sb-kpi">8</span></div>
 
   <div class="sg">Admin</div>
   <div class="si" data-pg="fy_close"><span class="ic">◑</span>FY Close</div>
@@ -463,7 +463,7 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
         <div class="kpp-src" style="opacity:.4"><div class="kpp-dot"></div>Daily Readiness <span class="phase-pill" style="margin-left:4px">P2</span></div>
         <div class="kpp-src" style="opacity:.4"><div class="kpp-dot"></div>PR Fund <span class="phase-pill" style="margin-left:4px">P3</span></div>
         <div class="kpp-src" style="opacity:.4"><div class="kpp-dot"></div>Procurement <span class="phase-pill" style="margin-left:4px">P3</span></div>
-        <div class="kpp-src" style="opacity:.4"><div class="kpp-dot"></div>PistenBully <span class="phase-pill" style="margin-left:4px">P4</span></div>
+        <div class="kpp-src"><div class="kpp-dot" id="dot-pistenbully"></div>PistenBully <span class="phase-pill live" style="margin-left:4px">Phase 4</span></div>
         <div class="kpp-src" style="opacity:.3"><div class="kpp-dot"></div>Technical Store <span class="phase-pill" style="margin-left:4px">Pending</span></div>
         <div class="kpp-src" style="opacity:.3"><div class="kpp-dot"></div>Fire Ext <span class="phase-pill" style="margin-left:4px">Pending</span></div>
         <div class="kpp-src" style="opacity:.3"><div class="kpp-dot"></div>Medical Stock <span class="phase-pill" style="margin-left:4px">Pending</span></div>
@@ -514,10 +514,10 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
       <div class="ksc-track"><div class="ksc-fill loading" id="ksc-bar-procurement" style="width:25%"></div></div>
       <div class="ksc-meta" id="ksc-meta-procurement">Fetching live data...</div>
     </div>
-    <div class="ksc dim" style="border-left-color:#ddd">
-      <div class="ksc-hd"><div class="ksc-name">PistenBully</div><span class="phase-pill">Phase 4</span></div>
-      <div class="ksc-track"><div class="ksc-fill loading" style="width:0%"></div></div>
-      <div class="ksc-meta">Service compliance, hours</div>
+    <div class="ksc" id="ksc-pistenbully" style="border-left-color:#7f4c00" onclick="scrollTo('panel-pistenbully')">
+      <div class="ksc-hd"><div class="ksc-name">PistenBully</div><div class="ksc-score loading" id="ksc-score-pistenbully">...</div></div>
+      <div class="ksc-track"><div class="ksc-fill loading" id="ksc-bar-pistenbully" style="width:25%"></div></div>
+      <div class="ksc-meta" id="ksc-meta-pistenbully">Fetching live data...</div>
     </div>
     <div class="ksc dim" style="border-left-color:#ddd">
       <div class="ksc-hd"><div class="ksc-name">Technical Store</div><span class="phase-pill">Pending</span></div>
@@ -724,6 +724,23 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
     <div class="dept-grid" id="dept-adventure" style="display:none"></div>
   </div>
 
+  <!-- PistenBully detail panel -->
+  <div class="kpi-panel" id="panel-pistenbully">
+    <div class="kpi-phd">
+      <div class="kpi-ptitle">PistenBully 400 W — KPI Detail</div>
+      <span class="phase-pill live">Phase 4 — Live</span>
+      <div class="score-badge loading" id="badge-pistenbully">Loading...</div>
+      <button class="kpi-refresh" onclick="fetchPistenBullyKpi()">↻ Refresh</button>
+    </div>
+    <div class="kpi-rows" id="rows-pistenbully">
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:220px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:300px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:60%"></div></div><div class="kpi-rscore pending">—</div></div>
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:180px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:260px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:40%"></div></div><div class="kpi-rscore pending">—</div></div>
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:200px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:280px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:80%"></div></div><div class="kpi-rscore pending">—</div></div>
+    </div>
+    <div id="fail-pistenbully"></div>
+    <div class="dept-grid" id="dept-pistenbully" style="display:none"></div>
+  </div>
+
   <div class="last-up" id="kpi-ts">Not yet loaded</div>
 </div>
 
@@ -867,6 +884,7 @@ const READINESS_URL  = 'https://script.google.com/macros/s/AKfycbx8loQIr9DFz8q1P
 const PRFUND_URL      = 'https://script.google.com/macros/s/AKfycbxWqdyPxJ-mYOY3BZTPp2rur8JiqeyBhANuWeJJBxCYk6MBymNJfqpFJLynKRLXaJk/exec';
 const PROCUREMENT_URL = 'https://script.google.com/macros/s/AKfycby_M0NW85JpZBvJXCAoIM0p70V4YmD_ohwO1maXYjWme6_49rRKBp5JbSSPFiR0cQno/exec';
 const ADVENTURE_URL   = 'https://script.google.com/macros/s/AKfycbz5Ul6VqHbwlkUg16ymnVpQaukjVh30NTokPceAafmPnjhHnsOZSGw70PMzdESLN3KE2g/exec';
+const PISTENBULLY_URL = 'https://script.google.com/macros/s/AKfycbxQuyK_UEsPfl28KcZBV7H2aDJtpqaP0EE2J5ZFI_5BT0JGR-u0E3qqrqg_vr1544ViGg/exec';
 // ─────────────────────────────────────────────────────────
 
 // ── NAV ───────────────────────────────────────────────────
@@ -884,6 +902,7 @@ function nav(id) {
   if (id === 'kpi' && kpiState.prfund.status === 'idle')       fetchPrFundKpi();
   if (id === 'kpi' && kpiState.procurement.status === 'idle')  fetchProcurementKpi();
   if (id === 'kpi' && kpiState.adventure.status === 'idle')    fetchAdventureKpi();
+  if (id === 'kpi' && kpiState.pistenbully.status === 'idle')  fetchPistenBullyKpi();
   if (id === 'sops' && sopData.length === 0)                   loadSops();
 }
 
@@ -917,7 +936,8 @@ const kpiState = {
   readiness:    { status: 'idle', score: null, data: null },
   prfund:       { status: 'idle', score: null, data: null },
   procurement:  { status: 'idle', score: null, data: null },
-  adventure:    { status: 'idle', score: null, data: null }
+  adventure:    { status: 'idle', score: null, data: null },
+  pistenbully:  { status: 'idle', score: null, data: null }
 };
 
 // ── KPI FETCH ─────────────────────────────────────────────
@@ -2068,6 +2088,152 @@ function filterSops() {
     });
   });
   grid.innerHTML = html;
+}
+// ── PISTENBULLY KPI FETCH ─────────────────────────────────
+async function fetchPistenBullyKpi() {
+  setPistenBullyLoading();
+  try {
+    const res  = await fetch(PISTENBULLY_URL, {
+      method:  'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body:    JSON.stringify({ action: 'getKpiData' })
+    });
+    const data = await res.json();
+    if (data.status !== 'ok') throw new Error(data.message || 'Script returned error');
+    kpiState.pistenbully = { status: 'loaded', score: data.overallScore, data: data };
+    renderPistenBullyKpi(data);
+    updatePortfolioScore();
+  } catch (err) {
+    kpiState.pistenbully.status = 'error';
+    setPistenBullyError(err.message);
+  }
+}
+
+function renderPistenBullyKpi(d) {
+  const cls = scoreClass(d.overallScore);
+
+  // Source card
+  const sc = document.getElementById('ksc-score-pistenbully');
+  sc.textContent = d.overallScore;
+  sc.className   = 'ksc-score ' + cls;
+  const bar = document.getElementById('ksc-bar-pistenbully');
+  bar.style.width = d.overallScore + '%';
+  bar.className   = 'ksc-fill ' + cls;
+  document.getElementById('ksc-meta-pistenbully').textContent =
+    (d.currentHours || 0).toFixed(1) + ' hrs · ' +
+    (d.opToday ? 'Op submitted' : 'Op NOT submitted') + ' · ' +
+    fmtTime(d.asOf);
+  document.getElementById('dot-pistenbully').style.background = dotColor(cls);
+
+  // Score badge
+  const badge = document.getElementById('badge-pistenbully');
+  badge.textContent = d.overallScore + ' / 100';
+  badge.className   = 'score-badge ' + cls;
+
+  // KPI rows
+  let html = '';
+  d.kpis.forEach(k => {
+    const c   = k.score === null ? 'pending' : k.status;
+    const pct = k.pct !== undefined ? k.pct : Math.min(k.score || 0, 100);
+    html += `<div class="kpi-row">
+      <div class="kpi-rdot ${c}"></div>
+      <div class="kpi-rinner">
+        <div class="kpi-rlbl">${k.label}</div>
+        <div class="kpi-rdetail">${k.detail}</div>
+      </div>
+      <div class="kpi-rtrack"><div class="kpi-rfill ${c}" style="width:${Math.min(pct,100)}%"></div></div>
+      <div class="kpi-rscore ${c}">${k.score !== null ? k.score : '—'}</div>
+    </div>`;
+  });
+  document.getElementById('rows-pistenbully').innerHTML = html;
+
+  // Failure list
+  renderFails('fail-pistenbully', (d.failures || []).map(f => ({
+    name: f.label, reason: f.reason, level: f.level
+  })));
+
+  // Breakdown tiles
+  const dg = document.getElementById('dept-pistenbully');
+  dg.style.display = 'grid';
+
+  // Maintenance tasks
+  const maintKpi = d.kpis ? d.kpis.find(k => k.id === 'pb_maintenance_compliance') : null;
+  let maintRows = '';
+  if (maintKpi && d.maintTasks) {
+    d.maintTasks.forEach(t => {
+      const cls2 = t.status === 'DUE' ? (t.remaining <= 0 ? 'c' : 'w') : t.status === 'SOON' ? 'w' : 'g';
+      const label = t.remaining <= 0 ? 'OVERDUE ' + Math.abs(t.remaining).toFixed(0) + 'h' : t.remaining.toFixed(0) + 'h left';
+      maintRows += `<div class="dept-row"><span>${t.name}</span><span class="dv ${cls2}">${label}</span></div>`;
+    });
+  }
+
+  // Fault list
+  const faultKpi = d.kpis ? d.kpis.find(k => k.id === 'pb_fault_rate') : null;
+  let faultRows = '';
+  if (faultKpi && faultKpi.faultList && faultKpi.faultList.length) {
+    faultKpi.faultList.slice(0,3).forEach(f => {
+      faultRows += `<div class="dept-row" style="flex-direction:column;align-items:flex-start;gap:2px">
+        <span style="font-weight:600">${f.operator} — ${f.date}</span>
+        <span style="font-size:11px;color:var(--text3)">${f.notes}</span>
+      </div>`;
+    });
+  } else {
+    faultRows = '<div class="dept-row"><span style="color:var(--text3)">No faults reported in last 30 days</span></div>';
+  }
+
+  // Machine status
+  const machKpi = d.kpis ? d.kpis.find(k => k.id === 'pb_machine_status') : null;
+  const machCls = machKpi && machKpi.status === 'critical' ? 'c' : machKpi && machKpi.status === 'warning' ? 'w' : 'g';
+
+  dg.innerHTML = `
+    <div class="dept-card" style="grid-column:1/-1">
+      <div class="dept-name">Scheduled Maintenance — All 7 Tasks</div>
+      ${maintRows || '<div class="dept-row"><span style="color:var(--text3)">No maintenance config data</span></div>'}
+    </div>
+    <div class="dept-card">
+      <div class="dept-name">Machine Status</div>
+      <div class="dept-row"><span>Operational status</span><span class="dv ${machCls}">${d.machineStatus || '—'}</span></div>
+      <div class="dept-row"><span>Hour meter</span><span class="dv">${(d.currentHours||0).toFixed(1)} hrs</span></div>
+      <div class="dept-row"><span>Open follow-ups</span><span class="dv ${(d.openFollowups||0) > 0 ? 'w' : 'g'}">${d.openFollowups||0}</span></div>
+      <div class="dept-row"><span>Total service records</span><span class="dv">${d.totalServices||0}</span></div>
+    </div>
+    <div class="dept-card">
+      <div class="dept-name">Recent Fault Reports (last 30d)</div>
+      ${faultRows}
+    </div>`;
+
+  document.getElementById('kpi-ts').textContent =
+    'Last refreshed: ' + new Date().toLocaleString('en-PK', {
+      timeZone:'Asia/Karachi', day:'numeric', month:'short',
+      year:'numeric', hour:'2-digit', minute:'2-digit'
+    });
+}
+
+function setPistenBullyLoading() {
+  document.getElementById('ksc-score-pistenbully').textContent = '...';
+  document.getElementById('ksc-score-pistenbully').className   = 'ksc-score loading';
+  document.getElementById('ksc-bar-pistenbully').className     = 'ksc-fill loading';
+  document.getElementById('ksc-bar-pistenbully').style.width   = '25%';
+  document.getElementById('ksc-meta-pistenbully').textContent  = 'Fetching live data...';
+  document.getElementById('badge-pistenbully').textContent     = 'Loading...';
+  document.getElementById('badge-pistenbully').className       = 'score-badge loading';
+}
+
+function setPistenBullyError(msg) {
+  document.getElementById('ksc-score-pistenbully').textContent = 'Error';
+  document.getElementById('ksc-score-pistenbully').className   = 'ksc-score critical';
+  document.getElementById('ksc-bar-pistenbully').style.width   = '0%';
+  document.getElementById('ksc-bar-pistenbully').className     = 'ksc-fill critical';
+  document.getElementById('ksc-meta-pistenbully').textContent  = 'Connection failed';
+  document.getElementById('badge-pistenbully').textContent     = 'Connection error';
+  document.getElementById('badge-pistenbully').className       = 'score-badge critical';
+  document.getElementById('dot-pistenbully').style.background  = '#b93328';
+  document.getElementById('rows-pistenbully').innerHTML =
+    `<div class="kpi-error">
+      <strong>Could not connect to PistenBully script.</strong><br>
+      ${msg}<br><br>
+      Check GAS deployment is set to <em>Execute as: Me</em> and <em>Anyone</em> can access.
+    </div>`;
 }
 </script>
 </body>
