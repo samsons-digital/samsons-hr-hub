@@ -361,7 +361,7 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
   <div class="si" data-pg="sops"><span class="ic">≡</span>Policies &amp; SOPs<span class="sbadge a">4</span></div>
 
   <div class="sg">Intelligence</div>
-  <div class="si" data-pg="kpi"><span class="ic">◈</span>KPI Dashboard<span class="sbadge b" id="sb-kpi">11</span></div>
+  <div class="si" data-pg="kpi"><span class="ic">◈</span>KPI Dashboard<span class="sbadge b" id="sb-kpi">12</span></div>
 
   <div class="sg">Admin</div>
   <div class="si" data-pg="fy_close"><span class="ic">◑</span>FY Close</div>
@@ -472,7 +472,7 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
         <div class="kpp-src"><div class="kpp-dot" id="dot-techstore"></div>Technical Store <span class="phase-pill live" style="margin-left:4px">Pending</span></div>
         <div class="kpp-src"><div class="kpp-dot" id="dot-fireext"></div>Fire Ext <span class="phase-pill live" style="margin-left:4px">Pending</span></div>
         <div class="kpp-src" style="opacity:.3"><div class="kpp-dot"></div>Medical Stock <span class="phase-pill" style="margin-left:4px">Pending</span></div>
-        <div class="kpp-src" style="opacity:.3"><div class="kpp-dot"></div>Vehicle &amp; Machinery <span class="phase-pill" style="margin-left:4px">Pending</span></div>
+        <div class="kpp-src"><div class="kpp-dot" id="dot-fleet"></div>Vehicle &amp; Machinery <span class="phase-pill live" style="margin-left:4px">Pending</span></div>
         <div class="kpp-src" style="opacity:.3"><div class="kpp-dot"></div>Heavy Machines <span class="phase-pill" style="margin-left:4px">Pending</span></div>
         <div class="kpp-src" style="opacity:.3"><div class="kpp-dot"></div>Fixed Assets <span class="phase-pill" style="margin-left:4px">Pending</span></div>
         <div class="kpp-src" style="opacity:.3"><div class="kpp-dot"></div>GV Activity Checks <span class="phase-pill" style="margin-left:4px">Pending</span></div>
@@ -539,10 +539,10 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
       <div class="ksc-track"><div class="ksc-fill loading" style="width:0%"></div></div>
       <div class="ksc-meta">First aid inventory, expiry dates</div>
     </div>
-    <div class="ksc dim" style="border-left-color:#ddd">
-      <div class="ksc-hd"><div class="ksc-name">Vehicle &amp; Machinery</div><span class="phase-pill">Pending</span></div>
-      <div class="ksc-track"><div class="ksc-fill loading" style="width:0%"></div></div>
-      <div class="ksc-meta">Daily checks, service compliance</div>
+    <div class="ksc" id="ksc-fleet" style="border-left-color:#1a3c5e" onclick="scrollTo('panel-fleet')">
+      <div class="ksc-hd"><div class="ksc-name">Vehicle &amp; Machinery</div><div class="ksc-score loading" id="ksc-score-fleet">...</div></div>
+      <div class="ksc-track"><div class="ksc-fill loading" id="ksc-bar-fleet" style="width:25%"></div></div>
+      <div class="ksc-meta" id="ksc-meta-fleet">Fetching live data...</div>
     </div>
     <div class="ksc dim" style="border-left-color:#ddd">
       <div class="ksc-hd"><div class="ksc-name">Heavy Machine Checks</div><span class="phase-pill">Pending</span></div>
@@ -818,6 +818,25 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
     </div>
   </div>
 
+  <!-- Vehicle & Machinery detail panel -->
+  <div class="kpi-panel collapsed" id="panel-fleet">
+    <div class="kpi-phd" onclick="togglePanel('panel-fleet')">
+      <div class="kpi-ptitle">Vehicle &amp; Machinery — KPI Detail</div><span class="kpi-chevron">▼</span>
+      <span class="phase-pill live">Pending — Live</span>
+      <div class="score-badge loading" id="badge-fleet">Loading...</div>
+      <button class="kpi-refresh" onclick="event.stopPropagation();fetchFleetKpi()">↻ Refresh</button>
+    </div>
+    <div class="kpi-body">
+    <div class="kpi-rows" id="rows-fleet">
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:220px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:300px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:60%"></div></div><div class="kpi-rscore pending">—</div></div>
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:180px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:260px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:40%"></div></div><div class="kpi-rscore pending">—</div></div>
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:200px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:280px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:80%"></div></div><div class="kpi-rscore pending">—</div></div>
+    </div>
+    <div id="fail-fleet"></div>
+    <div class="dept-grid" id="dept-fleet" style="display:none"></div>
+    </div>
+  </div>
+
   <div class="last-up" id="kpi-ts">Not yet loaded</div>
 </div>
 
@@ -965,6 +984,7 @@ const PISTENBULLY_URL = 'https://script.google.com/macros/s/AKfycbxQuyK_UEsPfl28
 const TECHSTORE_URL   = 'https://script.google.com/macros/s/AKfycbw2JmvXXOluxC-1unKKJ-twTV1_2RBTugcMaAahOyNYrq7GQnzo_4WE5O6xqksYfO3RuA/exec';
 const FNB_URL         = 'https://script.google.com/macros/s/AKfycbwLYi35mpDSy9ne65u3AxGnDRcbBgjRy1EeEnJAgvaQRaV4jtmy8Oqf2dUOaRS0hv_3fg/exec';
 const FIREEXT_URL     = 'https://script.google.com/macros/s/AKfycbzOvjJFBAlqRkY67SRjcsWD51oJXVmqtKj2956ah5Wus1ERis68b0rhq4TfIcrc2ofJ/exec';
+const FLEET_URL       = 'https://script.google.com/macros/s/AKfycbwLtIGBIFBYqa6ebBtTywO-iKwEIHX5dOlDzqryFMOCewHcLs_UkiSeYfWwTFpOEjOS9g/exec';
 // ─────────────────────────────────────────────────────────
 
 // ── NAV ───────────────────────────────────────────────────
@@ -986,6 +1006,7 @@ function nav(id) {
   if (id === 'kpi' && kpiState.techstore.status === 'idle')    fetchTechStoreKpi();
   if (id === 'kpi' && kpiState.fnb.status === 'idle')          fetchFnBKpi();
   if (id === 'kpi' && kpiState.fireext.status === 'idle')      fetchFireExtKpi();
+  if (id === 'kpi' && kpiState.fleet.status === 'idle')        fetchFleetKpi();
   if (id === 'sops' && sopData.length === 0)                   loadSops();
 }
 
@@ -1023,7 +1044,8 @@ const kpiState = {
   pistenbully:  { status: 'idle', score: null, data: null },
   techstore:    { status: 'idle', score: null, data: null },
   fnb:          { status: 'idle', score: null, data: null },
-  fireext:      { status: 'idle', score: null, data: null }
+  fireext:      { status: 'idle', score: null, data: null },
+  fleet:        { status: 'idle', score: null, data: null }
 };
 
 // ── KPI FETCH ─────────────────────────────────────────────
@@ -1195,6 +1217,141 @@ function fmtTime(iso) {
   try { return new Date(iso).toLocaleTimeString('en-PK', { timeZone:'Asia/Karachi', hour:'2-digit', minute:'2-digit' }); }
   catch(e) { return ''; }
 }
+// ── VEHICLE & MACHINERY KPI FETCH ────────────────────────
+async function fetchFleetKpi() {
+  setFleetLoading();
+  try {
+    const res  = await fetch(FLEET_URL, {
+      method:  'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body:    JSON.stringify({ action: 'getKpiData' })
+    });
+    const data = await res.json();
+    if (data.status !== 'ok') throw new Error(data.message || 'Script returned error');
+    kpiState.fleet = { status: 'loaded', score: data.overallScore, data: data };
+    renderFleetKpi(data);
+    updatePortfolioScore();
+  } catch(err) {
+    kpiState.fleet.status = 'error';
+    setFleetError(err.message);
+  }
+}
+
+function renderFleetKpi(d) {
+  const cls = scoreClass(d.overallScore);
+
+  // Source card
+  const sc = document.getElementById('ksc-score-fleet');
+  sc.textContent = d.overallScore;
+  sc.className   = 'ksc-score ' + cls;
+  const bar = document.getElementById('ksc-bar-fleet');
+  bar.style.width = d.overallScore + '%';
+  bar.className   = 'ksc-fill ' + cls;
+  document.getElementById('ksc-meta-fleet').textContent =
+    d.vehicleCount + ' vehicles · ' +
+    d.checkedToday + ' checked today · ' +
+    (d.unsafeToday > 0 ? d.unsafeToday + ' unsafe · ' : '') +
+    fmtTime(d.asOf);
+  document.getElementById('dot-fleet').style.background = dotColor(cls);
+
+  // Score badge
+  const badge = document.getElementById('badge-fleet');
+  badge.textContent = d.overallScore + ' / 100';
+  badge.className   = 'score-badge ' + cls;
+
+  // KPI rows
+  let html = '';
+  d.kpis.forEach(k => {
+    const c   = k.score === null ? 'pending' : k.status;
+    const pct = k.pct !== undefined ? k.pct : Math.min(k.score || 0, 100);
+    html += `<div class="kpi-row">
+      <div class="kpi-rdot ${c}"></div>
+      <div class="kpi-rinner">
+        <div class="kpi-rlbl">${k.label}</div>
+        <div class="kpi-rdetail">${k.detail}</div>
+      </div>
+      <div class="kpi-rtrack"><div class="kpi-rfill ${c}" style="width:${Math.min(pct,100)}%"></div></div>
+      <div class="kpi-rscore ${c}">${k.score !== null ? k.score : '—'}</div>
+    </div>`;
+  });
+  document.getElementById('rows-fleet').innerHTML = html;
+
+  // Failure list
+  renderFails('fail-fleet', (d.failures || []).map(f => ({
+    name: f.label, reason: f.reason, level: f.level
+  })));
+
+  // Breakdown tiles — service status per vehicle
+  const dg = document.getElementById('dept-fleet');
+  dg.style.display = 'grid';
+
+  const svcKpi = d.kpis ? d.kpis.find(k => k.id === 'fleet_service_compliance') : null;
+  let vehicleRows = '';
+  if (svcKpi && svcKpi.assetList) {
+    vehicleRows = svcKpi.assetList.map(a => {
+      const sc2 = a.status === 'DUE' ? 'c' : a.status === 'SOON' ? 'w' : 'g';
+      const remainLabel = a.remaining < 0
+        ? Math.abs(a.remaining) + ' KM OVERDUE'
+        : a.remaining + ' KM left';
+      return `<div class="dept-row">
+        <span>${a.name}</span>
+        <span class="dv ${sc2}">${remainLabel}</span>
+      </div>`;
+    }).join('');
+  }
+
+  // Unsafe reports
+  const unsafeKpi = d.kpis ? d.kpis.find(k => k.id === 'fleet_unsafe_reports') : null;
+  let unsafeRows = '<div class="dept-row"><span style="color:var(--text3)">No unsafe reports in last 7 days</span></div>';
+  if (unsafeKpi && unsafeKpi.unsafeList && unsafeKpi.unsafeList.length > 0) {
+    unsafeRows = unsafeKpi.unsafeList.slice(0, 4).map(u =>
+      `<div class="dept-row" style="flex-direction:column;align-items:flex-start;gap:2px">
+        <span style="font-weight:600">${u.asset} — ${u.date}</span>
+        <span style="font-size:11px;color:var(--text3)">${u.operator} · ${u.unsafeReason || 'No reason given'}</span>
+      </div>`
+    ).join('');
+  }
+
+  dg.innerHTML = `
+    <div class="dept-card" style="grid-column:1/-1">
+      <div class="dept-name">Vehicle Service Status — 8 Vehicles</div>
+      ${vehicleRows || '<div class="dept-row"><span style="color:var(--text3)">No service data available</span></div>'}
+    </div>
+    <div class="dept-card">
+      <div class="dept-name">Unsafe Reports — Last 7 Days</div>
+      ${unsafeRows}
+    </div>`;
+
+  document.getElementById('kpi-ts').textContent =
+    'Last refreshed: ' + new Date().toLocaleString('en-PK', {
+      timeZone:'Asia/Karachi', day:'numeric', month:'short',
+      year:'numeric', hour:'2-digit', minute:'2-digit'
+    });
+}
+
+function setFleetLoading() {
+  document.getElementById('ksc-score-fleet').textContent = '...';
+  document.getElementById('ksc-score-fleet').className   = 'ksc-score loading';
+  document.getElementById('ksc-bar-fleet').className     = 'ksc-fill loading';
+  document.getElementById('ksc-bar-fleet').style.width   = '25%';
+  document.getElementById('ksc-meta-fleet').textContent  = 'Fetching live data...';
+  document.getElementById('badge-fleet').textContent     = 'Loading...';
+  document.getElementById('badge-fleet').className       = 'score-badge loading';
+}
+
+function setFleetError(msg) {
+  document.getElementById('ksc-score-fleet').textContent = 'Error';
+  document.getElementById('ksc-score-fleet').className   = 'ksc-score critical';
+  document.getElementById('ksc-bar-fleet').style.width   = '0%';
+  document.getElementById('ksc-bar-fleet').className     = 'ksc-fill critical';
+  document.getElementById('ksc-meta-fleet').textContent  = 'Connection failed';
+  document.getElementById('badge-fleet').textContent     = 'Connection error';
+  document.getElementById('badge-fleet').className       = 'score-badge critical';
+  document.getElementById('dot-fleet').style.background  = '#b93328';
+  document.getElementById('rows-fleet').innerHTML =
+    `<div class="kpi-error"><strong>Could not connect to Fleet Management script.</strong><br>${msg}</div>`;
+}
+
 // ── FIRE EXT COMPLIANCE KPI FETCH ────────────────────────
 async function fetchFireExtKpi() {
   setFireExtLoading();
