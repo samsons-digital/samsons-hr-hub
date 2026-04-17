@@ -361,7 +361,7 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
   <div class="si" data-pg="sops"><span class="ic">≡</span>Policies &amp; SOPs<span class="sbadge a">4</span></div>
 
   <div class="sg">Intelligence</div>
-  <div class="si" data-pg="kpi"><span class="ic">◈</span>KPI Dashboard<span class="sbadge b" id="sb-kpi">10</span></div>
+  <div class="si" data-pg="kpi"><span class="ic">◈</span>KPI Dashboard<span class="sbadge b" id="sb-kpi">11</span></div>
 
   <div class="sg">Admin</div>
   <div class="si" data-pg="fy_close"><span class="ic">◑</span>FY Close</div>
@@ -470,7 +470,7 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
         <div class="kpp-src" style="opacity:.4"><div class="kpp-dot"></div>Procurement <span class="phase-pill" style="margin-left:4px">P3</span></div>
         <div class="kpp-src"><div class="kpp-dot" id="dot-pistenbully"></div>PistenBully <span class="phase-pill live" style="margin-left:4px">Phase 4</span></div>
         <div class="kpp-src"><div class="kpp-dot" id="dot-techstore"></div>Technical Store <span class="phase-pill live" style="margin-left:4px">Pending</span></div>
-        <div class="kpp-src" style="opacity:.3"><div class="kpp-dot"></div>Fire Ext <span class="phase-pill" style="margin-left:4px">Pending</span></div>
+        <div class="kpp-src"><div class="kpp-dot" id="dot-fireext"></div>Fire Ext <span class="phase-pill live" style="margin-left:4px">Pending</span></div>
         <div class="kpp-src" style="opacity:.3"><div class="kpp-dot"></div>Medical Stock <span class="phase-pill" style="margin-left:4px">Pending</span></div>
         <div class="kpp-src" style="opacity:.3"><div class="kpp-dot"></div>Vehicle &amp; Machinery <span class="phase-pill" style="margin-left:4px">Pending</span></div>
         <div class="kpp-src" style="opacity:.3"><div class="kpp-dot"></div>Heavy Machines <span class="phase-pill" style="margin-left:4px">Pending</span></div>
@@ -529,10 +529,10 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
       <div class="ksc-track"><div class="ksc-fill loading" id="ksc-bar-techstore" style="width:25%"></div></div>
       <div class="ksc-meta" id="ksc-meta-techstore">Fetching live data...</div>
     </div>
-    <div class="ksc dim" style="border-left-color:#ddd">
-      <div class="ksc-hd"><div class="ksc-name">Fire Ext Compliance</div><span class="phase-pill">Pending</span></div>
-      <div class="ksc-track"><div class="ksc-fill loading" style="width:0%"></div></div>
-      <div class="ksc-meta">Inspection dates, expiry tracking</div>
+    <div class="ksc" id="ksc-fireext" style="border-left-color:#c0392b" onclick="scrollTo('panel-fireext')">
+      <div class="ksc-hd"><div class="ksc-name">Fire Ext Compliance</div><div class="ksc-score loading" id="ksc-score-fireext">...</div></div>
+      <div class="ksc-track"><div class="ksc-fill loading" id="ksc-bar-fireext" style="width:25%"></div></div>
+      <div class="ksc-meta" id="ksc-meta-fireext">Fetching live data...</div>
     </div>
     <div class="ksc dim" style="border-left-color:#ddd">
       <div class="ksc-hd"><div class="ksc-name">Medical Stock</div><span class="phase-pill">Pending</span></div>
@@ -800,6 +800,24 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
     </div>
   </div>
 
+  <!-- Fire Ext Compliance detail panel -->
+  <div class="kpi-panel collapsed" id="panel-fireext">
+    <div class="kpi-phd" onclick="togglePanel('panel-fireext')">
+      <div class="kpi-ptitle">Fire Extinguisher Compliance — KPI Detail</div><span class="kpi-chevron">▼</span>
+      <span class="phase-pill live">Pending — Live</span>
+      <div class="score-badge loading" id="badge-fireext">Loading...</div>
+      <button class="kpi-refresh" onclick="event.stopPropagation();fetchFireExtKpi()">↻ Refresh</button>
+    </div>
+    <div class="kpi-body">
+    <div class="kpi-rows" id="rows-fireext">
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:220px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:300px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:60%"></div></div><div class="kpi-rscore pending">—</div></div>
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:180px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:260px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:40%"></div></div><div class="kpi-rscore pending">—</div></div>
+    </div>
+    <div id="fail-fireext"></div>
+    <div class="dept-grid" id="dept-fireext" style="display:none"></div>
+    </div>
+  </div>
+
   <div class="last-up" id="kpi-ts">Not yet loaded</div>
 </div>
 
@@ -946,6 +964,7 @@ const ADVENTURE_URL   = 'https://script.google.com/macros/s/AKfycbz5Ul6VqHbwlkUg
 const PISTENBULLY_URL = 'https://script.google.com/macros/s/AKfycbxQuyK_UEsPfl28KcZBV7H2aDJtpqaP0EE2J5ZFI_5BT0JGR-u0E3qqrqg_vr1544ViGg/exec';
 const TECHSTORE_URL   = 'https://script.google.com/macros/s/AKfycbw2JmvXXOluxC-1unKKJ-twTV1_2RBTugcMaAahOyNYrq7GQnzo_4WE5O6xqksYfO3RuA/exec';
 const FNB_URL         = 'https://script.google.com/macros/s/AKfycbwLYi35mpDSy9ne65u3AxGnDRcbBgjRy1EeEnJAgvaQRaV4jtmy8Oqf2dUOaRS0hv_3fg/exec';
+const FIREEXT_URL     = 'https://script.google.com/macros/s/AKfycbzOvjJFBAlqRkY67SRjcsWD51oJXVmqtKj2956ah5Wus1ERis68b0rhq4TfIcrc2ofJ/exec';
 // ─────────────────────────────────────────────────────────
 
 // ── NAV ───────────────────────────────────────────────────
@@ -966,6 +985,7 @@ function nav(id) {
   if (id === 'kpi' && kpiState.pistenbully.status === 'idle')  fetchPistenBullyKpi();
   if (id === 'kpi' && kpiState.techstore.status === 'idle')    fetchTechStoreKpi();
   if (id === 'kpi' && kpiState.fnb.status === 'idle')          fetchFnBKpi();
+  if (id === 'kpi' && kpiState.fireext.status === 'idle')      fetchFireExtKpi();
   if (id === 'sops' && sopData.length === 0)                   loadSops();
 }
 
@@ -1002,7 +1022,8 @@ const kpiState = {
   adventure:    { status: 'idle', score: null, data: null },
   pistenbully:  { status: 'idle', score: null, data: null },
   techstore:    { status: 'idle', score: null, data: null },
-  fnb:          { status: 'idle', score: null, data: null }
+  fnb:          { status: 'idle', score: null, data: null },
+  fireext:      { status: 'idle', score: null, data: null }
 };
 
 // ── KPI FETCH ─────────────────────────────────────────────
@@ -1174,6 +1195,123 @@ function fmtTime(iso) {
   try { return new Date(iso).toLocaleTimeString('en-PK', { timeZone:'Asia/Karachi', hour:'2-digit', minute:'2-digit' }); }
   catch(e) { return ''; }
 }
+// ── FIRE EXT COMPLIANCE KPI FETCH ────────────────────────
+async function fetchFireExtKpi() {
+  setFireExtLoading();
+  try {
+    const res  = await fetch(FIREEXT_URL, {
+      method:  'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body:    JSON.stringify({ action: 'getKpiData' })
+    });
+    const data = await res.json();
+    if (data.status !== 'ok') throw new Error(data.message || 'Script returned error');
+    kpiState.fireext = { status: 'loaded', score: data.overallScore, data: data };
+    renderFireExtKpi(data);
+    updatePortfolioScore();
+  } catch(err) {
+    kpiState.fireext.status = 'error';
+    setFireExtError(err.message);
+  }
+}
+
+function renderFireExtKpi(d) {
+  const cls = scoreClass(d.overallScore);
+
+  // Source card
+  const sc = document.getElementById('ksc-score-fireext');
+  sc.textContent = d.overallScore;
+  sc.className   = 'ksc-score ' + cls;
+  const bar = document.getElementById('ksc-bar-fireext');
+  bar.style.width = d.overallScore + '%';
+  bar.className   = 'ksc-fill ' + cls;
+  document.getElementById('ksc-meta-fireext').textContent =
+    d.totalUnits + ' units · ' +
+    (d.totalExpired > 0 ? d.totalExpired + ' EXPIRED · ' : '') +
+    (d.totalFaulty  > 0 ? d.totalFaulty  + ' faulty · '  : '') +
+    fmtTime(d.asOf);
+  document.getElementById('dot-fireext').style.background = dotColor(cls);
+
+  // Score badge
+  const badge = document.getElementById('badge-fireext');
+  badge.textContent = d.overallScore + ' / 100';
+  badge.className   = 'score-badge ' + cls;
+
+  // KPI rows
+  let html = '';
+  d.kpis.forEach(k => {
+    const c   = k.score === null ? 'pending' : k.status;
+    const pct = k.pct !== undefined ? k.pct : Math.min(k.score || 0, 100);
+    html += `<div class="kpi-row">
+      <div class="kpi-rdot ${c}"></div>
+      <div class="kpi-rinner">
+        <div class="kpi-rlbl">${k.label}</div>
+        <div class="kpi-rdetail">${k.detail}</div>
+      </div>
+      <div class="kpi-rtrack"><div class="kpi-rfill ${c}" style="width:${Math.min(pct,100)}%"></div></div>
+      <div class="kpi-rscore ${c}">${k.score !== null ? k.score : '—'}</div>
+    </div>`;
+  });
+  document.getElementById('rows-fireext').innerHTML = html;
+
+  // Failure list
+  renderFails('fail-fireext', (d.failures || []).map(f => ({
+    name: f.label, reason: f.reason, level: f.level
+  })));
+
+  // Breakdown tiles — per site
+  const dg = document.getElementById('dept-fireext');
+  dg.style.display = 'grid';
+
+  const sitesKpi = d.kpis ? d.kpis.find(k => k.id === 'fe_site_compliance') : null;
+  let siteRows = '';
+  if (sitesKpi && sitesKpi.siteList) {
+    siteRows = sitesKpi.siteList.map(s => {
+      const sc2 = s.expired > 0 ? 'c' : s.expiring > 0 || s.faulty > 0 ? 'w' : 'g';
+      return `<div class="dept-card">
+        <div class="dept-name">${s.label}</div>
+        <div class="dept-row"><span>Units registered</span><span class="dv">${s.total}</span></div>
+        <div class="dept-row"><span>Inspected</span><span class="dv ${s.pct >= 80 ? 'g' : 'w'}">${s.inspected} (${s.pct}%)</span></div>
+        ${s.expired > 0  ? `<div class="dept-row"><span>Expired</span><span class="dv c">${s.expired}</span></div>` : ''}
+        ${s.expiring > 0 ? `<div class="dept-row"><span>Expiring soon</span><span class="dv w">${s.expiring}</span></div>` : ''}
+        ${s.faulty > 0   ? `<div class="dept-row"><span>Faulty/Empty</span><span class="dv c">${s.faulty}</span></div>` : ''}
+        ${s.overdue > 0  ? `<div class="dept-row"><span>Overdue (90d)</span><span class="dv w">${s.overdue}</span></div>` : ''}
+      </div>`;
+    }).join('');
+  }
+
+  dg.innerHTML = siteRows || '<div class="dept-card"><div class="dept-row"><span style="color:var(--text3)">No site data available</span></div></div>';
+
+  document.getElementById('kpi-ts').textContent =
+    'Last refreshed: ' + new Date().toLocaleString('en-PK', {
+      timeZone:'Asia/Karachi', day:'numeric', month:'short',
+      year:'numeric', hour:'2-digit', minute:'2-digit'
+    });
+}
+
+function setFireExtLoading() {
+  document.getElementById('ksc-score-fireext').textContent = '...';
+  document.getElementById('ksc-score-fireext').className   = 'ksc-score loading';
+  document.getElementById('ksc-bar-fireext').className     = 'ksc-fill loading';
+  document.getElementById('ksc-bar-fireext').style.width   = '25%';
+  document.getElementById('ksc-meta-fireext').textContent  = 'Fetching live data...';
+  document.getElementById('badge-fireext').textContent     = 'Loading...';
+  document.getElementById('badge-fireext').className       = 'score-badge loading';
+}
+
+function setFireExtError(msg) {
+  document.getElementById('ksc-score-fireext').textContent = 'Error';
+  document.getElementById('ksc-score-fireext').className   = 'ksc-score critical';
+  document.getElementById('ksc-bar-fireext').style.width   = '0%';
+  document.getElementById('ksc-bar-fireext').className     = 'ksc-fill critical';
+  document.getElementById('ksc-meta-fireext').textContent  = 'Connection failed';
+  document.getElementById('badge-fireext').textContent     = 'Connection error';
+  document.getElementById('badge-fireext').className       = 'score-badge critical';
+  document.getElementById('dot-fireext').style.background  = '#b93328';
+  document.getElementById('rows-fireext').innerHTML =
+    `<div class="kpi-error"><strong>Could not connect to Fire Ext script.</strong><br>${msg}</div>`;
+}
+
 // ── F&B STOCK CONTROLS KPI FETCH ─────────────────────────
 async function fetchFnBKpi() {
   setFnBLoading();
