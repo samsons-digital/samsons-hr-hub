@@ -1579,7 +1579,9 @@ function renderTechStoreKpi(d) {
   bar.style.width = d.overallScore + '%';
   bar.className   = 'ksc-fill ' + cls;
   document.getElementById('ksc-meta-techstore').textContent =
-    d.totalItems + ' items · ' + d.monthLabel + ' · ' + d.daysLeft + ' days to month end · ' + fmtTime(d.asOf);
+    d.totalItems + ' items · ' + d.storeCount + ' stores · ' +
+    (d.totalZero > 0 ? d.totalZero + ' zero-stock · ' : '') +
+    fmtTime(d.asOf);
   document.getElementById('dot-techstore').style.background = dotColor(cls);
 
   // Score badge
@@ -1613,58 +1615,52 @@ function renderTechStoreKpi(d) {
   const dg = document.getElementById('dept-techstore');
   dg.style.display = 'grid';
 
-  // Balance variances
-  const balKpi = d.kpis ? d.kpis.find(k => k.id === 'store_balance_reconciliation') : null;
-  let balRows = '<div class="dept-row"><span style="color:var(--text3)">No variances — all items balance</span></div>';
-  if (balKpi && balKpi.variances && balKpi.variances.length > 0) {
-    balRows = balKpi.variances.slice(0,5).map(v =>
-      `<div class="dept-row"><span>${v.name} (${v.store})</span><span class="dv c">Var: ${v.variance > 0 ? '+' : ''}${v.variance}</span></div>`
+  // Store item counts
+  const covKpi = d.kpis ? d.kpis.find(k => k.id === 'ts_store_coverage') : null;
+  let storeRows = '';
+  if (covKpi && covKpi.storeItemCounts) {
+    storeRows = covKpi.storeItemCounts.map(s =>
+      `<div class="dept-row"><span>${s.store}</span><span class="dv ${s.items > 0 ? 'g' : 'c'}">${s.items} items</span></div>`
     ).join('');
   }
 
-  // Liquid issues
-  const liqKpi = d.kpis ? d.kpis.find(k => k.id === 'store_liquid_balance') : null;
-  let liqRows = '<div class="dept-row"><span style="color:var(--text3)">No liquid issues this month</span></div>';
-  if (liqKpi && liqKpi.unaccountedList && liqKpi.unaccountedList.length > 0) {
-    liqRows = liqKpi.unaccountedList.slice(0,5).map(i =>
-      `<div class="dept-row"><span>${i.name} — ${i.qty} ${i.unit}</span><span class="dv c">Missing: ${!i.hasParty ? 'Name ' : ''}${!i.hasRef ? 'Dept/Reason' : ''}</span></div>`
-    ).join('');
-  } else if (liqKpi && liqKpi.value > 0) {
-    liqRows = `<div class="dept-row"><span style="color:var(--text3)">${liqKpi.value} liquid issue(s) — all fully accounted</span></div>`;
-  }
-
-  // Reorder alerts
-  const reordKpi = d.kpis ? d.kpis.find(k => k.id === 'store_reorder_compliance') : null;
-  let reordRows = '<div class="dept-row"><span style="color:var(--text3)">No items at zero requiring replenishment</span></div>';
-  if (reordKpi && reordKpi.alertList && reordKpi.alertList.length > 0) {
-    reordRows = reordKpi.alertList.slice(0,5).map(r =>
-      `<div class="dept-row"><span>${r.name} (${r.store})</span><span class="dv ${r.daysAtZero >= 14 ? 'c' : 'w'}">${r.daysAtZero}d at zero</span></div>`
-    ).join('');
+  // Zero stock by store
+  const zeroKpi = d.kpis ? d.kpis.find(k => k.id === 'ts_zero_stock') : null;
+  let zeroRows = '<div class="dept-row"><span style="color:var(--text3)">No zero-stock items</span></div>';
+  if (zeroKpi && zeroKpi.storeBreakdown) {
+    const withZero = zeroKpi.storeBreakdown.filter(s => s.zeroCount > 0);
+    if (withZero.length > 0) {
+      zeroRows = withZero.map(s =>
+        `<div class="dept-row"><span>${s.store}</span><span class="dv ${s.zeroCount > 10 ? 'c' : 'w'}">${s.zeroCount} at zero</span></div>`
+      ).join('');
+    }
   }
 
   // Check status
-  const chkKpi = d.kpis ? d.kpis.find(k => k.id === 'store_monthend_check') : null;
-  const chkCls = chkKpi ? (chkKpi.status === 'good' ? 'g' : chkKpi.status === 'warning' ? 'w' : 'c') : 'w';
+  const chkKpi = d.kpis ? d.kpis.find(k => k.id === 'ts_monthly_check') : null;
+  let checkRows = '';
+  if (chkKpi) {
+    if (chkKpi.finalizedList && chkKpi.finalizedList.length > 0) {
+      checkRows += chkKpi.finalizedList.map(s => `<div class="dept-row"><span>${s}</span><span class="dv g">Finalized</span></div>`).join('');
+    }
+    if (chkKpi.pendingList && chkKpi.pendingList.length > 0) {
+      checkRows += chkKpi.pendingList.map(s => `<div class="dept-row"><span>${s}</span><span class="dv w">Pending</span></div>`).join('');
+    }
+  }
+  if (!checkRows) checkRows = '<div class="dept-row"><span style="color:var(--text3)">No check data</span></div>';
 
   dg.innerHTML = `
-    <div class="dept-card">
-      <div class="dept-name">Month-End Stock Check — ${d.monthLabel}</div>
-      <div class="dept-row"><span>Status</span><span class="dv ${chkCls}">${chkKpi ? chkKpi.unit : '—'}</span></div>
-      <div class="dept-row"><span>Days to month end</span><span class="dv ${d.daysLeft <= 3 ? 'c' : d.daysLeft <= 7 ? 'w' : 'g'}">${d.daysLeft} days</span></div>
-      <div class="dept-row"><span>Total items tracked</span><span class="dv">${d.totalItems}</span></div>
-      <div class="dept-row"><span>Transactions this month</span><span class="dv">${d.monthTxnCount}</span></div>
+    <div class="dept-card" style="grid-column:1/-1">
+      <div class="dept-name">Items per Store — ${d.totalItems} total across ${d.storeCount} stores</div>
+      ${storeRows}
     </div>
     <div class="dept-card">
-      <div class="dept-name">Balance Variances This Month</div>
-      ${balRows}
+      <div class="dept-name">Zero Stock by Store</div>
+      ${zeroRows}
     </div>
     <div class="dept-card">
-      <div class="dept-name">Unaccounted Liquid Issues</div>
-      ${liqRows}
-    </div>
-    <div class="dept-card">
-      <div class="dept-name">Reorder Alerts — Zero Stock</div>
-      ${reordRows}
+      <div class="dept-name">Monthly Check — ${d.currentPeriod}</div>
+      ${checkRows}
     </div>`;
 
   document.getElementById('kpi-ts').textContent =
@@ -1673,7 +1669,6 @@ function renderTechStoreKpi(d) {
       year:'numeric', hour:'2-digit', minute:'2-digit'
     });
 }
-
 function setTechStoreLoading() {
   document.getElementById('ksc-score-techstore').textContent = '...';
   document.getElementById('ksc-score-techstore').className   = 'ksc-score loading';
