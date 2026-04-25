@@ -471,7 +471,7 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
         <div class="kpp-src"><div class="kpp-dot" id="dot-pistenbully"></div>PistenBully <span class="phase-pill live" style="margin-left:4px">Phase 4</span></div>
         <div class="kpp-src"><div class="kpp-dot" id="dot-techstore"></div>Technical Store <span class="phase-pill live" style="margin-left:4px">Pending</span></div>
         <div class="kpp-src"><div class="kpp-dot" id="dot-fireext"></div>Fire Ext <span class="phase-pill live" style="margin-left:4px">Pending</span></div>
-        <div class="kpp-src" style="opacity:.3"><div class="kpp-dot"></div>Medical Stock <span class="phase-pill" style="margin-left:4px">Pending</span></div>
+        <div class="kpp-src"><div class="kpp-dot" id="dot-medical"></div>Medical Stock <span class="phase-pill live" style="margin-left:4px">Live</span></div>
         <div class="kpp-src"><div class="kpp-dot" id="dot-fleet"></div>Vehicle &amp; Machinery <span class="phase-pill live" style="margin-left:4px">Pending</span></div>
         <div class="kpp-src" style="opacity:.3"><div class="kpp-dot"></div>Heavy Machines <span class="phase-pill" style="margin-left:4px">Pending</span></div>
         <div class="kpp-src" style="opacity:.3"><div class="kpp-dot"></div>Fixed Assets <span class="phase-pill" style="margin-left:4px">Pending</span></div>
@@ -530,10 +530,10 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
       <div class="ksc-track"><div class="ksc-fill loading" id="ksc-bar-fireext" style="width:25%"></div></div>
       <div class="ksc-meta" id="ksc-meta-fireext">Fetching live data...</div>
     </div>
-    <div class="ksc dim" style="border-left-color:#ddd">
-      <div class="ksc-hd"><div class="ksc-name">Medical Stock</div><span class="phase-pill">Pending</span></div>
-      <div class="ksc-track"><div class="ksc-fill loading" style="width:0%"></div></div>
-      <div class="ksc-meta">First aid inventory, expiry dates</div>
+    <div class="ksc" id="ksc-medical" style="border-left-color:#7c3aed" onclick="scrollTo('panel-medical')">
+      <div class="ksc-hd"><div class="ksc-name">Medical Stock</div><div class="ksc-score loading" id="ksc-score-medical">...</div></div>
+      <div class="ksc-track"><div class="ksc-fill loading" id="ksc-bar-medical" style="width:25%"></div></div>
+      <div class="ksc-meta" id="ksc-meta-medical">Fetching live data...</div>
     </div>
     <div class="ksc" id="ksc-fleet" style="border-left-color:#1a3c5e" onclick="scrollTo('panel-fleet')">
       <div class="ksc-hd"><div class="ksc-name">Vehicle &amp; Machinery</div><div class="ksc-score loading" id="ksc-score-fleet">...</div></div>
@@ -715,6 +715,21 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
     </div>
     <div id="fail-pistenbully"></div>
     <div class="dept-grid" id="dept-pistenbully" style="display:none"></div>
+    </div>
+  </div>
+
+  <!-- Medical Stock detail panel -->
+  <div class="kpi-panel collapsed" id="panel-medical">
+    <div class="kpi-phd" onclick="togglePanel('panel-medical')">
+      <div class="kpi-ptitle">Medical Stock — KPI Detail</div><span class="kpi-chevron">&#9660;</span>
+      <div class="kpi-pmeta" id="kpi-medical"></div>
+      <div class="score-badge loading" id="badge-medical">Loading...</div>
+      <button class="kpi-refresh" onclick="event.stopPropagation();fetchMedicalKpi()">&#8635; Refresh</button>
+    </div>
+    <div class="kpi-body">
+    <div class="kpi-rows" id="rows-medical"></div>
+    <div id="fail-medical"></div>
+    <div class="dept-grid" id="dept-medical" style="display:none"></div>
     </div>
   </div>
 
@@ -938,6 +953,7 @@ const ADVENTURE_URL   = 'https://script.google.com/macros/s/AKfycbz5Ul6VqHbwlkUg
 const PISTENBULLY_URL = 'https://script.google.com/macros/s/AKfycbxQuyK_UEsPfl28KcZBV7H2aDJtpqaP0EE2J5ZFI_5BT0JGR-u0E3qqrqg_vr1544ViGg/exec';
 const TECHSTORE_URL   = 'https://script.google.com/macros/s/AKfycbwOl_noGhIdBxtxuf_hnNSZs7jibECNhhP9YnB_knF-kM0TkjJgp8KS2Xh9qEtrvWvH6g/exec';
 const FNB_URL         = 'https://script.google.com/macros/s/AKfycbwCxyvvkBllZs-6fRzpCVNxbG8oZi5gMfL5gVPY03sT5oZLTmwkD0avjo18r42zizacug/exec';
+const MEDICAL_URL     = 'https://script.google.com/macros/s/AKfycbwywPeUyqikxj3uSWCLx9HVYTnujDTQMZqFpurMe-HqiNC3uAmVBZRpbDw8hBB6oEa_ZQ/exec';
 const FIREEXT_URL     = 'https://script.google.com/macros/s/AKfycbz4tBL1MHpNb1619jCP88msSJlTVFW8605fcTkRDAMN0N7075FRuOLWZjEeH0pgcwx2/exec';
 const FLEET_URL       = 'https://script.google.com/macros/s/AKfycbwLtIGBIFBYqa6ebBtTywO-iKwEIHX5dOlDzqryFMOCewHcLs_UkiSeYfWwTFpOEjOS9g/exec';
 // ─────────────────────────────────────────────────────────
@@ -959,6 +975,7 @@ function nav(id) {
   if (id === 'kpi' && kpiState.pistenbully.status === 'idle')  fetchPistenBullyKpi();
   if (id === 'kpi' && kpiState.techstore.status === 'idle')    fetchTechStoreKpi();
   if (id === 'kpi' && kpiState.fnb.status === 'idle')          fetchFnBKpi();
+  if (id === 'kpi' && kpiState.medical.status === 'idle')      fetchMedicalKpi();
   if (id === 'kpi' && kpiState.fireext.status === 'idle')      fetchFireExtKpi();
   if (id === 'kpi' && kpiState.fleet.status === 'idle')        fetchFleetKpi();
   if (id === 'sops' && sopData.length === 0)                   loadSops();
@@ -997,6 +1014,7 @@ const kpiState = {
   pistenbully:  { status: 'idle', score: null, data: null },
   techstore:    { status: 'idle', score: null, data: null },
   fnb:          { status: 'idle', score: null, data: null },
+  medical:      { status: 'idle', score: null, data: null },
   fireext:      { status: 'idle', score: null, data: null },
   fleet:        { status: 'idle', score: null, data: null }
 };
@@ -2826,6 +2844,124 @@ function setPistenBullyError(msg) {
       Check GAS deployment is set to <em>Execute as: Me</em> and <em>Anyone</em> can access.
     </div>`;
 }
+
+// ── Medical Stock KPI ──────────────────────────────────────────────────────
+async function fetchMedicalKpi() {
+  setMedicalLoading();
+  try {
+    const res = await fetch(MEDICAL_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ action: 'getKpiData' })
+    });
+    const data = await res.json();
+    if (data.status !== 'ok') throw new Error(data.message || 'Script returned error');
+    kpiState.medical = { status: 'loaded', score: data.overallScore, data: data };
+    renderMedicalKpi(data);
+    updatePortfolioScore();
+  } catch(err) {
+    kpiState.medical.status = 'error';
+    setMedicalError(err.message);
+  }
+}
+
+function renderMedicalKpi(d) {
+  const cls = scoreClass(d.overallScore);
+  document.getElementById('ksc-score-medical').textContent = d.overallScore;
+  document.getElementById('ksc-score-medical').className = 'ksc-score ' + cls;
+  document.getElementById('ksc-bar-medical').style.width = d.overallScore + '%';
+  document.getElementById('ksc-bar-medical').className = 'ksc-fill ' + cls;
+  document.getElementById('ksc-meta-medical').textContent =
+    d.totalSkus + ' SKUs · ' + d.outOfStock + ' out · ' + d.critical + ' critical · ' + fmtTime(d.asOf);
+  document.getElementById('dot-medical').style.background = dotColor(cls);
+
+  const badge = document.getElementById('badge-medical');
+  badge.textContent = d.overallScore + ' / 100';
+  badge.className = 'score-badge ' + cls;
+
+  let html = '';
+  d.kpis.forEach(k => {
+    const c = k.score === null ? 'pending' : k.status;
+    const pct = k.pct !== undefined ? k.pct : Math.min(k.score || 0, 100);
+    html += `<div class="kpi-row">
+      <div class="kpi-rdot ${c}"></div>
+      <div class="kpi-rinner">
+        <div class="kpi-rlbl">${k.label}</div>
+        <div class="kpi-rdetail">${k.detail}</div>
+      </div>
+      <div class="kpi-rtrack"><div class="kpi-rfill ${c}" style="width:${Math.min(pct,100)}%"></div></div>
+      <div class="kpi-rscore ${c}">${k.score !== null ? k.score : '—'}</div>
+    </div>`;
+  });
+  document.getElementById('rows-medical').innerHTML = html;
+
+  renderFails('fail-medical', (d.failures || []).map(f => ({ name: f.label, reason: f.reason, level: f.level })));
+
+  const dg = document.getElementById('dept-medical');
+  dg.style.display = 'grid';
+
+  const stockKpi = d.kpis.find(k => k.id === 'med_stock_compliance');
+  let critRows = '<div class="dept-row"><span style="color:var(--text3)">All medicines adequately stocked</span></div>';
+  if (stockKpi && stockKpi.criticalList && stockKpi.criticalList.length > 0) {
+    critRows = stockKpi.criticalList.slice(0,6).map(i =>
+      `<div class="dept-row"><span>${i.name}</span><span class="dv c">Bal: ${i.balance} / Min: ${i.min}</span></div>`
+    ).join('');
+  }
+
+  const expiryKpi = d.kpis.find(k => k.id === 'med_expiry_alerts');
+  let expRows = '<div class="dept-row"><span style="color:var(--text3)">No expiry flags</span></div>';
+  if (expiryKpi && expiryKpi.expiryList && expiryKpi.expiryList.length > 0) {
+    expRows = expiryKpi.expiryList.slice(0,6).map(i =>
+      `<div class="dept-row"><span>${i.name}</span><span class="dv w">${i.flag} (bal: ${i.balance})</span></div>`
+    ).join('');
+  }
+
+  const visitKpi = d.kpis.find(k => k.id === 'med_visit_activity');
+  const visitSummary = visitKpi
+    ? `<div class="dept-row"><span>Visits today</span><span class="dv g">${d.visitsToday}</span></div>
+       <div class="dept-row"><span>Visits this week</span><span class="dv g">${d.visitsWeek}</span></div>
+       <div class="dept-row"><span>Follow-ups pending</span><span class="dv ${visitKpi.followUpPending > 0 ? 'w' : 'g'}">${visitKpi.followUpPending}</span></div>`
+    : '';
+
+  dg.innerHTML = `
+    <div class="dept-card">
+      <div class="dept-name">Critical / Out of Stock (${d.outOfStock + d.critical} items)</div>
+      ${critRows}
+    </div>
+    <div class="dept-card">
+      <div class="dept-name">Expiry Alerts (${d.expiryCount} flagged)</div>
+      ${expRows}
+    </div>
+    <div class="dept-card">
+      <div class="dept-name">Visit Activity</div>
+      ${visitSummary}
+    </div>`;
+
+  document.getElementById('kpi-medical').textContent =
+    'Last refreshed: ' + new Date().toLocaleString('en-PK', {
+      timeZone:'Asia/Karachi', day:'numeric', month:'short',
+      year:'numeric', hour:'2-digit', minute:'2-digit'
+    });
+}
+
+function setMedicalLoading() {
+  document.getElementById('ksc-score-medical').textContent = '...';
+  document.getElementById('ksc-score-medical').className = 'ksc-score loading';
+  document.getElementById('ksc-bar-medical').className = 'ksc-fill loading';
+  document.getElementById('ksc-meta-medical').textContent = 'Fetching live data...';
+  const badge = document.getElementById('badge-medical');
+  if (badge) { badge.textContent = 'Loading...'; badge.className = 'score-badge loading'; }
+}
+
+function setMedicalError(msg) {
+  document.getElementById('ksc-score-medical').textContent = 'Error';
+  document.getElementById('ksc-score-medical').className = 'ksc-score critical';
+  document.getElementById('ksc-bar-medical').className = 'ksc-fill critical';
+  document.getElementById('ksc-meta-medical').textContent = 'Connection failed';
+  const badge = document.getElementById('badge-medical');
+  if (badge) { badge.textContent = 'Error'; badge.className = 'score-badge critical'; }
+}
+
 </script>
 </body>
 </html>
