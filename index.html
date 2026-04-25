@@ -361,7 +361,7 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
   <div class="si" data-pg="sops"><span class="ic">≡</span>Policies &amp; SOPs<span class="sbadge a">4</span></div>
 
   <div class="sg">Intelligence</div>
-  <div class="si" data-pg="kpi"><span class="ic">◈</span>KPI Dashboard<span class="sbadge b" id="sb-kpi">12</span></div>
+  <div class="si" data-pg="kpi"><span class="ic">◈</span>KPI Dashboard<span class="sbadge b" id="sb-kpi">11</span></div>
 
   <div class="sg">Admin</div>
   <div class="si" data-pg="fy_close"><span class="ic">◑</span>FY Close</div>
@@ -457,7 +457,7 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
     <div>
       <div style="font-size:11px;color:var(--text3);margin-bottom:7px">Connected sources</div>
       <div class="kpp-srcs">
-        <div class="kpp-src"><div class="kpp-dot" id="dot-leave"></div>Leave Tracker <span class="phase-pill live" style="margin-left:4px">Phase 1</span></div>
+        
         <div class="kpp-src"><div class="kpp-dot" id="dot-warnings"></div>Warnings System <span class="phase-pill live" style="margin-left:4px">Phase 1</span></div>
         <div class="kpp-src"><div class="kpp-dot" id="dot-chairlift"></div>Chairlift Checks <span class="phase-pill live" style="margin-left:4px">Phase 2</span></div>
         <div class="kpp-src"><div class="kpp-dot" id="dot-readiness"></div>Daily Readiness <span class="phase-pill live" style="margin-left:4px">Phase 2</span></div>
@@ -484,11 +484,7 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
 
   <!-- Source cards -->
   <div class="kpi-src-grid">
-    <div class="ksc" id="ksc-leave" style="border-left-color:#1b5e3b" onclick="scrollTo('panel-leave')">
-      <div class="ksc-hd"><div class="ksc-name">Leave Tracker</div><div class="ksc-score loading" id="ksc-score-leave">...</div></div>
-      <div class="ksc-track"><div class="ksc-fill loading" id="ksc-bar-leave" style="width:25%"></div></div>
-      <div class="ksc-meta" id="ksc-meta-leave">Fetching live data...</div>
-    </div>
+    
     <div class="ksc" id="ksc-warnings" style="border-left-color:#c96a10" onclick="scrollTo('panel-warnings')">
       <div class="ksc-hd"><div class="ksc-name">Warnings System</div><div class="ksc-score loading" id="ksc-score-warnings">...</div></div>
       <div class="ksc-track"><div class="ksc-fill loading" id="ksc-bar-warnings" style="width:25%"></div></div>
@@ -572,47 +568,7 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
   </div>
 
   <!-- Leave Tracker detail panel -->
-  <div class="kpi-panel collapsed" id="panel-leave">
-    <div class="kpi-phd" onclick="togglePanel('panel-leave')">
-      <div class="kpi-ptitle">Leave Tracker — KPI Detail</div><span class="kpi-chevron">▼</span>
-      <span class="phase-pill live">Phase 1 — Live</span>
-      <div class="score-badge loading" id="badge-leave">Loading...</div>
-      <button class="kpi-refresh" onclick="fetchLeaveKpi()">↻ Refresh</button>
-    </div>
-    <div class="kpi-body">
-    <div class="kpi-rows" id="rows-leave">
-      <div class="kpi-row">
-        <div class="kpi-rdot pending"></div>
-        <div class="kpi-rinner">
-          <div class="skel" style="height:12px;width:160px;margin-bottom:6px"></div>
-          <div class="skel" style="height:10px;width:240px"></div>
-        </div>
-        <div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:40%"></div></div>
-        <div class="kpi-rscore pending">—</div>
-      </div>
-      <div class="kpi-row">
-        <div class="kpi-rdot pending"></div>
-        <div class="kpi-rinner">
-          <div class="skel" style="height:12px;width:140px;margin-bottom:6px"></div>
-          <div class="skel" style="height:10px;width:200px"></div>
-        </div>
-        <div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:60%"></div></div>
-        <div class="kpi-rscore pending">—</div>
-      </div>
-      <div class="kpi-row">
-        <div class="kpi-rdot pending"></div>
-        <div class="kpi-rinner">
-          <div class="skel" style="height:12px;width:180px;margin-bottom:6px"></div>
-          <div class="skel" style="height:10px;width:220px"></div>
-        </div>
-        <div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:75%"></div></div>
-        <div class="kpi-rscore pending">—</div>
-      </div>
-    </div>
-    <div id="fail-leave"></div>
-    <div class="dept-grid" id="dept-leave" style="display:none"></div>
-    </div>
-  </div>
+  
 
   <!-- Warnings System detail panel -->
   <div class="kpi-panel collapsed" id="panel-warnings">
@@ -973,7 +929,6 @@ html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px
 
 <script>
 // ── CONFIG — HARDCODED URLS ───────────────────────────────
-const LEAVE_URL      = 'https://script.google.com/macros/s/AKfycbybU2ee__bYCfvONE0BxcH0q2_bNeInCyyGG-eD00xGUauPCf8pXAiUdoCB8pErwFKH/exec';
 const WARNINGS_URL   = 'https://script.google.com/macros/s/AKfycbw_H3UcaZXWLfs6PbrDRMoNeD-L5QkCopul0yDnpHOcY586FTO7rVAUmlZNAcyRPn6x/exec';
 const CHAIRLIFT_URL  = 'https://script.google.com/macros/s/AKfycbx6pT2xPiXZ4ZPK2G_ipRYVoMdWvTYO9aWiO2q75PIea1UZQCGKjXB1hOfXiArzVlC7qw/exec';
 const READINESS_URL  = 'https://script.google.com/macros/s/AKfycbx8loQIr9DFz8q1Pe_8gLYVzecRLk_RVl6Y1wM9agzFYdrbXcdDaPochMw0lINkfw3y/exec';
@@ -995,7 +950,6 @@ function nav(id) {
   if (pg) pg.classList.add('on');
   const si = document.querySelector('.si[data-pg="' + id + '"]');
   if (si) si.classList.add('on');
-  if (id === 'kpi' && kpiState.leave.status === 'idle')        fetchLeaveKpi();
   if (id === 'kpi' && kpiState.warnings.status === 'idle')     fetchWarningsKpi();
   if (id === 'kpi' && kpiState.chairlift.status === 'idle')    fetchChairliftKpi();
   if (id === 'kpi' && kpiState.readiness.status === 'idle')    fetchReadinessKpi();
@@ -1034,7 +988,6 @@ function fyTick(el) {
 
 // ── KPI STATE ─────────────────────────────────────────────
 const kpiState = {
-  leave:        { status: 'idle', score: null, data: null },
   warnings:     { status: 'idle', score: null, data: null },
   chairlift:    { status: 'idle', score: null, data: null },
   readiness:    { status: 'idle', score: null, data: null },
@@ -1049,25 +1002,6 @@ const kpiState = {
 };
 
 // ── KPI FETCH ─────────────────────────────────────────────
-async function fetchLeaveKpi() {
-  setLeaveLoading();
-  try {
-    const res  = await fetch(LEAVE_URL, {
-      method:  'POST',
-      headers: { 'Content-Type': 'text/plain' },
-      body:    JSON.stringify({ action: 'getKpiData' })
-    });
-    const data = await res.json();
-    if (data.status !== 'ok') throw new Error(data.message || 'Script returned error');
-    kpiState.leave = { status: 'loaded', score: data.overallScore, data: data };
-    renderLeaveKpi(data);
-    updatePortfolioScore();
-  } catch (err) {
-    kpiState.leave.status = 'error';
-    setLeaveError(err.message);
-  }
-}
-
 // ── RENDER LEAVE KPI ──────────────────────────────────────
 function renderLeaveKpi(d) {
   const cls = scoreClass(d.overallScore);
