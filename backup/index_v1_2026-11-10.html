@@ -1,0 +1,3144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Samsons HR Hub — Northern Pakistan</title>
+<style>
+/* ── RESET & BASE ─────────────────────────────────────────── */
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --green:#1b5e3b;--green2:#26825a;--green3:#e6f2ec;--green4:#d0e9da;
+  --gold:#b8922e;--gold2:#faf3e0;--gold3:#f0e4c0;
+  --red:#b93328;--red2:#fdecea;
+  --amber:#c96a10;--amber2:#fef3e8;
+  --blue:#1660a0;--blue2:#e6f1fb;
+  --slate:#2c3e50;
+  --bg:#f7f6f3;--bgw:#ffffff;
+  --border:#e2dfd8;--border2:#d0cdc6;
+  --text:#1a1917;--text2:#5a5854;--text3:#9a9690;
+  --nav:52px;--side:210px;
+  --rad:8px;--radl:12px;
+}
+html,body{height:100%;font-family:'Segoe UI',system-ui,sans-serif;font-size:13px;color:var(--text);background:var(--bg)}
+
+/* ── TOP NAV ─────────────────────────────────────────────── */
+.topnav{
+  position:fixed;top:0;left:0;right:0;height:var(--nav);
+  background:var(--green);display:flex;align-items:center;
+  padding:0 20px;gap:14px;z-index:100;
+}
+.tn-logo{width:34px;height:34px;background:var(--gold);border-radius:7px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:13px;font-weight:700;color:#fff;flex-shrink:0;letter-spacing:.5px}
+.tn-brand{color:#fff}
+.tn-brand strong{font-size:15px;font-weight:600;display:block;line-height:1.2}
+.tn-brand span{font-size:11px;color:rgba(255,255,255,.6)}
+.tn-sp{flex:1}
+.tn-pill{background:rgba(255,255,255,.12);border:0.5px solid rgba(255,255,255,.2);
+  color:rgba(255,255,255,.8);font-size:11px;padding:3px 11px;border-radius:10px}
+.tn-date{font-size:11px;color:rgba(255,255,255,.55)}
+.tn-av{width:30px;height:30px;background:var(--gold);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:11px;font-weight:600;color:#fff;margin-left:6px;cursor:pointer}
+
+/* ── LAYOUT ──────────────────────────────────────────────── */
+.shell{display:flex;padding-top:var(--nav);min-height:100vh}
+
+/* ── SIDEBAR ─────────────────────────────────────────────── */
+.sidebar{
+  width:var(--side);flex-shrink:0;
+  background:var(--bgw);border-right:1px solid var(--border);
+  position:fixed;top:var(--nav);bottom:0;overflow-y:auto;
+  padding:10px 0 20px;
+}
+.sg{padding:5px 15px 3px;font-size:10px;font-weight:600;
+  color:var(--text3);text-transform:uppercase;letter-spacing:.7px;margin-top:8px}
+.si{display:flex;align-items:center;gap:9px;padding:7px 15px;
+  font-size:12.5px;color:var(--text2);cursor:pointer;
+  border-left:2.5px solid transparent;transition:all .12s;line-height:1.2;
+  text-decoration:none;user-select:none}
+.si:hover{background:#f5f3ef;color:var(--text)}
+.si.on{background:var(--green3);color:var(--green);border-left-color:var(--green);font-weight:600}
+.si.dim{opacity:.45;pointer-events:none;cursor:default}
+.si.dim .ic{opacity:.5}
+.sop-cov-row{display:flex;align-items:center;gap:7px;padding:5px 8px;border-radius:5px;font-size:12px}
+.sop-cov-row.sop-has{background:var(--green3);color:var(--green)}
+.sop-cov-row.sop-missing-live{background:#fef0f0;color:#b93328}
+.sop-cov-row.sop-missing-pend{background:#fff8ec;color:#8a5a00}
+.sop-cov-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.sop-cov-dot.g{background:var(--green)}
+.sop-cov-dot.r{background:#b93328}
+.sop-cov-dot.a{background:#e8a020}
+.sop-cov-row span:nth-child(2){flex:1}
+.sop-cov-tag{font-size:9px;font-weight:700;padding:1px 5px;border-radius:8px;flex-shrink:0}
+.sop-cov-tag.live{background:rgba(22,96,160,.12);color:#1660a0}
+.sop-cov-tag.pend{background:rgba(184,146,46,.12);color:#8a5a00}
+.si .ic{width:16px;text-align:center;font-size:12px;flex-shrink:0;opacity:.7}
+.si.on .ic{opacity:1}
+.sbadge{margin-left:auto;font-size:10px;font-weight:600;padding:1px 6px;
+  border-radius:8px;min-width:18px;text-align:center;color:#fff}
+.sbadge.r{background:var(--red)}.sbadge.a{background:var(--amber)}
+.sbadge.g{background:var(--green2)}.sbadge.b{background:var(--blue)}
+
+/* ── MAIN ────────────────────────────────────────────────── */
+.main{margin-left:var(--side);flex:1;padding:22px;max-width:1100px}
+
+/* ── PAGE ────────────────────────────────────────────────── */
+.pg{display:none}.pg.on{display:block}
+.ph{margin-bottom:16px}
+.ph h1{font-size:18px;font-weight:600;color:var(--text);margin-bottom:3px}
+.ph p{font-size:12px;color:var(--text2)}
+
+/* ── ENTITY STRIP ────────────────────────────────────────── */
+.estrip{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.ep{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;
+  border-radius:10px;font-size:11px;font-weight:500;
+  background:var(--gold2);color:#7a5e1a;border:0.5px solid #e0c96a}
+.ed{width:7px;height:7px;border-radius:50%}
+
+/* ── STAT CARDS ──────────────────────────────────────────── */
+.sr{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:9px;margin-bottom:16px}
+.sc{background:var(--bgw);border:1px solid var(--border);border-radius:var(--rad);padding:13px 15px}
+.sc .lbl{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.5px;margin-bottom:5px}
+.sc .val{font-size:24px;font-weight:600;color:var(--text);line-height:1}
+.sc .sub{font-size:10px;color:var(--text3);margin-top:3px}
+.sc.ga{background:var(--green3);border-color:var(--green4)}.sc.ga .val{color:var(--green)}
+.sc.ra{background:var(--red2);border-color:#f5c8c4}.sc.ra .val{color:var(--red)}
+.sc.aa{background:var(--amber2);border-color:#f5d8b8}.sc.aa .val{color:var(--amber)}
+.sc.ba{background:var(--blue2);border-color:#c8ddf5}.sc.ba .val{color:var(--blue)}
+.sc.goa{background:var(--gold2);border-color:var(--gold3)}.sc.goa .val{color:var(--gold)}
+
+/* ── CARD ─────────────────────────────────────────────────── */
+.card{background:var(--bgw);border:1px solid var(--border);border-radius:var(--radl);padding:16px;margin-bottom:14px}
+.ch{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;flex-wrap:wrap;gap:8px}
+.ct{font-size:13px;font-weight:600;color:var(--text)}
+.cs{font-size:11px;color:var(--text3);margin-top:2px}
+
+/* ── TABLE ────────────────────────────────────────────────── */
+.tbl{width:100%;border-collapse:collapse;font-size:12px}
+.tbl th{text-align:left;font-size:10px;font-weight:600;color:var(--text3);
+  padding:6px 10px;border-bottom:1px solid var(--border);
+  background:#faf9f7;text-transform:uppercase;letter-spacing:.4px}
+.tbl td{padding:8px 10px;border-bottom:1px solid var(--border);color:var(--text);vertical-align:middle}
+.tbl tr:last-child td{border-bottom:none}
+.tbl tr:hover td{background:#faf9f7}
+
+/* ── BADGES ───────────────────────────────────────────────── */
+.b{display:inline-block;font-size:10px;font-weight:600;padding:2px 8px;border-radius:7px;white-space:nowrap}
+.bf{background:var(--red2);color:#8a2118}
+.bw{background:var(--amber2);color:#8a4a0a}
+.bv{background:var(--blue2);color:#0f4a7a}
+.ba{background:var(--green3);color:#1b5e3b}
+.be{background:var(--amber2);color:#8a4a0a}
+.bex{background:#f0f0ee;color:#555}
+.by{background:var(--green3);color:#1b5e3b}
+.bn{background:var(--red2);color:#8a2118}
+.bent{background:var(--gold2);color:#7a5e1a;border:0.5px solid #e0c96a}
+
+/* ── GRID ─────────────────────────────────────────────────── */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+
+/* ── BARS ─────────────────────────────────────────────────── */
+.br{display:flex;align-items:center;gap:9px;margin-bottom:9px;font-size:11px}
+.bl{width:130px;color:var(--text2);flex-shrink:0}
+.bt{flex:1;height:6px;background:#f0ede8;border-radius:3px;overflow:hidden}
+.bf2{height:100%;border-radius:3px;transition:width .7s ease}
+.bf2.g{background:var(--green)}.bf2.go{background:var(--gold)}
+.bf2.a{background:var(--amber)}.bf2.r{background:var(--red)}.bf2.gr{background:#ccc}
+.bcount{width:28px;text-align:right;color:var(--text3)}
+
+/* ── BUTTONS ──────────────────────────────────────────────── */
+.btn{padding:5px 12px;font-size:11px;border:1px solid var(--border2);
+  border-radius:var(--rad);cursor:pointer;background:var(--bgw);color:var(--text);
+  font-family:inherit;transition:all .12s}
+.btn:hover{background:#f5f3ef}
+.btn.p{background:var(--green);color:#fff;border-color:var(--green)}
+.btn.p:hover{background:var(--green2)}
+.btn.gold{background:var(--gold);color:#fff;border-color:var(--gold)}
+
+/* ── FILTER CHIPS ─────────────────────────────────────────── */
+.fr{display:flex;gap:6px;margin-bottom:13px;flex-wrap:wrap;align-items:center}
+.fc{padding:4px 11px;border-radius:10px;font-size:11px;
+  border:1px solid var(--border2);cursor:pointer;
+  background:var(--bgw);color:var(--text2);transition:all .12s;font-family:inherit}
+.fc:hover{background:#f5f3ef}
+.fc.on{background:var(--green);color:#fff;border-color:var(--green)}
+.si-in{padding:6px 11px;border:1px solid var(--border2);border-radius:var(--rad);
+  font-size:12px;background:var(--bgw);color:var(--text);outline:none;font-family:inherit}
+.si-in:focus{border-color:var(--green)}
+
+/* ── CHECKLIST ────────────────────────────────────────────── */
+.ci{display:flex;align-items:center;gap:9px;padding:8px 0;
+  border-bottom:1px solid var(--border);font-size:12px}
+.ci:last-child{border-bottom:none}
+.cb{width:16px;height:16px;border-radius:4px;border:1.5px solid var(--border2);
+  cursor:pointer;flex-shrink:0;display:flex;align-items:center;
+  justify-content:center;font-size:10px;transition:all .12s}
+.cb.on{background:var(--green);border-color:var(--green);color:#fff}
+
+/* ── DONUT ────────────────────────────────────────────────── */
+.dw{display:flex;align-items:center;gap:18px}
+.dl .lr{display:flex;align-items:center;gap:7px;margin-bottom:7px;
+  font-size:11px;color:var(--text2)}
+.ld{width:9px;height:9px;border-radius:50%;flex-shrink:0}
+
+/* ── TIMELINE ─────────────────────────────────────────────── */
+.tli{display:flex;gap:10px;margin-bottom:12px}
+.tld{width:9px;height:9px;border-radius:50%;margin-top:4px;flex-shrink:0}
+.tlln{width:1px;background:var(--border);flex-shrink:0;align-self:stretch;margin:0 4px}
+.tlt{font-size:12px;font-weight:600;color:var(--text)}
+.tlm{font-size:11px;color:var(--text3);margin-top:2px}
+
+/* ────────────────────────────────────────────────────────────
+   KPI PAGE STYLES
+   ──────────────────────────────────────────────────────────── */
+.kpi-portfolio{
+  display:flex;align-items:center;gap:18px;flex-wrap:wrap;
+  background:var(--bgw);border:1px solid var(--border);
+  border-radius:var(--radl);padding:14px 18px;margin-bottom:16px;
+}
+.kpp-score{font-size:32px;font-weight:700;line-height:1}
+.kpp-score.good{color:var(--green)}.kpp-score.warning{color:var(--amber)}.kpp-score.critical{color:var(--red)}
+.kpp-lbl{font-size:11px;color:var(--text3);margin-bottom:3px}
+.kpp-sub{font-size:11px;color:var(--text3);margin-top:2px}
+.kpp-div{width:1px;height:44px;background:var(--border);flex-shrink:0}
+.kpp-srcs{display:flex;gap:10px;flex-wrap:wrap}
+.kpp-src{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--text2)}
+.kpp-dot{width:8px;height:8px;border-radius:50%;background:#ccc;transition:background .3s}
+.phase-pill{display:inline-block;font-size:9px;font-weight:600;
+  padding:1px 6px;border-radius:5px;
+  background:#f0ede8;color:var(--text3);border:0.5px solid var(--border)}
+.phase-pill.live{background:var(--green3);color:var(--green);border-color:var(--green4)}
+
+/* source cards */
+.kpi-src-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:9px;margin-bottom:16px}
+.ksc{background:var(--bgw);border:1px solid var(--border);border-radius:var(--radl);
+  padding:11px 13px;border-left-width:3px;cursor:pointer;transition:background .12s}
+.ksc:hover{background:#faf9f7}
+.ksc.dim{opacity:.42;cursor:default}
+.ksc-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+.ksc-name{font-size:12px;font-weight:600;color:var(--text)}
+.ksc-score{font-size:20px;font-weight:700;line-height:1}
+.ksc-score.good{color:var(--green)}.ksc-score.warning{color:var(--amber)}
+.ksc-score.critical{color:var(--red)}.ksc-score.loading{color:var(--text3);font-size:12px}
+.ksc-track{height:5px;background:#f0ede8;border-radius:3px;overflow:hidden;margin-bottom:5px}
+.ksc-fill{height:100%;border-radius:3px;transition:width .8s ease}
+.ksc-fill.good{background:var(--green)}.ksc-fill.warning{background:var(--amber)}
+.ksc-fill.critical{background:var(--red)}.ksc-fill.loading{background:#ddd;width:25%!important}
+.ksc-meta{font-size:10px;color:var(--text3)}
+
+/* detail panel */
+.kpi-panel{background:var(--bgw);border:1px solid var(--border);border-radius:var(--radl);margin-bottom:14px;overflow:hidden}
+.kpi-phd{display:flex;align-items:center;gap:10px;padding:11px 15px;
+  border-bottom:1px solid var(--border);background:#faf9f7;flex-wrap:wrap;cursor:pointer;user-select:none}
+.kpi-phd:hover{background:#f5f3ee}
+.kpi-ptitle{font-size:13px;font-weight:600;color:var(--text);flex:1}
+.kpi-chevron{font-size:11px;color:var(--text3);transition:transform .2s;margin-left:2px;flex-shrink:0}
+.kpi-panel.collapsed .kpi-chevron{transform:rotate(-90deg)}
+.kpi-panel.collapsed .kpi-body{display:none}
+.kpi-panel.collapsed .kpi-phd{border-bottom:none}
+.score-badge{font-size:11px;font-weight:600;padding:3px 10px;border-radius:8px}
+.score-badge.good{background:var(--green3);color:var(--green)}
+.score-badge.warning{background:var(--amber2);color:var(--amber)}
+.score-badge.critical{background:var(--red2);color:var(--red)}
+.score-badge.loading{background:#f0ede8;color:var(--text3)}
+.kpi-refresh{font-size:11px;color:var(--text2);cursor:pointer;
+  padding:3px 9px;border:1px solid var(--border2);border-radius:var(--rad);
+  background:var(--bgw);font-family:inherit}
+.kpi-refresh:hover{background:#f5f3ef}
+
+/* kpi rows */
+.kpi-rows{padding:2px 0}
+.kpi-row{display:flex;align-items:center;gap:11px;padding:10px 15px;
+  border-bottom:1px solid var(--border)}
+.kpi-row:last-child{border-bottom:none}
+.kpi-rdot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.kpi-rdot.good{background:var(--green)}.kpi-rdot.warning{background:var(--amber)}
+.kpi-rdot.critical{background:var(--red)}.kpi-rdot.info{background:var(--blue)}
+.kpi-rdot.pending{background:#ccc}
+.kpi-rinner{flex:1;min-width:0}
+.kpi-rlbl{font-size:12px;font-weight:600;color:var(--text)}
+.kpi-rdetail{font-size:11px;color:var(--text3);margin-top:2px}
+.kpi-rtrack{width:110px;height:5px;background:#f0ede8;border-radius:3px;overflow:hidden;flex-shrink:0}
+.kpi-rfill{height:100%;border-radius:3px;transition:width .9s ease}
+.kpi-rfill.good{background:var(--green)}.kpi-rfill.warning{background:var(--amber)}
+.kpi-rfill.critical{background:var(--red)}.kpi-rfill.info{background:var(--blue)}
+.kpi-rfill.pending{background:#ccc}
+.kpi-rscore{font-size:12px;font-weight:700;width:34px;text-align:right;flex-shrink:0}
+.kpi-rscore.good{color:var(--green)}.kpi-rscore.warning{color:var(--amber)}
+.kpi-rscore.critical{color:var(--red)}.kpi-rscore.pending{color:var(--text3)}
+
+/* failure list */
+.fail-wrap{margin:0 15px 13px;border:1px solid var(--border);border-radius:var(--rad);overflow:hidden}
+.fail-hd{font-size:10px;font-weight:600;color:var(--text3);text-transform:uppercase;
+  letter-spacing:.5px;padding:5px 11px;background:#faf9f7;border-bottom:1px solid var(--border)}
+.fail-row{display:flex;align-items:flex-start;gap:9px;padding:7px 11px;
+  border-bottom:1px solid var(--border);font-size:11px}
+.fail-row:last-child{border-bottom:none}
+.fail-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:3px}
+.fail-dot.c{background:var(--red)}.fail-dot.w{background:var(--amber)}
+.fail-name{font-weight:600;width:150px;flex-shrink:0;color:var(--text)}
+.fail-reason{color:var(--text2);flex:1}
+.fail-age{color:var(--amber);font-weight:600;white-space:nowrap}
+
+/* dept mini */
+.dept-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;padding:13px 15px}
+.dept-card{background:#faf9f7;border-radius:var(--rad);padding:9px 11px;border:1px solid var(--border)}
+.dept-name{font-size:11px;font-weight:600;color:var(--text);margin-bottom:5px}
+.dept-row{display:flex;justify-content:space-between;font-size:10px;color:var(--text3);margin-bottom:3px}
+.dv{font-weight:600;color:var(--text)}.dv.c{color:var(--red)}.dv.w{color:var(--amber)}.dv.g{color:var(--green)}
+
+/* skeleton */
+@keyframes pulse{0%,100%{opacity:.4}50%{opacity:.9}}
+.skel{background:#f0ede8;border-radius:4px;animation:pulse 1.4s ease-in-out infinite}
+
+/* connection error */
+.kpi-error{padding:16px 15px;font-size:12px;color:var(--red);background:var(--red2);
+  margin:0;border-top:1px solid #f5c8c4}
+
+/* ── ENTITY CARDS ─────────────────────────────────────────── */
+.enc{background:var(--bgw);border:1px solid var(--border);
+  border-radius:var(--radl);padding:14px;border-left-width:3px}
+
+/* ── PROGRESS BAR ─────────────────────────────────────────── */
+.prog-track{height:8px;background:#f0ede8;border-radius:4px;overflow:hidden;margin-top:10px}
+.prog-fill{height:100%;background:var(--green);border-radius:4px;transition:width .4s ease}
+
+/* ── LAST UPDATED ─────────────────────────────────────────── */
+.last-up{font-size:10px;color:var(--text3);text-align:right;margin-top:6px}
+
+/* ── RESPONSIVE ───────────────────────────────────────────── */
+@media(max-width:640px){
+  .sidebar{display:none}
+  .main{margin-left:0}
+  .g2{grid-template-columns:1fr}
+  .dept-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ── TOP NAV ───────────────────────────────────────────── -->
+<div class="topnav">
+  <div class="tn-logo">SG</div>
+  <div class="tn-brand">
+    <strong>Samsons HR Hub</strong>
+    <span>Northern Pakistan Portfolio</span>
+  </div>
+  <div class="tn-sp"></div>
+  <div class="tn-pill">FY 2025–26</div>
+  <div class="tn-date" id="tn-date" style="margin-left:10px"></div>
+  <div class="tn-av" title="Admin">AB</div>
+</div>
+
+<!-- ── SIDEBAR ────────────────────────────────────────────── -->
+<div class="shell">
+<div class="sidebar">
+  <div class="sg">Overview</div>
+  <div class="si on" data-pg="dashboard"><span class="ic">◈</span>Dashboard</div>
+  <div class="si" data-pg="entities"><span class="ic">⬡</span>Entities</div>
+
+  <div class="sg">Workforce</div>
+  <div class="si" data-pg="headcount"><span class="ic">⊕</span>Headcount</div>
+  <div class="si" data-pg="leave"><span class="ic">◷</span>Leave Tracker</div>
+  <div class="si" data-pg="recruitment"><span class="ic">◎</span>Recruitment</div>
+  <div class="si" data-pg="performance"><span class="ic">▲</span>Performance</div>
+
+  <div class="sg">Compliance</div>
+  <div class="si" data-pg="warnings"><span class="ic">⚐</span>Warnings<span class="sbadge a">8</span></div>
+  <div class="si" data-pg="bonus"><span class="ic">◐</span>Bonus Eligibility<span class="sbadge g">8</span></div>
+  <div class="si" data-pg="certs"><span class="ic">◻</span>Certifications<span class="sbadge r">3</span></div>
+  <div class="si" data-pg="disciplinary"><span class="ic">▣</span>Disciplinary</div>
+
+  <div class="sg">Training &amp; Certificates</div>
+  <div class="si dim" data-pg="training_schedule"><span class="ic">◷</span>Training Schedule</div>
+  <div class="si dim" data-pg="activity_certs"><span class="ic">◻</span>Activity Certifications</div>
+  <div class="si dim" data-pg="first_aid"><span class="ic">✚</span>First Aid &amp; Safety</div>
+  <div class="si dim" data-pg="operator_quals"><span class="ic">◎</span>Operator Qualifications</div>
+
+  <div class="sg">Documentation</div>
+  <div class="si" data-pg="sops"><span class="ic">≡</span>Policies &amp; SOPs<span class="sbadge a">4</span></div>
+
+  <div class="sg">Intelligence</div>
+  <div class="si" data-pg="kpi"><span class="ic">◈</span>KPI Dashboard<span class="sbadge b" id="sb-kpi">12</span></div>
+
+  <div class="sg">Admin</div>
+  <div class="si" data-pg="fy_close"><span class="ic">◑</span>FY Close</div>
+  <div class="si" data-pg="reports"><span class="ic">⋮</span>Reports</div>
+  <div class="si" data-pg="log"><span class="ic">⊙</span>Audit Log</div>
+</div>
+
+<!-- ── MAIN ───────────────────────────────────────────────── -->
+<div class="main">
+
+<!-- ════════════════════════════════════════════════════════
+     DASHBOARD
+════════════════════════════════════════════════════════ -->
+<div class="pg on" id="pg-dashboard">
+  <div class="ph"><h1>Portfolio Overview</h1><p>Senior HR Manager — Northern Pakistan | All 7 entities</p></div>
+  <div class="estrip">
+    <span class="ep"><span class="ed" style="background:#1b5e3b"></span>MJSR</span>
+    <span class="ep"><span class="ed" style="background:#b8922e"></span>Green Valley</span>
+    <span class="ep"><span class="ed" style="background:#1660a0"></span>Samsons Inn</span>
+    <span class="ep"><span class="ed" style="background:#7b3f9e"></span>Healthcare</span>
+    <span class="ep"><span class="ed" style="background:#c96a10"></span>ALIF School</span>
+    <span class="ep"><span class="ed" style="background:#b93328"></span>Construction</span>
+    <span class="ep"><span class="ed" style="background:#666"></span>CORA</span>
+  </div>
+  <div class="sr">
+    <div class="sc ga"><div class="lbl">Total Headcount</div><div class="val">247</div><div class="sub">7 entities</div></div>
+    <div class="sc aa"><div class="lbl">Active Warnings</div><div class="val">8</div><div class="sub">All entities</div></div>
+    <div class="sc ra"><div class="lbl">Expiring &lt;30d</div><div class="val">2</div><div class="sub">F&B dept</div></div>
+    <div class="sc goa"><div class="lbl">Bonus Eligible</div><div class="val">8/11</div><div class="sub">FY2026</div></div>
+    <div class="sc ba"><div class="lbl">Leave Pending</div><div class="val">4</div><div class="sub">Awaiting approval</div></div>
+    <div class="sc ra"><div class="lbl">Cert Alerts</div><div class="val">3</div><div class="sub">Renew required</div></div>
+  </div>
+  <div class="g2">
+    <div class="card">
+      <div class="ch"><div><div class="ct">Warnings by Department</div><div class="cs">MJSR active only</div></div>
+        <button class="btn" onclick="nav('warnings')">View all →</button></div>
+      <div class="br"><div class="bl">Administration</div><div class="bt"><div class="bf2 r" style="width:100%"></div></div><div class="bcount">2</div></div>
+      <div class="br"><div class="bl">Sales</div><div class="bt"><div class="bf2 a" style="width:100%"></div></div><div class="bcount">2</div></div>
+      <div class="br"><div class="bl">F&B</div><div class="bt"><div class="bf2 g" style="width:100%"></div></div><div class="bcount">2</div></div>
+      <div class="br"><div class="bl">Samsons Inn</div><div class="bt"><div class="bf2 go" style="width:50%"></div></div><div class="bcount">1</div></div>
+      <div class="br"><div class="bl">Technical</div><div class="bt"><div class="bf2 gr" style="width:25%"></div></div><div class="bcount">1*</div></div>
+      <div style="font-size:10px;color:var(--text3);margin-top:4px">* Verbal — expired Feb 2026</div>
+    </div>
+    <div class="card">
+      <div class="ch"><div class="ct">Headcount by Entity</div></div>
+      <div class="dw">
+        <svg width="90" height="90" viewBox="0 0 90 90">
+          <circle cx="45" cy="45" r="33" fill="none" stroke="#f0ede8" stroke-width="14"/>
+          <circle cx="45" cy="45" r="33" fill="none" stroke="#1b5e3b" stroke-width="14" stroke-dasharray="82 125" stroke-dashoffset="-8"/>
+          <circle cx="45" cy="45" r="33" fill="none" stroke="#b8922e" stroke-width="14" stroke-dasharray="28 179" stroke-dashoffset="-90"/>
+          <circle cx="45" cy="45" r="33" fill="none" stroke="#1660a0" stroke-width="14" stroke-dasharray="23 184" stroke-dashoffset="-118"/>
+          <circle cx="45" cy="45" r="33" fill="none" stroke="#7b3f9e" stroke-width="14" stroke-dasharray="19 188" stroke-dashoffset="-141"/>
+          <circle cx="45" cy="45" r="33" fill="none" stroke="#c96a10" stroke-width="14" stroke-dasharray="16 191" stroke-dashoffset="-160"/>
+          <circle cx="45" cy="45" r="33" fill="none" stroke="#b93328" stroke-width="14" stroke-dasharray="27 180" stroke-dashoffset="-176"/>
+          <text x="45" y="49" text-anchor="middle" style="font-size:13px;font-weight:700;fill:var(--text)">247</text>
+        </svg>
+        <div class="dl">
+          <div class="lr"><span class="ld" style="background:#1b5e3b"></span>MJSR — 76</div>
+          <div class="lr"><span class="ld" style="background:#b8922e"></span>Green Valley — 30</div>
+          <div class="lr"><span class="ld" style="background:#1660a0"></span>Samsons Inn — 28</div>
+          <div class="lr"><span class="ld" style="background:#7b3f9e"></span>Healthcare — 24</div>
+          <div class="lr"><span class="ld" style="background:#c96a10"></span>ALIF — 18</div>
+          <div class="lr"><span class="ld" style="background:#b93328"></span>Con / CORA — 71</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="card">
+    <div class="ch"><div class="ct">Recent Activity</div>
+      <button class="btn gold" onclick="nav('kpi')">View KPI Dashboard →</button>
+    </div>
+    <div class="tli"><div style="display:flex;flex-direction:column;align-items:center"><div class="tld" style="background:var(--amber)"></div><div class="tlln"></div></div><div><div class="tlt">Warning expiring — Rashid Ali &amp; Jamal Ahmed (F&B)</div><div class="tlm">Written Warning · expires 1 May 2026 — 16 days remaining</div></div></div>
+    <div class="tli"><div style="display:flex;flex-direction:column;align-items:center"><div class="tld" style="background:var(--green)"></div><div class="tlln"></div></div><div><div class="tlt">Bonus override approved — Muhammad Saeed, Sales</div><div class="tlm">GM override by Martin Schultz · Jan 6, 2026</div></div></div>
+    <div class="tli"><div style="display:flex;flex-direction:column;align-items:center"><div class="tld" style="background:var(--red)"></div><div class="tlln"></div></div><div><div class="tlt">Final Written Warning — Ashfaq &amp; Abid Nawaz (Admin)</div><div class="tlm">Issued Oct 31, 2025 · Active until Oct 31, 2026</div></div></div>
+    <div class="tli"><div style="align-items:center"><div class="tld" style="background:#bbb"></div></div><div><div class="tlt">2 verbal warnings expired — Muhammad Bilal &amp; Adnan Khan (Technical)</div><div class="tlm">3-month verbals lapsed · Feb 1, 2026</div></div></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     KPI DASHBOARD — LIVE DATA
+════════════════════════════════════════════════════════ -->
+<div class="pg" id="pg-kpi">
+  <div class="ph"><h1>KPI Dashboard</h1><p>Live performance indicators — Northern Pakistan Portfolio</p></div>
+
+  <!-- Portfolio score -->
+  <div class="kpi-portfolio">
+    <div>
+      <div class="kpp-lbl">Portfolio health score</div>
+      <div class="kpp-score loading" id="portfolio-score">—</div>
+      <div class="kpp-sub" id="portfolio-sub">Connecting to data sources...</div>
+    </div>
+    <div class="kpp-div"></div>
+    <div>
+      <div style="font-size:11px;color:var(--text3);margin-bottom:7px">Connected sources</div>
+      <div class="kpp-srcs">
+        
+        <div class="kpp-src"><div class="kpp-dot" id="dot-warnings"></div>Warnings System <span class="phase-pill live" style="margin-left:4px">Phase 1</span></div>
+        <div class="kpp-src"><div class="kpp-dot" id="dot-chairlift"></div>Chairlift Checks <span class="phase-pill live" style="margin-left:4px">Phase 2</span></div>
+        <div class="kpp-src"><div class="kpp-dot" id="dot-readiness"></div>Daily Readiness <span class="phase-pill live" style="margin-left:4px">Phase 2</span></div>
+        <div class="kpp-src"><div class="kpp-dot" id="dot-prfund"></div>PR Fund Tracker <span class="phase-pill live" style="margin-left:4px">Phase 3</span></div>
+        <div class="kpp-src"><div class="kpp-dot" id="dot-procurement"></div>Procurement Hub <span class="phase-pill live" style="margin-left:4px">Phase 3</span></div>
+        <div class="kpp-src"><div class="kpp-dot" id="dot-adventure"></div>Adventure Checks <span class="phase-pill live" style="margin-left:4px">Phase 2</span></div>
+        <div class="kpp-src" style="opacity:.4"><div class="kpp-dot"></div>Chairlift Checks <span class="phase-pill" style="margin-left:4px">P2</span></div>
+        <div class="kpp-src" style="opacity:.4"><div class="kpp-dot"></div>Daily Readiness <span class="phase-pill" style="margin-left:4px">P2</span></div>
+        <div class="kpp-src" style="opacity:.4"><div class="kpp-dot"></div>PR Fund <span class="phase-pill" style="margin-left:4px">P3</span></div>
+        <div class="kpp-src" style="opacity:.4"><div class="kpp-dot"></div>Procurement <span class="phase-pill" style="margin-left:4px">P3</span></div>
+        <div class="kpp-src"><div class="kpp-dot" id="dot-pistenbully"></div>PistenBully <span class="phase-pill live" style="margin-left:4px">Phase 4</span></div>
+        <div class="kpp-src"><div class="kpp-dot" id="dot-techstore"></div>Technical Store <span class="phase-pill live" style="margin-left:4px">Pending</span></div>
+        <div class="kpp-src"><div class="kpp-dot" id="dot-fireext"></div>Fire Ext <span class="phase-pill live" style="margin-left:4px">Pending</span></div>
+        <div class="kpp-src"><div class="kpp-dot" id="dot-medical"></div>Medical Stock <span class="phase-pill live" style="margin-left:4px">Live</span></div>
+        <div class="kpp-src"><div class="kpp-dot" id="dot-fleet"></div>Vehicle &amp; Machinery <span class="phase-pill live" style="margin-left:4px">Pending</span></div>
+        <div class="kpp-src"><div class="kpp-dot" id="dot-heavymach"></div>Heavy Machines <span class="phase-pill live" style="margin-left:4px">Pending</span></div>
+        <div class="kpp-src" style="opacity:.3"><div class="kpp-dot"></div>Fixed Assets <span class="phase-pill" style="margin-left:4px">Pending</span></div>
+        <div class="kpp-src" style="opacity:.3"><div class="kpp-dot"></div>GV Activity Checks <span class="phase-pill" style="margin-left:4px">Pending</span></div>
+        <div class="kpp-src" style="opacity:.3"><div class="kpp-dot"></div>Samsons Inn <span class="phase-pill" style="margin-left:4px">Pending</span></div>
+        <div class="kpp-src"><div class="kpp-dot" id="dot-fnb"></div>F&amp;B Stock Controls <span class="phase-pill live" style="margin-left:4px">Pending</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Source cards -->
+  <div class="kpi-src-grid">
+    
+    <div class="ksc" id="ksc-warnings" style="border-left-color:#c96a10" onclick="scrollTo('panel-warnings')">
+      <div class="ksc-hd"><div class="ksc-name">Warnings System</div><div class="ksc-score loading" id="ksc-score-warnings">...</div></div>
+      <div class="ksc-track"><div class="ksc-fill loading" id="ksc-bar-warnings" style="width:25%"></div></div>
+      <div class="ksc-meta" id="ksc-meta-warnings">Fetching live data...</div>
+    </div>
+    <div class="ksc" id="ksc-adventure" style="border-left-color:#276749" onclick="scrollTo('panel-adventure')">
+      <div class="ksc-hd"><div class="ksc-name">Adventure Checks</div><div class="ksc-score loading" id="ksc-score-adventure">...</div></div>
+      <div class="ksc-track"><div class="ksc-fill loading" id="ksc-bar-adventure" style="width:25%"></div></div>
+      <div class="ksc-meta" id="ksc-meta-adventure">Fetching live data...</div>
+    </div>
+    <div class="ksc" id="ksc-chairlift" style="border-left-color:#553c9a" onclick="scrollTo('panel-chairlift')">
+      <div class="ksc-hd"><div class="ksc-name">Chairlift Checks</div><div class="ksc-score loading" id="ksc-score-chairlift">...</div></div>
+      <div class="ksc-track"><div class="ksc-fill loading" id="ksc-bar-chairlift" style="width:25%"></div></div>
+      <div class="ksc-meta" id="ksc-meta-chairlift">Fetching live data...</div>
+    </div>
+    <div class="ksc" id="ksc-readiness" style="border-left-color:#1660a0" onclick="scrollTo('panel-readiness')">
+      <div class="ksc-hd"><div class="ksc-name">Daily Readiness</div><div class="ksc-score loading" id="ksc-score-readiness">...</div></div>
+      <div class="ksc-track"><div class="ksc-fill loading" id="ksc-bar-readiness" style="width:25%"></div></div>
+      <div class="ksc-meta" id="ksc-meta-readiness">Fetching live data...</div>
+    </div>
+    <div class="ksc" id="ksc-prfund" style="border-left-color:#b8922e" onclick="scrollTo('panel-prfund')">
+      <div class="ksc-hd"><div class="ksc-name">PR Fund Tracker</div><div class="ksc-score loading" id="ksc-score-prfund">...</div></div>
+      <div class="ksc-track"><div class="ksc-fill loading" id="ksc-bar-prfund" style="width:25%"></div></div>
+      <div class="ksc-meta" id="ksc-meta-prfund">Fetching live data...</div>
+    </div>
+    <div class="ksc" id="ksc-procurement" style="border-left-color:#2c5282" onclick="scrollTo('panel-procurement')">
+      <div class="ksc-hd"><div class="ksc-name">Procurement Hub</div><div class="ksc-score loading" id="ksc-score-procurement">...</div></div>
+      <div class="ksc-track"><div class="ksc-fill loading" id="ksc-bar-procurement" style="width:25%"></div></div>
+      <div class="ksc-meta" id="ksc-meta-procurement">Fetching live data...</div>
+    </div>
+    <div class="ksc" id="ksc-pistenbully" style="border-left-color:#7f4c00" onclick="scrollTo('panel-pistenbully')">
+      <div class="ksc-hd"><div class="ksc-name">PistenBully</div><div class="ksc-score loading" id="ksc-score-pistenbully">...</div></div>
+      <div class="ksc-track"><div class="ksc-fill loading" id="ksc-bar-pistenbully" style="width:25%"></div></div>
+      <div class="ksc-meta" id="ksc-meta-pistenbully">Fetching live data...</div>
+    </div>
+    <div class="ksc" id="ksc-techstore" style="border-left-color:#2d6a8f" onclick="scrollTo('panel-techstore')">
+      <div class="ksc-hd"><div class="ksc-name">Technical Store</div><div class="ksc-score loading" id="ksc-score-techstore">...</div></div>
+      <div class="ksc-track"><div class="ksc-fill loading" id="ksc-bar-techstore" style="width:25%"></div></div>
+      <div class="ksc-meta" id="ksc-meta-techstore">Fetching live data...</div>
+    </div>
+    <div class="ksc" id="ksc-fireext" style="border-left-color:#c0392b" onclick="scrollTo('panel-fireext')">
+      <div class="ksc-hd"><div class="ksc-name">Fire Ext Compliance</div><div class="ksc-score loading" id="ksc-score-fireext">...</div></div>
+      <div class="ksc-track"><div class="ksc-fill loading" id="ksc-bar-fireext" style="width:25%"></div></div>
+      <div class="ksc-meta" id="ksc-meta-fireext">Fetching live data...</div>
+    </div>
+    <div class="ksc" id="ksc-medical" style="border-left-color:#7c3aed" onclick="scrollTo('panel-medical')">
+      <div class="ksc-hd"><div class="ksc-name">Medical Stock</div><div class="ksc-score loading" id="ksc-score-medical">...</div></div>
+      <div class="ksc-track"><div class="ksc-fill loading" id="ksc-bar-medical" style="width:25%"></div></div>
+      <div class="ksc-meta" id="ksc-meta-medical">Fetching live data...</div>
+    </div>
+    <div class="ksc" id="ksc-fleet" style="border-left-color:#1a3c5e" onclick="scrollTo('panel-fleet')">
+      <div class="ksc-hd"><div class="ksc-name">Vehicle &amp; Machinery</div><div class="ksc-score loading" id="ksc-score-fleet">...</div></div>
+      <div class="ksc-track"><div class="ksc-fill loading" id="ksc-bar-fleet" style="width:25%"></div></div>
+      <div class="ksc-meta" id="ksc-meta-fleet">Fetching live data...</div>
+    </div>
+    <div class="ksc" id="ksc-heavymach" style="border-left-color:#5c3d11" onclick="scrollTo('panel-heavymach')">
+      <div class="ksc-hd"><div class="ksc-name">Heavy Machine Checks</div><div class="ksc-score loading" id="ksc-score-heavymach">...</div></div>
+      <div class="ksc-track"><div class="ksc-fill loading" id="ksc-bar-heavymach" style="width:25%"></div></div>
+      <div class="ksc-meta" id="ksc-meta-heavymach">Fetching live data...</div>
+    </div>
+    <div class="ksc dim" style="border-left-color:#ddd">
+      <div class="ksc-hd"><div class="ksc-name">Fixed Asset Compliance</div><span class="phase-pill">Pending</span></div>
+      <div class="ksc-track"><div class="ksc-fill loading" style="width:0%"></div></div>
+      <div class="ksc-meta">627 assets, verification status</div>
+    </div>
+    <div class="ksc dim" style="border-left-color:#ddd">
+      <div class="ksc-hd"><div class="ksc-name">GV Activity Checks</div><span class="phase-pill">Pending</span></div>
+      <div class="ksc-track"><div class="ksc-fill loading" style="width:0%"></div></div>
+      <div class="ksc-meta">Green Valley — Ferris Wheel, Kids Zipline</div>
+    </div>
+    <div class="ksc dim" style="border-left-color:#ddd">
+      <div class="ksc-hd"><div class="ksc-name">Samsons Inn</div><span class="phase-pill">Pending</span></div>
+      <div class="ksc-track"><div class="ksc-fill loading" style="width:0%"></div></div>
+      <div class="ksc-meta">Lodge occupancy, revenue, compliance</div>
+    </div>
+    <div class="ksc" id="ksc-fnb" style="border-left-color:#1a6b45" onclick="scrollTo('panel-fnb')">
+      <div class="ksc-hd"><div class="ksc-name">F&amp;B Stock Controls</div><div class="ksc-score loading" id="ksc-score-fnb">...</div></div>
+      <div class="ksc-track"><div class="ksc-fill loading" id="ksc-bar-fnb" style="width:25%"></div></div>
+      <div class="ksc-meta" id="ksc-meta-fnb">Fetching live data...</div>
+    </div>
+  </div>
+
+  <!-- Leave Tracker detail panel -->
+  
+
+  <!-- Warnings System detail panel -->
+  <div class="kpi-panel collapsed" id="panel-warnings">
+    <div class="kpi-phd" onclick="togglePanel('panel-warnings')">
+      <div class="kpi-ptitle">Warnings System — KPI Detail</div><span class="kpi-chevron">▼</span>
+      <span class="phase-pill live">Phase 1 — Live</span>
+      <div class="score-badge loading" id="badge-warnings">Loading...</div>
+      <button class="kpi-refresh" onclick="fetchWarningsKpi()">↻ Refresh</button>
+    </div>
+    <div class="kpi-body">
+    <div class="kpi-rows" id="rows-warnings">
+      <div class="kpi-row">
+        <div class="kpi-rdot pending"></div>
+        <div class="kpi-rinner">
+          <div class="skel" style="height:12px;width:160px;margin-bottom:6px"></div>
+          <div class="skel" style="height:10px;width:240px"></div>
+        </div>
+        <div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:40%"></div></div>
+        <div class="kpi-rscore pending">—</div>
+      </div>
+      <div class="kpi-row">
+        <div class="kpi-rdot pending"></div>
+        <div class="kpi-rinner">
+          <div class="skel" style="height:12px;width:140px;margin-bottom:6px"></div>
+          <div class="skel" style="height:10px;width:200px"></div>
+        </div>
+        <div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:60%"></div></div>
+        <div class="kpi-rscore pending">—</div>
+      </div>
+    </div>
+    <div id="fail-warnings"></div>
+    <div class="dept-grid" id="dept-warnings" style="display:none"></div>
+    </div>
+  </div>
+
+  <!-- Chairlift Checks detail panel -->
+  <div class="kpi-panel collapsed" id="panel-chairlift">
+    <div class="kpi-phd" onclick="togglePanel('panel-chairlift')">
+      <div class="kpi-ptitle">Chairlift Daily Checks — KPI Detail</div><span class="kpi-chevron">▼</span>
+      <span class="phase-pill live">Phase 2 — Live</span>
+      <div class="score-badge loading" id="badge-chairlift">Loading...</div>
+      <button class="kpi-refresh" onclick="fetchChairliftKpi()">↻ Refresh</button>
+    </div>
+    <div class="kpi-body">
+    <div class="kpi-rows" id="rows-chairlift">
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:180px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:280px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:40%"></div></div><div class="kpi-rscore pending">—</div></div>
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:160px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:240px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:60%"></div></div><div class="kpi-rscore pending">—</div></div>
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:200px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:260px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:75%"></div></div><div class="kpi-rscore pending">—</div></div>
+    </div>
+    <div id="fail-chairlift"></div>
+    <div class="dept-grid" id="dept-chairlift" style="display:none"></div>
+    </div>
+  </div>
+
+  <!-- Daily Readiness detail panel -->
+  <div class="kpi-panel collapsed" id="panel-readiness">
+    <div class="kpi-phd" onclick="togglePanel('panel-readiness')">
+      <div class="kpi-ptitle">Daily Readiness Checklist — KPI Detail</div><span class="kpi-chevron">▼</span>
+      <span class="phase-pill live">Phase 2 — Live</span>
+      <div class="score-badge loading" id="badge-readiness">Loading...</div>
+      <button class="kpi-refresh" onclick="fetchReadinessKpi()">↻ Refresh</button>
+    </div>
+    <div class="kpi-body">
+    <div class="kpi-rows" id="rows-readiness">
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:180px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:280px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:40%"></div></div><div class="kpi-rscore pending">—</div></div>
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:160px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:240px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:60%"></div></div><div class="kpi-rscore pending">—</div></div>
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:200px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:260px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:75%"></div></div><div class="kpi-rscore pending">—</div></div>
+    </div>
+    <div id="fail-readiness"></div>
+    <div class="dept-grid" id="dept-readiness" style="display:none"></div>
+    </div>
+  </div>
+
+  <!-- PR Fund Tracker detail panel -->
+  <div class="kpi-panel collapsed" id="panel-prfund">
+    <div class="kpi-phd" onclick="togglePanel('panel-prfund')">
+      <div class="kpi-ptitle">PR Fund Tracker — KPI Detail</div><span class="kpi-chevron">▼</span>
+      <span class="phase-pill live">Phase 3 — Live</span>
+      <div class="score-badge loading" id="badge-prfund">Loading...</div>
+      <button class="kpi-refresh" onclick="fetchPrFundKpi()">↻ Refresh</button>
+    </div>
+    <div class="kpi-body">
+    <div class="kpi-rows" id="rows-prfund">
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:200px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:300px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:50%"></div></div><div class="kpi-rscore pending">—</div></div>
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:160px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:240px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:70%"></div></div><div class="kpi-rscore pending">—</div></div>
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:180px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:260px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:60%"></div></div><div class="kpi-rscore pending">—</div></div>
+    </div>
+    <div id="fail-prfund"></div>
+    <div class="dept-grid" id="dept-prfund" style="display:none"></div>
+    </div>
+  </div>
+
+  <!-- Procurement Hub detail panel -->
+  <div class="kpi-panel collapsed" id="panel-procurement">
+    <div class="kpi-phd" onclick="togglePanel('panel-procurement')">
+      <div class="kpi-ptitle">Procurement Hub — KPI Detail</div><span class="kpi-chevron">▼</span>
+      <span class="phase-pill live">Phase 3 — Live</span>
+      <div class="score-badge loading" id="badge-procurement">Loading...</div>
+      <button class="kpi-refresh" onclick="fetchProcurementKpi()">↻ Refresh</button>
+    </div>
+    <div class="kpi-body">
+    <div class="kpi-rows" id="rows-procurement">
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:180px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:300px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:40%"></div></div><div class="kpi-rscore pending">—</div></div>
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:200px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:260px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:65%"></div></div><div class="kpi-rscore pending">—</div></div>
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:160px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:240px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:80%"></div></div><div class="kpi-rscore pending">—</div></div>
+    </div>
+    <div id="fail-procurement"></div>
+    <div class="dept-grid" id="dept-procurement" style="display:none"></div>
+    </div>
+  </div>
+
+  <!-- Adventure Checks detail panel -->
+  <div class="kpi-panel collapsed" id="panel-adventure">
+    <div class="kpi-phd" onclick="togglePanel('panel-adventure')">
+      <div class="kpi-ptitle">Adventure Checks — KPI Detail</div><span class="kpi-chevron">▼</span>
+      <span class="phase-pill live">Phase 2 — Live</span>
+      <div class="score-badge loading" id="badge-adventure">Loading...</div>
+      <button class="kpi-refresh" onclick="fetchAdventureKpi()">↻ Refresh</button>
+    </div>
+    <div class="kpi-body">
+    <div class="kpi-rows" id="rows-adventure">
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:200px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:280px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:50%"></div></div><div class="kpi-rscore pending">—</div></div>
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:160px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:240px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:70%"></div></div><div class="kpi-rscore pending">—</div></div>
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:180px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:260px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:40%"></div></div><div class="kpi-rscore pending">—</div></div>
+    </div>
+    <div id="fail-adventure"></div>
+    <div class="dept-grid" id="dept-adventure" style="display:none"></div>
+    </div>
+  </div>
+
+  <!-- PistenBully detail panel -->
+  <div class="kpi-panel collapsed" id="panel-pistenbully">
+    <div class="kpi-phd" onclick="togglePanel('panel-pistenbully')">
+      <div class="kpi-ptitle">PistenBully 400 W — KPI Detail</div><span class="kpi-chevron">▼</span>
+      <span class="phase-pill live">Phase 4 — Live</span>
+      <div class="score-badge loading" id="badge-pistenbully">Loading...</div>
+      <button class="kpi-refresh" onclick="fetchPistenBullyKpi()">↻ Refresh</button>
+    </div>
+    <div class="kpi-body">
+    <div class="kpi-rows" id="rows-pistenbully">
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:220px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:300px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:60%"></div></div><div class="kpi-rscore pending">—</div></div>
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:180px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:260px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:40%"></div></div><div class="kpi-rscore pending">—</div></div>
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:200px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:280px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:80%"></div></div><div class="kpi-rscore pending">—</div></div>
+    </div>
+    <div id="fail-pistenbully"></div>
+    <div class="dept-grid" id="dept-pistenbully" style="display:none"></div>
+    </div>
+  </div>
+
+  <!-- Medical Stock detail panel -->
+  <div class="kpi-panel collapsed" id="panel-medical">
+    <div class="kpi-phd" onclick="togglePanel('panel-medical')">
+      <div class="kpi-ptitle">Medical Stock — KPI Detail</div><span class="kpi-chevron">&#9660;</span>
+      <div class="kpi-pmeta" id="kpi-medical"></div>
+      <div class="score-badge loading" id="badge-medical">Loading...</div>
+      <button class="kpi-refresh" onclick="event.stopPropagation();fetchMedicalKpi()">&#8635; Refresh</button>
+    </div>
+    <div class="kpi-body">
+    <div class="kpi-rows" id="rows-medical"></div>
+    <div id="fail-medical"></div>
+    <div class="dept-grid" id="dept-medical" style="display:none"></div>
+    </div>
+  </div>
+
+  <!-- Technical Store detail panel -->
+  <div class="kpi-panel collapsed" id="panel-techstore">
+    <div class="kpi-phd" onclick="togglePanel('panel-techstore')">
+      <div class="kpi-ptitle">Technical Store — KPI Detail</div><span class="kpi-chevron">▼</span>
+      <span class="phase-pill live">Pending — Live</span>
+      <div class="score-badge loading" id="badge-techstore">Loading...</div>
+      <button class="kpi-refresh" onclick="event.stopPropagation();fetchTechStoreKpi()">↻ Refresh</button>
+    </div>
+    <div class="kpi-body">
+    <div class="kpi-rows" id="rows-techstore">
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:220px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:300px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:60%"></div></div><div class="kpi-rscore pending">—</div></div>
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:180px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:260px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:40%"></div></div><div class="kpi-rscore pending">—</div></div>
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:200px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:280px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:80%"></div></div><div class="kpi-rscore pending">—</div></div>
+    </div>
+    <div id="fail-techstore"></div>
+    <div class="dept-grid" id="dept-techstore" style="display:none"></div>
+    </div>
+  </div>
+
+  <!-- F&B Stock Controls detail panel -->
+  <div class="kpi-panel collapsed" id="panel-fnb">
+    <div class="kpi-phd" onclick="togglePanel('panel-fnb')">
+      <div class="kpi-ptitle">F&amp;B Stock Controls — KPI Detail</div><span class="kpi-chevron">▼</span>
+      <span class="phase-pill live">Pending — Live</span>
+      <div class="score-badge loading" id="badge-fnb">Loading...</div>
+      <button class="kpi-refresh" onclick="event.stopPropagation();fetchFnBKpi()">↻ Refresh</button>
+    </div>
+    <div class="kpi-body">
+    <div class="kpi-rows" id="rows-fnb">
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:220px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:300px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:60%"></div></div><div class="kpi-rscore pending">—</div></div>
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:180px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:260px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:40%"></div></div><div class="kpi-rscore pending">—</div></div>
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:200px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:280px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:80%"></div></div><div class="kpi-rscore pending">—</div></div>
+    </div>
+    <div id="fail-fnb"></div>
+    <div class="dept-grid" id="dept-fnb" style="display:none"></div>
+    </div>
+  </div>
+
+  <!-- Fire Ext Compliance detail panel -->
+  <div class="kpi-panel collapsed" id="panel-fireext">
+    <div class="kpi-phd" onclick="togglePanel('panel-fireext')">
+      <div class="kpi-ptitle">Fire Extinguisher Compliance — KPI Detail</div><span class="kpi-chevron">▼</span>
+      <span class="phase-pill live">Pending — Live</span>
+      <div class="score-badge loading" id="badge-fireext">Loading...</div>
+      <button class="kpi-refresh" onclick="event.stopPropagation();fetchFireExtKpi()">↻ Refresh</button>
+    </div>
+    <div class="kpi-body">
+    <div class="kpi-rows" id="rows-fireext">
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:220px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:300px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:60%"></div></div><div class="kpi-rscore pending">—</div></div>
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:180px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:260px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:40%"></div></div><div class="kpi-rscore pending">—</div></div>
+    </div>
+    <div id="fail-fireext"></div>
+    <div class="dept-grid" id="dept-fireext" style="display:none"></div>
+    </div>
+  </div>
+
+  <!-- Vehicle & Machinery detail panel -->
+  <div class="kpi-panel collapsed" id="panel-fleet">
+    <div class="kpi-phd" onclick="togglePanel('panel-fleet')">
+      <div class="kpi-ptitle">Vehicle &amp; Machinery — KPI Detail</div><span class="kpi-chevron">▼</span>
+      <span class="phase-pill live">Pending — Live</span>
+      <div class="score-badge loading" id="badge-fleet">Loading...</div>
+      <button class="kpi-refresh" onclick="event.stopPropagation();fetchFleetKpi()">↻ Refresh</button>
+    </div>
+    <div class="kpi-body">
+    <div class="kpi-rows" id="rows-fleet">
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:220px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:300px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:60%"></div></div><div class="kpi-rscore pending">—</div></div>
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:180px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:260px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:40%"></div></div><div class="kpi-rscore pending">—</div></div>
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:200px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:280px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:80%"></div></div><div class="kpi-rscore pending">—</div></div>
+    </div>
+    <div id="fail-fleet"></div>
+    <div class="dept-grid" id="dept-fleet" style="display:none"></div>
+    </div>
+  </div>
+
+  <!-- Heavy Machine Checks detail panel -->
+  <div class="kpi-panel collapsed" id="panel-heavymach">
+    <div class="kpi-phd" onclick="togglePanel('panel-heavymach')">
+      <div class="kpi-ptitle">Heavy Machine Checks — KPI Detail</div><span class="kpi-chevron">▼</span>
+      <span class="phase-pill live">FL-01 &amp; TB-01</span>
+      <div class="score-badge loading" id="badge-heavymach">Loading...</div>
+      <button class="kpi-refresh" onclick="event.stopPropagation();fetchHeavyMachKpi()">↻ Refresh</button>
+    </div>
+    <div class="kpi-body">
+    <div class="kpi-rows" id="rows-heavymach">
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:220px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:300px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:60%"></div></div><div class="kpi-rscore pending">—</div></div>
+      <div class="kpi-row"><div class="kpi-rdot pending"></div><div class="kpi-rinner"><div class="skel" style="height:12px;width:180px;margin-bottom:6px"></div><div class="skel" style="height:10px;width:260px"></div></div><div class="kpi-rtrack"><div class="kpi-rfill pending" style="width:40%"></div></div><div class="kpi-rscore pending">—</div></div>
+    </div>
+    <div id="fail-heavymach"></div>
+    <div class="dept-grid" id="dept-heavymach" style="display:none"></div>
+    </div>
+  </div>
+
+  <div class="last-up" id="kpi-ts">Not yet loaded</div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════
+     STUB PAGES — all other sections
+════════════════════════════════════════════════════════ -->
+<div class="pg" id="pg-entities"><div class="ph"><h1>Entities</h1><p>7 entities — Northern Pakistan Portfolio</p></div>
+  <div class="g2">
+    <div class="enc" style="border-left-color:#1b5e3b"><div class="ch"><div class="ct">MJSR</div><span class="b bent">Malam Jabba Ski Resort</span></div><div class="sr" style="grid-template-columns:repeat(3,1fr);margin-bottom:6px"><div class="sc"><div class="lbl">Staff</div><div class="val" style="font-size:18px">76</div></div><div class="sc aa"><div class="lbl">Warnings</div><div class="val" style="font-size:18px">8</div></div><div class="sc"><div class="lbl">Depts</div><div class="val" style="font-size:18px">11</div></div></div><div style="font-size:11px;color:var(--text3)">Swat Valley, KPK · GM: Martin Schultz</div></div>
+    <div class="enc" style="border-left-color:#b8922e"><div class="ch"><div class="ct">Green Valley</div><span class="b bent">GV Adventure Park</span></div><div class="sr" style="grid-template-columns:repeat(3,1fr);margin-bottom:6px"><div class="sc"><div class="lbl">Staff</div><div class="val" style="font-size:18px">30</div></div><div class="sc ga"><div class="lbl">Warnings</div><div class="val" style="font-size:18px">0</div></div><div class="sc"><div class="lbl">Depts</div><div class="val" style="font-size:18px">4</div></div></div><div style="font-size:11px;color:var(--text3)">Swat Valley, KPK</div></div>
+    <div class="enc" style="border-left-color:#1660a0"><div class="ch"><div class="ct">Samsons Inn</div><span class="b bent">Lodge &amp; Hospitality</span></div><div class="sr" style="grid-template-columns:repeat(3,1fr);margin-bottom:6px"><div class="sc"><div class="lbl">Staff</div><div class="val" style="font-size:18px">28</div></div><div class="sc aa"><div class="lbl">Warnings</div><div class="val" style="font-size:18px">1</div></div><div class="sc"><div class="lbl">Depts</div><div class="val" style="font-size:18px">5</div></div></div><div style="font-size:11px;color:var(--text3)">On-mountain accommodation</div></div>
+    <div class="enc" style="border-left-color:#7b3f9e"><div class="ch"><div class="ct">Healthcare</div><span class="b bent">PIN: 1999</span></div><div class="sr" style="grid-template-columns:repeat(3,1fr);margin-bottom:6px"><div class="sc"><div class="lbl">Staff</div><div class="val" style="font-size:18px">24</div></div><div class="sc ga"><div class="lbl">Warnings</div><div class="val" style="font-size:18px">0</div></div><div class="sc"><div class="lbl">Depts</div><div class="val" style="font-size:18px">3</div></div></div><div style="font-size:11px;color:var(--text3)">Healthcare services</div></div>
+    <div class="enc" style="border-left-color:#c96a10"><div class="ch"><div class="ct">ALIF School</div><span class="b bent">PIN: 2000</span></div><div class="sr" style="grid-template-columns:repeat(3,1fr);margin-bottom:6px"><div class="sc"><div class="lbl">Staff</div><div class="val" style="font-size:18px">18</div></div><div class="sc ga"><div class="lbl">Warnings</div><div class="val" style="font-size:18px">0</div></div><div class="sc"><div class="lbl">Depts</div><div class="val" style="font-size:18px">3</div></div></div><div style="font-size:11px;color:var(--text3)">Education entity</div></div>
+    <div class="enc" style="border-left-color:#b93328"><div class="ch"><div class="ct">Construction &amp; CORA</div><span class="b bent">PIN: 2100 / 2200</span></div><div class="sr" style="grid-template-columns:repeat(3,1fr);margin-bottom:6px"><div class="sc"><div class="lbl">Staff</div><div class="val" style="font-size:18px">71</div></div><div class="sc ga"><div class="lbl">Warnings</div><div class="val" style="font-size:18px">0</div></div><div class="sc"><div class="lbl">Depts</div><div class="val" style="font-size:18px">7</div></div></div><div style="font-size:11px;color:var(--text3)">Civil &amp; operations</div></div>
+  </div>
+</div>
+
+<div class="pg" id="pg-headcount"><div class="ph"><h1>Headcount</h1><p>All permanent staff — 7 entities</p></div><div class="card"><div class="ct" style="margin-bottom:10px">Coming soon — will pull live from MJSR Leave Tracker employee list</div></div></div>
+<div class="pg" id="pg-leave"><div class="ph"><h1>Leave Tracker</h1><p>MJSR — 76 staff · 1.16 days accrual on 25th</p></div><div class="card"><div class="ch"><div class="ct">Live leave data</div><a href="https://samsons-digital.github.io/mjsr-leave-tracker/" target="_blank" class="btn p">Open Leave Portal →</a></div><div style="font-size:12px;color:var(--text2)">Full leave management is live at the MJSR Leave Tracker portal. KPI summary visible in the KPI Dashboard tab.</div></div></div>
+<div class="pg" id="pg-recruitment"><div class="ph"><h1>Recruitment</h1><p>Active positions and pipeline</p></div><div class="card"><div class="ct" style="margin-bottom:8px">Security &amp; PR Manager — MJSR</div><div style="font-size:12px;color:var(--text2)">4 candidates evaluated · Recommended: Hashim Naqvi (84/100)</div></div></div>
+<div class="pg" id="pg-performance"><div class="ph"><h1>Performance</h1><p>Appraisals and KPIs</p></div><div class="card"><div class="ct">Q4 FY2026 appraisals due June 2026</div></div></div>
+<div class="pg" id="pg-warnings"><div class="ph"><h1>Warnings Tracker</h1><p>All entities</p></div><div class="card"><div class="ct">8 active warnings — see KPI Dashboard for live scores</div></div></div>
+<div class="pg" id="pg-bonus"><div class="ph"><h1>Bonus Eligibility</h1><p>FY 2025–26 · Snapshot: 30 Jun 2026</p></div><div class="card"><div class="ct">8 of 11 staff eligible · 1 GM override (Muhammad Saeed)</div></div></div>
+<div class="pg" id="pg-certs"><div class="ph"><h1>Certifications</h1><p>Safety certs and operator licences</p></div><div class="card"><div class="ct">3 alerts — Kids Climbing Wall expired, 2 expiring within 60 days</div></div></div>
+<div class="pg" id="pg-disciplinary"><div class="ph"><h1>Disciplinary Log</h1><p>Formal actions beyond warnings</p></div><div class="card"><div class="ct">0 dismissals this FY · Escalation triggers: all OK</div></div></div>
+<div class="pg" id="pg-sops">
+  <div class="ph">
+    <h1>Policies &amp; SOPs</h1>
+    <p>Document register — all systems · opens directly from Google Drive</p>
+  </div>
+
+  <!-- SOP Coverage Summary -->
+  <div class="card" style="margin-bottom:16px;padding:16px 20px">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:14px">
+      <div style="font-size:13px;font-weight:600;color:var(--text)">SOP Coverage — KPI Dashboard Systems</div>
+      <div style="display:flex;gap:10px;font-size:11px">
+        <span style="display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:50%;background:var(--green);display:inline-block"></span>SOP exists</span>
+        <span style="display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:50%;background:#b93328;display:inline-block"></span>Missing — live system</span>
+        <span style="display:flex;align-items:center;gap:4px"><span style="width:8px;height:8px;border-radius:50%;background:#e8a020;display:inline-block"></span>Missing — pending system</span>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:6px" id="sop-coverage-grid">
+      <!-- Live systems -->
+      <div class="sop-cov-row sop-has"><span class="sop-cov-dot g"></span><span>Leave Tracker</span><span class="sop-cov-tag live">Live</span></div>
+      <div class="sop-cov-row sop-missing-live"><span class="sop-cov-dot r"></span><span>Warnings System</span><span class="sop-cov-tag live">Live</span></div>
+      <div class="sop-cov-row sop-has"><span class="sop-cov-dot g"></span><span>Chairlift Checks</span><span class="sop-cov-tag live">Live</span></div>
+      <div class="sop-cov-row sop-has"><span class="sop-cov-dot g"></span><span>Daily Readiness</span><span class="sop-cov-tag live">Live</span></div>
+      <div class="sop-cov-row sop-has"><span class="sop-cov-dot g"></span><span>PR Fund Tracker</span><span class="sop-cov-tag live">Live</span></div>
+      <div class="sop-cov-row sop-has"><span class="sop-cov-dot g"></span><span>Procurement Hub</span><span class="sop-cov-tag live">Live</span></div>
+      <div class="sop-cov-row sop-has"><span class="sop-cov-dot g"></span><span>Adventure Checks</span><span class="sop-cov-tag live">Live</span></div>
+      <div class="sop-cov-row sop-has"><span class="sop-cov-dot g"></span><span>F&amp;F Benefits Portal</span><span class="sop-cov-tag live">Live</span></div>
+      <div class="sop-cov-row sop-has"><span class="sop-cov-dot g"></span><span>Tourist Count</span><span class="sop-cov-tag live">Live</span></div>
+      <!-- Pending systems -->
+      <div class="sop-cov-row sop-has"><span class="sop-cov-dot g"></span><span>PistenBully</span><span class="sop-cov-tag pend">Pending</span></div>
+      <div class="sop-cov-row sop-has"><span class="sop-cov-dot g"></span><span>Technical Store</span><span class="sop-cov-tag pend">Pending</span></div>
+      <div class="sop-cov-row sop-has"><span class="sop-cov-dot g"></span><span>Fire Ext Compliance</span><span class="sop-cov-tag pend">Pending</span></div>
+      <div class="sop-cov-row sop-has"><span class="sop-cov-dot g"></span><span>Heavy Machine Checks</span><span class="sop-cov-tag pend">Pending</span></div>
+      <div class="sop-cov-row sop-has"><span class="sop-cov-dot g"></span><span>Samsons Inn</span><span class="sop-cov-tag pend">Pending</span></div>
+      <div class="sop-cov-row sop-has"><span class="sop-cov-dot g"></span><span>Snowmaking</span><span class="sop-cov-tag pend">Pending</span></div>
+      <div class="sop-cov-row sop-missing-pend"><span class="sop-cov-dot a"></span><span>Medical Stock</span><span class="sop-cov-tag pend">Pending</span></div>
+      <div class="sop-cov-row sop-has"><span class="sop-cov-dot g"></span><span>Vehicle &amp; Machinery</span><span class="sop-cov-tag pend">Pending</span></div>
+      <div class="sop-cov-row sop-has"><span class="sop-cov-dot g"></span><span>Fixed Asset Compliance</span><span class="sop-cov-tag pend">Pending</span></div>
+      <div class="sop-cov-row sop-has"><span class="sop-cov-dot g"></span><span>GV Activity Checks <span style="font-weight:400;opacity:.7">(Samsons Adventure Park SOP)</span></span><span class="sop-cov-tag pend">Pending</span></div>
+      <div class="sop-cov-row sop-has"><span class="sop-cov-dot g"></span><span>Drone Operations &amp; Training</span><span class="sop-cov-tag" style="background:rgba(100,60,180,.1);color:#5b21b6">Training</span></div>
+      <div class="sop-cov-row sop-has"><span class="sop-cov-dot g"></span><span>F&amp;B Stock Controls</span><span class="sop-cov-tag pend">Pending</span></div>
+    </div>
+    <!-- Totals bar -->
+    <div style="margin-top:14px;padding-top:12px;border-top:1px solid var(--border);display:flex;gap:20px;flex-wrap:wrap;font-size:12px">
+      <span><strong style="color:var(--green)">22</strong> SOPs uploaded</span>
+      <span><strong style="color:#b93328">1</strong> missing — live systems</span>
+      <span><strong style="color:#e8a020">0</strong> missing — pending systems</span>
+      <span style="color:var(--text3)">21 systems · 1 training</span>
+    </div>
+  </div>
+
+  <!-- Toolbar -->
+  <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:16px">
+    <input id="sop-search" type="text" placeholder="Search SOPs..." oninput="filterSops()"
+      style="flex:1;min-width:200px;padding:8px 12px;border:1px solid var(--border);border-radius:6px;font-size:13px;background:var(--surface);color:var(--text)">
+    <select id="sop-filter-system" onchange="filterSops()"
+      style="padding:8px 12px;border:1px solid var(--border);border-radius:6px;font-size:13px;background:var(--surface);color:var(--text)">
+      <option value="">All Systems</option>
+    </select>
+    <select id="sop-filter-dept" onchange="filterSops()"
+      style="padding:8px 12px;border:1px solid var(--border);border-radius:6px;font-size:13px;background:var(--surface);color:var(--text)">
+      <option value="">All Departments</option>
+    </select>
+    <button class="btn" onclick="loadSops()" style="white-space:nowrap">↻ Refresh</button>
+  </div>
+
+  <!-- Stats bar -->
+  <div id="sop-stats" style="font-size:12px;color:var(--text3);margin-bottom:14px">Loading documents...</div>
+
+  <!-- SOP grid -->
+  <div id="sop-grid" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:12px"></div>
+
+  <!-- Empty state -->
+  <div id="sop-empty" style="display:none;text-align:center;padding:60px 20px;color:var(--text3)">
+    <div style="font-size:32px;margin-bottom:12px">≡</div>
+    <div style="font-size:14px;font-weight:600;margin-bottom:6px">No SOPs found</div>
+    <div style="font-size:12px">Try adjusting your search or filters</div>
+  </div>
+
+  <!-- Error state -->
+  <div id="sop-error" style="display:none" class="card">
+    <div style="color:#b93328;font-weight:600;margin-bottom:6px">Could not load SOPs</div>
+    <div id="sop-error-msg" style="font-size:12px;color:var(--text3)"></div>
+    <div style="font-size:11px;color:var(--text3);margin-top:8px">Check the SOP Index GAS script is deployed and accessible.</div>
+  </div>
+</div>
+<div class="pg" id="pg-fy_close"><div class="ph"><h1>FY Close Checklist</h1><p>FY 2025–26 · Snapshot: 30 Jun 2026</p></div>
+  <div class="card">
+    <div class="ch"><div class="ct">MJSR Warnings System — FY Close</div><span id="fy-prog" style="font-size:11px;color:var(--text3)">0 of 10</span></div>
+    <div id="fy-items">
+      <div class="ci"><div class="cb" onclick="fyTick(this)"></div>Confirm all warnings entered via Form</div>
+      <div class="ci"><div class="cb" onclick="fyTick(this)"></div>Confirm no pending incidents outside system</div>
+      <div class="ci"><div class="cb" onclick="fyTick(this)"></div>Verify FY End Snapshot Date (30 Jun 2026)</div>
+      <div class="ci"><div class="cb" onclick="fyTick(this)"></div>Verify Grace Months (currently 3)</div>
+      <div class="ci"><div class="cb" onclick="fyTick(this)"></div>Review all Active Warnings vs employee list</div>
+      <div class="ci"><div class="cb" onclick="fyTick(this)"></div>Review Bonus Eligibility Snapshot for all staff</div>
+      <div class="ci"><div class="cb" onclick="fyTick(this)"></div>Review and ratify all GM Overrides</div>
+      <div class="ci"><div class="cb" onclick="fyTick(this)"></div>Lock FY Snapshot — no further changes</div>
+      <div class="ci"><div class="cb" onclick="fyTick(this)"></div>Export Finance Bonus Export file for FY2026</div>
+      <div class="ci"><div class="cb" onclick="fyTick(this)"></div>Archive file with version history notation</div>
+    </div>
+    <div class="prog-track"><div class="prog-fill" id="fy-bar" style="width:0%"></div></div>
+  </div>
+</div>
+<div class="pg" id="pg-reports"><div class="ph"><h1>Reports</h1><p>On-demand HR reports</p></div><div class="card"><div class="ct">Report generation coming in next build phase</div></div></div>
+<div class="pg" id="pg-log"><div class="ph"><h1>Audit Log</h1><p>All HR system actions</p></div><div class="card"><div class="ct">Connected to Leave Tracker and Warnings System logs</div></div></div>
+
+</div><!-- end main -->
+</div><!-- end shell -->
+
+<script>
+// ── CONFIG — HARDCODED URLS ───────────────────────────────
+const WARNINGS_URL   = 'https://script.google.com/macros/s/AKfycbw_H3UcaZXWLfs6PbrDRMoNeD-L5QkCopul0yDnpHOcY586FTO7rVAUmlZNAcyRPn6x/exec';
+const CHAIRLIFT_URL  = 'https://script.google.com/macros/s/AKfycbx6pT2xPiXZ4ZPK2G_ipRYVoMdWvTYO9aWiO2q75PIea1UZQCGKjXB1hOfXiArzVlC7qw/exec';
+const READINESS_URL  = 'https://script.google.com/macros/s/AKfycbx8loQIr9DFz8q1Pe_8gLYVzecRLk_RVl6Y1wM9agzFYdrbXcdDaPochMw0lINkfw3y/exec';
+const PRFUND_URL      = 'https://script.google.com/macros/s/AKfycbxWqdyPxJ-mYOY3BZTPp2rur8JiqeyBhANuWeJJBxCYk6MBymNJfqpFJLynKRLXaJk/exec';
+const PROCUREMENT_URL = 'https://script.google.com/macros/s/AKfycby_M0NW85JpZBvJXCAoIM0p70V4YmD_ohwO1maXYjWme6_49rRKBp5JbSSPFiR0cQno/exec';
+const ADVENTURE_URL   = 'https://script.google.com/macros/s/AKfycbz5Ul6VqHbwlkUg16ymnVpQaukjVh30NTokPceAafmPnjhHnsOZSGw70PMzdESLN3KE2g/exec';
+const PISTENBULLY_URL = 'https://script.google.com/macros/s/AKfycbxQuyK_UEsPfl28KcZBV7H2aDJtpqaP0EE2J5ZFI_5BT0JGR-u0E3qqrqg_vr1544ViGg/exec';
+const TECHSTORE_URL   = 'https://script.google.com/macros/s/AKfycbwOl_noGhIdBxtxuf_hnNSZs7jibECNhhP9YnB_knF-kM0TkjJgp8KS2Xh9qEtrvWvH6g/exec';
+const FNB_URL         = 'https://script.google.com/macros/s/AKfycbwCxyvvkBllZs-6fRzpCVNxbG8oZi5gMfL5gVPY03sT5oZLTmwkD0avjo18r42zizacug/exec';
+const MEDICAL_URL     = 'https://script.google.com/macros/s/AKfycbwywPeUyqikxj3uSWCLx9HVYTnujDTQMZqFpurMe-HqiNC3uAmVBZRpbDw8hBB6oEa_ZQ/exec';
+const FIREEXT_URL     = 'https://script.google.com/macros/s/AKfycbz4tBL1MHpNb1619jCP88msSJlTVFW8605fcTkRDAMN0N7075FRuOLWZjEeH0pgcwx2/exec';
+const FLEET_URL       = 'https://script.google.com/macros/s/AKfycbwLtIGBIFBYqa6ebBtTywO-iKwEIHX5dOlDzqryFMOCewHcLs_UkiSeYfWwTFpOEjOS9g/exec';
+const HEAVYMACH_URL   = 'https://script.google.com/macros/s/AKfycbwArr5zIM6sY_zG98XZZvzTOFkvlUq71738qoDk_v8HQufUoCSGe8xV7v5edJHqJN5nDQ/exec';
+// ─────────────────────────────────────────────────────────
+
+// ── NAV ───────────────────────────────────────────────────
+function nav(id) {
+  document.querySelectorAll('.si').forEach(s => s.classList.remove('on'));
+  document.querySelectorAll('.pg').forEach(p => p.classList.remove('on'));
+  const pg = document.getElementById('pg-' + id);
+  if (pg) pg.classList.add('on');
+  const si = document.querySelector('.si[data-pg="' + id + '"]');
+  if (si) si.classList.add('on');
+  if (id === 'kpi' && kpiState.warnings.status === 'idle')     fetchWarningsKpi();
+  if (id === 'kpi' && kpiState.chairlift.status === 'idle')    fetchChairliftKpi();
+  if (id === 'kpi' && kpiState.readiness.status === 'idle')    fetchReadinessKpi();
+  if (id === 'kpi' && kpiState.prfund.status === 'idle')       fetchPrFundKpi();
+  if (id === 'kpi' && kpiState.procurement.status === 'idle')  fetchProcurementKpi();
+  if (id === 'kpi' && kpiState.adventure.status === 'idle')    fetchAdventureKpi();
+  if (id === 'kpi' && kpiState.pistenbully.status === 'idle')  fetchPistenBullyKpi();
+  if (id === 'kpi' && kpiState.techstore.status === 'idle')    fetchTechStoreKpi();
+  if (id === 'kpi' && kpiState.fnb.status === 'idle')          fetchFnBKpi();
+  if (id === 'kpi' && kpiState.medical.status === 'idle')      fetchMedicalKpi();
+  if (id === 'kpi' && kpiState.fireext.status === 'idle')      fetchFireExtKpi();
+  if (id === 'kpi' && kpiState.fleet.status === 'idle')        fetchFleetKpi();
+  if (id === 'kpi' && kpiState.heavymach.status === 'idle')    fetchHeavyMachKpi();
+  if (id === 'sops' && sopData.length === 0)                   loadSops();
+}
+
+document.querySelectorAll('.si[data-pg]').forEach(el => {
+  el.addEventListener('click', () => nav(el.dataset.pg));
+});
+
+// ── DATE ──────────────────────────────────────────────────
+function updateDate() {
+  const d = new Date();
+  document.getElementById('tn-date').textContent =
+    d.toLocaleDateString('en-PK', { weekday:'short', day:'numeric', month:'short', year:'numeric', timeZone:'Asia/Karachi' });
+}
+updateDate();
+
+// ── CHECKLIST ─────────────────────────────────────────────
+function fyTick(el) {
+  el.classList.toggle('on');
+  el.textContent = el.classList.contains('on') ? '✓' : '';
+  const done  = document.querySelectorAll('#fy-items .cb.on').length;
+  const total = document.querySelectorAll('#fy-items .cb').length;
+  document.getElementById('fy-prog').textContent = done + ' of ' + total;
+  document.getElementById('fy-bar').style.width  = Math.round(done / total * 100) + '%';
+}
+
+// ── KPI STATE ─────────────────────────────────────────────
+const kpiState = {
+  warnings:     { status: 'idle', score: null, data: null },
+  chairlift:    { status: 'idle', score: null, data: null },
+  readiness:    { status: 'idle', score: null, data: null },
+  prfund:       { status: 'idle', score: null, data: null },
+  procurement:  { status: 'idle', score: null, data: null },
+  adventure:    { status: 'idle', score: null, data: null },
+  pistenbully:  { status: 'idle', score: null, data: null },
+  techstore:    { status: 'idle', score: null, data: null },
+  fnb:          { status: 'idle', score: null, data: null },
+  medical:      { status: 'idle', score: null, data: null },
+  fireext:      { status: 'idle', score: null, data: null },
+  fleet:        { status: 'idle', score: null, data: null },
+  heavymach:    { status: 'idle', score: null, data: null }
+};
+
+// ── KPI FETCH ─────────────────────────────────────────────
+// ── RENDER LEAVE KPI ──────────────────────────────────────
+function renderLeaveKpi(d) {
+  const cls = scoreClass(d.overallScore);
+
+  // Source card
+  const sc = document.getElementById('ksc-score-leave');
+  sc.textContent = d.overallScore;
+  sc.className   = 'ksc-score ' + cls;
+  const bar = document.getElementById('ksc-bar-leave');
+  bar.style.width  = d.overallScore + '%';
+  bar.className    = 'ksc-fill ' + cls;
+  document.getElementById('ksc-meta-leave').textContent =
+    d.totalStaff + ' staff · updated ' + fmtTime(d.asOf);
+  document.getElementById('dot-leave').style.background = dotColor(cls);
+
+  // Score badge
+  const badge = document.getElementById('badge-leave');
+  badge.textContent = d.overallScore + ' / 100';
+  badge.className   = 'score-badge ' + cls;
+
+  // KPI rows
+  let html = '';
+  d.kpis.forEach(k => {
+    const c = k.status;
+    html += `<div class="kpi-row">
+      <div class="kpi-rdot ${c}"></div>
+      <div class="kpi-rinner">
+        <div class="kpi-rlbl">${k.label}</div>
+        <div class="kpi-rdetail">${k.detail}</div>
+      </div>
+      <div class="kpi-rtrack"><div class="kpi-rfill ${c}" style="width:${k.score||0}%"></div></div>
+      <div class="kpi-rscore ${c}">${k.score !== null ? k.score : '—'}</div>
+    </div>`;
+  });
+  document.getElementById('rows-leave').innerHTML = html;
+
+  // Failures — what was NOT done
+  const fails = [];
+  d.kpis.forEach(k => {
+    if (k.status === 'critical' || k.status === 'warning') {
+      fails.push({ name: k.label, reason: k.detail, level: k.status });
+    }
+  });
+  if (d.kpis[1] && d.kpis[1].queue) {
+    d.kpis[1].queue.forEach(q => {
+      if (q.ageDays > 3) {
+        fails.push({
+          name:   q.name + ' (' + q.dept + ')',
+          reason: q.type + ' · ' + q.days + ' days · submitted ' + q.ageDays + 'd ago',
+          level:  q.ageDays > 7 ? 'critical' : 'warning',
+          age:    q.ageDays + 'd'
+        });
+      }
+    });
+  }
+  renderFails('fail-leave', fails);
+
+  // Dept breakdown
+  if (d.deptBreakdown && d.deptBreakdown.length) {
+    const dg = document.getElementById('dept-leave');
+    dg.style.display = 'grid';
+    dg.innerHTML = d.deptBreakdown.slice(0,6).map(dep => {
+      const avgCls = dep.avgBal < 0 ? 'c' : dep.avgBal < 3 ? 'w' : 'g';
+      const ovCls  = dep.overspent > 0 ? (dep.overspent > 1 ? 'c' : 'w') : 'g';
+      return `<div class="dept-card">
+        <div class="dept-name">${dep.dept}</div>
+        <div class="dept-row"><span>Staff</span><span class="dv">${dep.staff}</span></div>
+        <div class="dept-row"><span>Avg balance</span><span class="dv ${avgCls}">${dep.avgBal}d</span></div>
+        <div class="dept-row"><span>Overspent</span><span class="dv ${ovCls}">${dep.overspent}</span></div>
+      </div>`;
+    }).join('');
+  }
+
+  document.getElementById('kpi-ts').textContent =
+    'Last refreshed: ' + new Date().toLocaleString('en-PK', { timeZone:'Asia/Karachi', day:'numeric', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit' });
+}
+
+// ── PORTFOLIO SCORE ───────────────────────────────────────
+function updatePortfolioScore() {
+  const scores = Object.values(kpiState)
+    .filter(s => s.score !== null)
+    .map(s => s.score);
+  if (!scores.length) return;
+  const avg = Math.round(scores.reduce((a,b)=>a+b,0) / scores.length);
+  const el  = document.getElementById('portfolio-score');
+  el.textContent = avg;
+  el.className   = 'kpp-score ' + scoreClass(avg);
+  document.getElementById('portfolio-sub').textContent =
+    scores.length + ' of 13 sources connected · Phase 1 of 4';
+}
+
+// ── FAILURES RENDERER ─────────────────────────────────────
+function renderFails(elId, fails) {
+  const el = document.getElementById(elId);
+  if (!fails || !fails.length) { el.innerHTML = ''; return; }
+  let h = '<div class="fail-wrap"><div class="fail-hd">Action required — not done</div>';
+  fails.forEach(f => {
+    h += `<div class="fail-row">
+      <div class="fail-dot ${f.level === 'warning' ? 'w' : 'c'}"></div>
+      <div class="fail-name">${f.name}</div>
+      <div class="fail-reason">${f.reason}</div>
+      ${f.age ? `<div class="fail-age">${f.age}</div>` : ''}
+    </div>`;
+  });
+  h += '</div>';
+  el.innerHTML = h;
+}
+
+// ── LOADING / ERROR STATES ────────────────────────────────
+function setLeaveLoading() {
+  document.getElementById('ksc-score-leave').textContent = '...';
+  document.getElementById('ksc-score-leave').className   = 'ksc-score loading';
+  document.getElementById('ksc-bar-leave').className     = 'ksc-fill loading';
+  document.getElementById('ksc-bar-leave').style.width   = '25%';
+  document.getElementById('ksc-meta-leave').textContent  = 'Fetching live data...';
+  document.getElementById('badge-leave').textContent     = 'Loading...';
+  document.getElementById('badge-leave').className       = 'score-badge loading';
+}
+
+function setLeaveError(msg) {
+  document.getElementById('ksc-score-leave').textContent = 'Error';
+  document.getElementById('ksc-score-leave').className   = 'ksc-score critical';
+  document.getElementById('ksc-bar-leave').style.width   = '0%';
+  document.getElementById('ksc-bar-leave').className     = 'ksc-fill critical';
+  document.getElementById('ksc-meta-leave').textContent  = 'Connection failed';
+  document.getElementById('badge-leave').textContent     = 'Connection error';
+  document.getElementById('badge-leave').className       = 'score-badge critical';
+  document.getElementById('dot-leave').style.background  = '#b93328';
+  document.getElementById('rows-leave').innerHTML =
+    `<div class="kpi-error">
+      <strong>Could not connect to Leave Tracker script.</strong><br>
+      ${msg}<br><br>
+      Check that the GAS deployment is set to <em>Execute as: Me</em> and <em>Anyone</em> can access.
+      Then click ↻ Refresh above.
+    </div>`;
+}
+
+// ── HELPERS ───────────────────────────────────────────────
+function scoreClass(s) {
+  if (s === null || s === undefined) return 'loading';
+  return s >= 75 ? 'good' : s >= 50 ? 'warning' : 'critical';
+}
+function dotColor(cls) {
+  return cls === 'good' ? '#1b5e3b' : cls === 'warning' ? '#c96a10' : '#b93328';
+}
+function fmtTime(iso) {
+  try { return new Date(iso).toLocaleTimeString('en-PK', { timeZone:'Asia/Karachi', hour:'2-digit', minute:'2-digit' }); }
+  catch(e) { return ''; }
+}
+// ── VEHICLE & MACHINERY KPI FETCH ────────────────────────
+async function fetchFleetKpi() {
+  setFleetLoading();
+  try {
+    const res  = await fetch(FLEET_URL, {
+      method:  'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body:    JSON.stringify({ action: 'getKpiData' })
+    });
+    const data = await res.json();
+    if (data.status !== 'ok') throw new Error(data.message || 'Script returned error');
+    kpiState.fleet = { status: 'loaded', score: data.overallScore, data: data };
+    renderFleetKpi(data);
+    updatePortfolioScore();
+  } catch(err) {
+    kpiState.fleet.status = 'error';
+    setFleetError(err.message);
+  }
+}
+
+function renderFleetKpi(d) {
+  const cls = scoreClass(d.overallScore);
+
+  // Source card
+  const sc = document.getElementById('ksc-score-fleet');
+  sc.textContent = d.overallScore;
+  sc.className   = 'ksc-score ' + cls;
+  const bar = document.getElementById('ksc-bar-fleet');
+  bar.style.width = d.overallScore + '%';
+  bar.className   = 'ksc-fill ' + cls;
+  document.getElementById('ksc-meta-fleet').textContent =
+    d.vehicleCount + ' vehicles · ' +
+    d.checkedToday + ' checked today · ' +
+    (d.unsafeToday > 0 ? d.unsafeToday + ' unsafe · ' : '') +
+    fmtTime(d.asOf);
+  document.getElementById('dot-fleet').style.background = dotColor(cls);
+
+  // Score badge
+  const badge = document.getElementById('badge-fleet');
+  badge.textContent = d.overallScore + ' / 100';
+  badge.className   = 'score-badge ' + cls;
+
+  // KPI rows
+  let html = '';
+  d.kpis.forEach(k => {
+    const c   = k.score === null ? 'pending' : k.status;
+    const pct = k.pct !== undefined ? k.pct : Math.min(k.score || 0, 100);
+    html += `<div class="kpi-row">
+      <div class="kpi-rdot ${c}"></div>
+      <div class="kpi-rinner">
+        <div class="kpi-rlbl">${k.label}</div>
+        <div class="kpi-rdetail">${k.detail}</div>
+      </div>
+      <div class="kpi-rtrack"><div class="kpi-rfill ${c}" style="width:${Math.min(pct,100)}%"></div></div>
+      <div class="kpi-rscore ${c}">${k.score !== null ? k.score : '—'}</div>
+    </div>`;
+  });
+  document.getElementById('rows-fleet').innerHTML = html;
+
+  // Failure list
+  renderFails('fail-fleet', (d.failures || []).map(f => ({
+    name: f.label, reason: f.reason, level: f.level
+  })));
+
+  // Breakdown tiles — service status per vehicle
+  const dg = document.getElementById('dept-fleet');
+  dg.style.display = 'grid';
+
+  const svcKpi = d.kpis ? d.kpis.find(k => k.id === 'fleet_service_compliance') : null;
+  let vehicleRows = '';
+  if (svcKpi && svcKpi.assetList) {
+    vehicleRows = svcKpi.assetList.map(a => {
+      const sc2 = a.status === 'DUE' ? 'c' : a.status === 'SOON' ? 'w' : 'g';
+      const remainLabel = a.remaining < 0
+        ? Math.abs(a.remaining) + ' KM OVERDUE'
+        : a.remaining + ' KM left';
+      return `<div class="dept-row">
+        <span>${a.name}</span>
+        <span class="dv ${sc2}">${remainLabel}</span>
+      </div>`;
+    }).join('');
+  }
+
+  // Unsafe reports
+  const unsafeKpi = d.kpis ? d.kpis.find(k => k.id === 'fleet_unsafe_reports') : null;
+  let unsafeRows = '<div class="dept-row"><span style="color:var(--text3)">No unsafe reports in last 7 days</span></div>';
+  if (unsafeKpi && unsafeKpi.unsafeList && unsafeKpi.unsafeList.length > 0) {
+    unsafeRows = unsafeKpi.unsafeList.slice(0, 4).map(u =>
+      `<div class="dept-row" style="flex-direction:column;align-items:flex-start;gap:2px">
+        <span style="font-weight:600">${u.asset} — ${u.date}</span>
+        <span style="font-size:11px;color:var(--text3)">${u.operator} · ${u.unsafeReason || 'No reason given'}</span>
+      </div>`
+    ).join('');
+  }
+
+  dg.innerHTML = `
+    <div class="dept-card" style="grid-column:1/-1">
+      <div class="dept-name">Vehicle Service Status — 8 Vehicles</div>
+      ${vehicleRows || '<div class="dept-row"><span style="color:var(--text3)">No service data available</span></div>'}
+    </div>
+    <div class="dept-card">
+      <div class="dept-name">Unsafe Reports — Last 7 Days</div>
+      ${unsafeRows}
+    </div>`;
+
+  document.getElementById('kpi-ts').textContent =
+    'Last refreshed: ' + new Date().toLocaleString('en-PK', {
+      timeZone:'Asia/Karachi', day:'numeric', month:'short',
+      year:'numeric', hour:'2-digit', minute:'2-digit'
+    });
+}
+
+function setFleetLoading() {
+  document.getElementById('ksc-score-fleet').textContent = '...';
+  document.getElementById('ksc-score-fleet').className   = 'ksc-score loading';
+  document.getElementById('ksc-bar-fleet').className     = 'ksc-fill loading';
+  document.getElementById('ksc-bar-fleet').style.width   = '25%';
+  document.getElementById('ksc-meta-fleet').textContent  = 'Fetching live data...';
+  document.getElementById('badge-fleet').textContent     = 'Loading...';
+  document.getElementById('badge-fleet').className       = 'score-badge loading';
+}
+
+function setFleetError(msg) {
+  document.getElementById('ksc-score-fleet').textContent = 'Error';
+  document.getElementById('ksc-score-fleet').className   = 'ksc-score critical';
+  document.getElementById('ksc-bar-fleet').style.width   = '0%';
+  document.getElementById('ksc-bar-fleet').className     = 'ksc-fill critical';
+  document.getElementById('ksc-meta-fleet').textContent  = 'Connection failed';
+  document.getElementById('badge-fleet').textContent     = 'Connection error';
+  document.getElementById('badge-fleet').className       = 'score-badge critical';
+  document.getElementById('dot-fleet').style.background  = '#b93328';
+  document.getElementById('rows-fleet').innerHTML =
+    `<div class="kpi-error"><strong>Could not connect to Fleet Management script.</strong><br>${msg}</div>`;
+}
+
+// ── FIRE EXT COMPLIANCE KPI FETCH ────────────────────────
+async function fetchFireExtKpi() {
+  setFireExtLoading();
+  try {
+    const res  = await fetch(FIREEXT_URL, {
+      method:  'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body:    JSON.stringify({ action: 'getKpiData' })
+    });
+    const data = await res.json();
+    if (data.status !== 'ok') throw new Error(data.message || 'Script returned error');
+    kpiState.fireext = { status: 'loaded', score: data.overallScore, data: data };
+    renderFireExtKpi(data);
+    updatePortfolioScore();
+  } catch(err) {
+    kpiState.fireext.status = 'error';
+    setFireExtError(err.message);
+  }
+}
+
+function renderFireExtKpi(d) {
+  const cls = scoreClass(d.overallScore);
+
+  // Source card
+  const sc = document.getElementById('ksc-score-fireext');
+  sc.textContent = d.overallScore;
+  sc.className   = 'ksc-score ' + cls;
+  const bar = document.getElementById('ksc-bar-fireext');
+  bar.style.width = d.overallScore + '%';
+  bar.className   = 'ksc-fill ' + cls;
+  document.getElementById('ksc-meta-fireext').textContent =
+    d.totalUnits + ' units · ' +
+    (d.totalExpired > 0 ? d.totalExpired + ' EXPIRED · ' : '') +
+    (d.totalFaulty  > 0 ? d.totalFaulty  + ' faulty · '  : '') +
+    fmtTime(d.asOf);
+  document.getElementById('dot-fireext').style.background = dotColor(cls);
+
+  // Score badge
+  const badge = document.getElementById('badge-fireext');
+  badge.textContent = d.overallScore + ' / 100';
+  badge.className   = 'score-badge ' + cls;
+
+  // KPI rows
+  let html = '';
+  d.kpis.forEach(k => {
+    const c   = k.score === null ? 'pending' : k.status;
+    const pct = k.pct !== undefined ? k.pct : Math.min(k.score || 0, 100);
+    html += `<div class="kpi-row">
+      <div class="kpi-rdot ${c}"></div>
+      <div class="kpi-rinner">
+        <div class="kpi-rlbl">${k.label}</div>
+        <div class="kpi-rdetail">${k.detail}</div>
+      </div>
+      <div class="kpi-rtrack"><div class="kpi-rfill ${c}" style="width:${Math.min(pct,100)}%"></div></div>
+      <div class="kpi-rscore ${c}">${k.score !== null ? k.score : '—'}</div>
+    </div>`;
+  });
+  document.getElementById('rows-fireext').innerHTML = html;
+
+  // Failure list
+  renderFails('fail-fireext', (d.failures || []).map(f => ({
+    name: f.label, reason: f.reason, level: f.level
+  })));
+
+  // Breakdown tiles — per site
+  const dg = document.getElementById('dept-fireext');
+  dg.style.display = 'grid';
+
+  const sitesKpi = d.kpis ? d.kpis.find(k => k.id === 'fe_site_compliance') : null;
+  let siteRows = '';
+  if (sitesKpi && sitesKpi.siteList) {
+    siteRows = sitesKpi.siteList.map(s => {
+      const sc2 = s.expired > 0 ? 'c' : s.expiring > 0 || s.faulty > 0 ? 'w' : 'g';
+      return `<div class="dept-card">
+        <div class="dept-name">${s.label}</div>
+        <div class="dept-row"><span>Units registered</span><span class="dv">${s.total}</span></div>
+        <div class="dept-row"><span>Inspected</span><span class="dv ${s.pct >= 80 ? 'g' : 'w'}">${s.inspected} (${s.pct}%)</span></div>
+        ${s.expired > 0  ? `<div class="dept-row"><span>Expired</span><span class="dv c">${s.expired}</span></div>` : ''}
+        ${s.expiring > 0 ? `<div class="dept-row"><span>Expiring soon</span><span class="dv w">${s.expiring}</span></div>` : ''}
+        ${s.faulty > 0   ? `<div class="dept-row"><span>Faulty/Empty</span><span class="dv c">${s.faulty}</span></div>` : ''}
+        ${s.overdue > 0  ? `<div class="dept-row"><span>Overdue (90d)</span><span class="dv w">${s.overdue}</span></div>` : ''}
+      </div>`;
+    }).join('');
+  }
+
+  dg.innerHTML = siteRows || '<div class="dept-card"><div class="dept-row"><span style="color:var(--text3)">No site data available</span></div></div>';
+
+  document.getElementById('kpi-ts').textContent =
+    'Last refreshed: ' + new Date().toLocaleString('en-PK', {
+      timeZone:'Asia/Karachi', day:'numeric', month:'short',
+      year:'numeric', hour:'2-digit', minute:'2-digit'
+    });
+}
+
+function setFireExtLoading() {
+  document.getElementById('ksc-score-fireext').textContent = '...';
+  document.getElementById('ksc-score-fireext').className   = 'ksc-score loading';
+  document.getElementById('ksc-bar-fireext').className     = 'ksc-fill loading';
+  document.getElementById('ksc-bar-fireext').style.width   = '25%';
+  document.getElementById('ksc-meta-fireext').textContent  = 'Fetching live data...';
+  document.getElementById('badge-fireext').textContent     = 'Loading...';
+  document.getElementById('badge-fireext').className       = 'score-badge loading';
+}
+
+function setFireExtError(msg) {
+  document.getElementById('ksc-score-fireext').textContent = 'Error';
+  document.getElementById('ksc-score-fireext').className   = 'ksc-score critical';
+  document.getElementById('ksc-bar-fireext').style.width   = '0%';
+  document.getElementById('ksc-bar-fireext').className     = 'ksc-fill critical';
+  document.getElementById('ksc-meta-fireext').textContent  = 'Connection failed';
+  document.getElementById('badge-fireext').textContent     = 'Connection error';
+  document.getElementById('badge-fireext').className       = 'score-badge critical';
+  document.getElementById('dot-fireext').style.background  = '#b93328';
+  document.getElementById('rows-fireext').innerHTML =
+    `<div class="kpi-error"><strong>Could not connect to Fire Ext script.</strong><br>${msg}</div>`;
+}
+
+// ── F&B STOCK CONTROLS KPI FETCH ─────────────────────────
+async function fetchFnBKpi() {
+  setFnBLoading();
+  try {
+    const res  = await fetch(FNB_URL, {
+      method:  'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body:    JSON.stringify({ action: 'getKpiData' })
+    });
+    const data = await res.json();
+    if (data.status !== 'ok') throw new Error(data.message || 'Script returned error');
+    kpiState.fnb = { status: 'loaded', score: data.overallScore, data: data };
+    renderFnBKpi(data);
+    updatePortfolioScore();
+  } catch(err) {
+    kpiState.fnb.status = 'error';
+    setFnBError(err.message);
+  }
+}
+
+function renderFnBKpi(d) {
+  const cls = scoreClass(d.overallScore);
+
+  // Source card
+  const sc = document.getElementById('ksc-score-fnb');
+  sc.textContent = d.overallScore;
+  sc.className   = 'ksc-score ' + cls;
+  const bar = document.getElementById('ksc-bar-fnb');
+  bar.style.width = d.overallScore + '%';
+  bar.className   = 'ksc-fill ' + cls;
+  document.getElementById('ksc-meta-fnb').textContent =
+    d.totalItems + ' items · ' +
+    (d.criticalCount > 0 ? d.criticalCount + ' CRITICAL · ' : '') +
+    (d.lowCount > 0 ? d.lowCount + ' LOW · ' : '') +
+    fmtTime(d.asOf);
+  document.getElementById('dot-fnb').style.background = dotColor(cls);
+
+  // Score badge
+  const badge = document.getElementById('badge-fnb');
+  badge.textContent = d.overallScore + ' / 100';
+  badge.className   = 'score-badge ' + cls;
+
+  // KPI rows
+  let html = '';
+  d.kpis.forEach(k => {
+    const c   = k.score === null ? 'pending' : k.status;
+    const pct = k.pct !== undefined ? k.pct : Math.min(k.score || 0, 100);
+    html += `<div class="kpi-row">
+      <div class="kpi-rdot ${c}"></div>
+      <div class="kpi-rinner">
+        <div class="kpi-rlbl">${k.label}</div>
+        <div class="kpi-rdetail">${k.detail}</div>
+      </div>
+      <div class="kpi-rtrack"><div class="kpi-rfill ${c}" style="width:${Math.min(pct,100)}%"></div></div>
+      <div class="kpi-rscore ${c}">${k.score !== null ? k.score : '—'}</div>
+    </div>`;
+  });
+  document.getElementById('rows-fnb').innerHTML = html;
+
+  // Failure list
+  renderFails('fail-fnb', (d.failures || []).map(f => ({
+    name: f.label, reason: f.reason, level: f.level
+  })));
+
+  // Breakdown tiles
+  const dg = document.getElementById('dept-fnb');
+  dg.style.display = 'grid';
+
+  // Par compliance details
+  const parKpi = d.kpis ? d.kpis.find(k => k.id === 'fnb_par_compliance') : null;
+  let critRows = '<div class="dept-row"><span style="color:var(--text3)">All items at or above par</span></div>';
+  if (parKpi && parKpi.criticalList && parKpi.criticalList.length > 0) {
+    critRows = parKpi.criticalList.slice(0,6).map(i =>
+      `<div class="dept-row"><span>${i.name}</span><span class="dv c">${i.current.toFixed(1)} / ${i.minPar} ${i.unit}</span></div>`
+    ).join('');
+  }
+
+  let lowRows = '';
+  if (parKpi && parKpi.lowList && parKpi.lowList.length > 0) {
+    lowRows = parKpi.lowList.slice(0,4).map(i =>
+      `<div class="dept-row"><span>${i.name}</span><span class="dv w">${i.current.toFixed(1)} / ${i.minPar} ${i.unit}</span></div>`
+    ).join('');
+  }
+
+  // Outlet breakdown
+  const balKpi  = d.kpis ? d.kpis.find(k => k.id === 'fnb_monthly_balance') : null;
+  let outletRows = '<div class="dept-row"><span style="color:var(--text3)">No outlet issues this month</span></div>';
+  if (d.outletList && d.outletList.length > 0) {
+    outletRows = d.outletList.slice(0,5).map(o =>
+      `<div class="dept-row"><span>${o.outlet}</span><span class="dv">${o.qty.toFixed(1)} units</span></div>`
+    ).join('');
+  }
+
+  // Accountability
+  const accKpi = d.kpis ? d.kpis.find(k => k.id === 'fnb_issue_accountability') : null;
+  const accCls = accKpi ? (accKpi.status === 'good' ? 'g' : accKpi.status === 'warning' ? 'w' : 'c') : 'w';
+
+  dg.innerHTML = `
+    <div class="dept-card" style="grid-column:1/-1">
+      <div class="dept-name">CRITICAL Par Items — Immediate Reorder Required</div>
+      ${critRows}
+      ${lowRows ? '<div class="dept-name" style="margin-top:8px;font-size:11px;color:var(--amber)">LOW Par Items</div>' + lowRows : ''}
+    </div>
+    <div class="dept-card">
+      <div class="dept-name">Monthly Movement — ${d.monthLabel}</div>
+      <div class="dept-row"><span>Total received (IN)</span><span class="dv g">${balKpi ? balKpi.monthIn : '—'} units</span></div>
+      <div class="dept-row"><span>Total issued (OUT)</span><span class="dv">${balKpi ? balKpi.monthOut : '—'} units</span></div>
+      <div class="dept-row"><span>Net movement</span><span class="dv ${balKpi && balKpi.netMovement >= 0 ? 'g' : 'w'}">${balKpi ? (balKpi.netMovement >= 0 ? '+' : '') + balKpi.netMovement : '—'}</span></div>
+      <div class="dept-row"><span>Total items tracked</span><span class="dv">${d.totalItems}</span></div>
+    </div>
+    <div class="dept-card">
+      <div class="dept-name">Issues by Outlet — ${d.monthLabel}</div>
+      ${outletRows}
+    </div>`;
+
+  document.getElementById('kpi-ts').textContent =
+    'Last refreshed: ' + new Date().toLocaleString('en-PK', {
+      timeZone:'Asia/Karachi', day:'numeric', month:'short',
+      year:'numeric', hour:'2-digit', minute:'2-digit'
+    });
+}
+
+function setFnBLoading() {
+  document.getElementById('ksc-score-fnb').textContent = '...';
+  document.getElementById('ksc-score-fnb').className   = 'ksc-score loading';
+  document.getElementById('ksc-bar-fnb').className     = 'ksc-fill loading';
+  document.getElementById('ksc-bar-fnb').style.width   = '25%';
+  document.getElementById('ksc-meta-fnb').textContent  = 'Fetching live data...';
+  document.getElementById('badge-fnb').textContent     = 'Loading...';
+  document.getElementById('badge-fnb').className       = 'score-badge loading';
+}
+
+function setFnBError(msg) {
+  document.getElementById('ksc-score-fnb').textContent = 'Error';
+  document.getElementById('ksc-score-fnb').className   = 'ksc-score critical';
+  document.getElementById('ksc-bar-fnb').style.width   = '0%';
+  document.getElementById('ksc-bar-fnb').className     = 'ksc-fill critical';
+  document.getElementById('ksc-meta-fnb').textContent  = 'Connection failed';
+  document.getElementById('badge-fnb').textContent     = 'Connection error';
+  document.getElementById('badge-fnb').className       = 'score-badge critical';
+  document.getElementById('dot-fnb').style.background  = '#b93328';
+  document.getElementById('rows-fnb').innerHTML =
+    `<div class="kpi-error"><strong>Could not connect to F&amp;B Stock script.</strong><br>${msg}</div>`;
+}
+
+// ── TECHNICAL STORE KPI FETCH ────────────────────────────
+async function fetchTechStoreKpi() {
+  setTechStoreLoading();
+  try {
+    const res  = await fetch(TECHSTORE_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ action: 'getKpiData' })
+    });
+    const data = await res.json();
+    if (data.status !== 'ok') throw new Error(data.message || 'Script returned error');
+    kpiState.techstore = { status: 'loaded', score: data.overallScore, data: data };
+    renderTechStoreKpi(data);
+    updatePortfolioScore();
+  } catch(err) {
+    kpiState.techstore.status = 'error';
+    setTechStoreError(err.message);
+  }
+}
+
+function renderTechStoreKpi(d) {
+  const cls = scoreClass(d.overallScore);
+
+  // Source card
+  const sc = document.getElementById('ksc-score-techstore');
+  sc.textContent = d.overallScore;
+  sc.className   = 'ksc-score ' + cls;
+  const bar = document.getElementById('ksc-bar-techstore');
+  bar.style.width = d.overallScore + '%';
+  bar.className   = 'ksc-fill ' + cls;
+  document.getElementById('ksc-meta-techstore').textContent =
+    d.totalItems + ' items · ' + d.storeCount + ' stores · ' +
+    (d.totalZero > 0 ? d.totalZero + ' zero-stock · ' : '') +
+    fmtTime(d.asOf);
+  document.getElementById('dot-techstore').style.background = dotColor(cls);
+
+  // Score badge
+  const badge = document.getElementById('badge-techstore');
+  badge.textContent = d.overallScore + ' / 100';
+  badge.className   = 'score-badge ' + cls;
+
+  // KPI rows
+  let html = '';
+  d.kpis.forEach(k => {
+    const c   = k.score === null ? 'pending' : k.status;
+    const pct = k.pct !== undefined ? k.pct : Math.min(k.score || 0, 100);
+    html += `<div class="kpi-row">
+      <div class="kpi-rdot ${c}"></div>
+      <div class="kpi-rinner">
+        <div class="kpi-rlbl">${k.label}</div>
+        <div class="kpi-rdetail">${k.detail}</div>
+      </div>
+      <div class="kpi-rtrack"><div class="kpi-rfill ${c}" style="width:${Math.min(pct,100)}%"></div></div>
+      <div class="kpi-rscore ${c}">${k.score !== null ? k.score : '—'}</div>
+    </div>`;
+  });
+  document.getElementById('rows-techstore').innerHTML = html;
+
+  // Failure list
+  renderFails('fail-techstore', (d.failures || []).map(f => ({
+    name: f.label, reason: f.reason, level: f.level
+  })));
+
+  // Breakdown tiles
+  const dg = document.getElementById('dept-techstore');
+  dg.style.display = 'grid';
+
+  // Store item counts
+  const covKpi = d.kpis ? d.kpis.find(k => k.id === 'ts_store_coverage') : null;
+  let storeRows = '';
+  if (covKpi && covKpi.storeItemCounts) {
+    storeRows = covKpi.storeItemCounts.map(s =>
+      `<div class="dept-row"><span>${s.store}</span><span class="dv ${s.items > 0 ? 'g' : 'c'}">${s.items} items</span></div>`
+    ).join('');
+  }
+
+  // Zero stock by store
+  const zeroKpi = d.kpis ? d.kpis.find(k => k.id === 'ts_zero_stock') : null;
+  let zeroRows = '<div class="dept-row"><span style="color:var(--text3)">No zero-stock items</span></div>';
+  if (zeroKpi && zeroKpi.storeBreakdown) {
+    const withZero = zeroKpi.storeBreakdown.filter(s => s.zeroCount > 0);
+    if (withZero.length > 0) {
+      zeroRows = withZero.map(s =>
+        `<div class="dept-row"><span>${s.store}</span><span class="dv ${s.zeroCount > 10 ? 'c' : 'w'}">${s.zeroCount} at zero</span></div>`
+      ).join('');
+    }
+  }
+
+  // Check status
+  const chkKpi = d.kpis ? d.kpis.find(k => k.id === 'ts_monthly_check') : null;
+  let checkRows = '';
+  if (chkKpi) {
+    if (chkKpi.finalizedList && chkKpi.finalizedList.length > 0) {
+      checkRows += chkKpi.finalizedList.map(s => `<div class="dept-row"><span>${s}</span><span class="dv g">Finalized</span></div>`).join('');
+    }
+    if (chkKpi.pendingList && chkKpi.pendingList.length > 0) {
+      checkRows += chkKpi.pendingList.map(s => `<div class="dept-row"><span>${s}</span><span class="dv w">Pending</span></div>`).join('');
+    }
+  }
+  if (!checkRows) checkRows = '<div class="dept-row"><span style="color:var(--text3)">No check data</span></div>';
+
+  dg.innerHTML = `
+    <div class="dept-card" style="grid-column:1/-1">
+      <div class="dept-name">Items per Store — ${d.totalItems} total across ${d.storeCount} stores</div>
+      ${storeRows}
+    </div>
+    <div class="dept-card">
+      <div class="dept-name">Zero Stock by Store</div>
+      ${zeroRows}
+    </div>
+    <div class="dept-card">
+      <div class="dept-name">Monthly Check — ${d.currentPeriod}</div>
+      ${checkRows}
+    </div>`;
+
+  document.getElementById('kpi-ts').textContent =
+    'Last refreshed: ' + new Date().toLocaleString('en-PK', {
+      timeZone:'Asia/Karachi', day:'numeric', month:'short',
+      year:'numeric', hour:'2-digit', minute:'2-digit'
+    });
+}
+function setTechStoreLoading() {
+  document.getElementById('ksc-score-techstore').textContent = '...';
+  document.getElementById('ksc-score-techstore').className   = 'ksc-score loading';
+  document.getElementById('ksc-bar-techstore').className     = 'ksc-fill loading';
+  document.getElementById('ksc-bar-techstore').style.width   = '25%';
+  document.getElementById('ksc-meta-techstore').textContent  = 'Fetching live data...';
+  document.getElementById('badge-techstore').textContent     = 'Loading...';
+  document.getElementById('badge-techstore').className       = 'score-badge loading';
+}
+
+function setTechStoreError(msg) {
+  document.getElementById('ksc-score-techstore').textContent = 'Error';
+  document.getElementById('ksc-score-techstore').className   = 'ksc-score critical';
+  document.getElementById('ksc-bar-techstore').style.width   = '0%';
+  document.getElementById('ksc-bar-techstore').className     = 'ksc-fill critical';
+  document.getElementById('ksc-meta-techstore').textContent  = 'Connection failed';
+  document.getElementById('badge-techstore').textContent     = 'Connection error';
+  document.getElementById('badge-techstore').className       = 'score-badge critical';
+  document.getElementById('dot-techstore').style.background  = '#b93328';
+  document.getElementById('rows-techstore').innerHTML =
+    `<div class="kpi-error"><strong>Could not connect to Technical Store script.</strong><br>${msg}</div>`;
+}
+
+// ── COLLAPSIBLE KPI PANELS ────────────────────────────────
+function togglePanel(id) {
+  const panel = document.getElementById(id);
+  if (panel) panel.classList.toggle('collapsed');
+}
+
+function scrollTo(id) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.remove('collapsed'); // auto-expand when clicked from source card
+  el.scrollIntoView({ behavior:'smooth', block:'start' });
+}
+// ── WARNINGS KPI FETCH ────────────────────────────────────
+async function fetchWarningsKpi() {
+  setWarningsLoading();
+  try {
+    const res  = await fetch(WARNINGS_URL, {
+      method:  'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body:    JSON.stringify({ action: 'getKpiData' })
+    });
+    const data = await res.json();
+    if (data.status !== 'ok') throw new Error(data.message || 'Script returned error');
+    kpiState.warnings = { status: 'loaded', score: data.overallScore, data: data };
+    renderWarningsKpi(data);
+    updatePortfolioScore();
+  } catch (err) {
+    kpiState.warnings.status = 'error';
+    setWarningsError(err.message);
+  }
+}
+
+function renderWarningsKpi(d) {
+  const cls = scoreClass(d.overallScore);
+
+  // Source card
+  const sc = document.getElementById('ksc-score-warnings');
+  sc.textContent = d.overallScore;
+  sc.className   = 'ksc-score ' + cls;
+  const bar = document.getElementById('ksc-bar-warnings');
+  bar.style.width = d.overallScore + '%';
+  bar.className   = 'ksc-fill ' + cls;
+  document.getElementById('ksc-meta-warnings').textContent =
+    d.totalWarnings + ' total · ' + d.activeWarnings + ' active · ' + fmtTime(d.asOf);
+  document.getElementById('dot-warnings').style.background = dotColor(cls);
+
+  // Score badge
+  const badge = document.getElementById('badge-warnings');
+  badge.textContent = d.overallScore + ' / 100';
+  badge.className   = 'score-badge ' + cls;
+
+  // KPI rows
+  let html = '';
+  d.kpis.forEach(k => {
+    const c = k.score === null ? 'pending' : k.status;
+    html += `<div class="kpi-row">
+      <div class="kpi-rdot ${c}"></div>
+      <div class="kpi-rinner">
+        <div class="kpi-rlbl">${k.label}</div>
+        <div class="kpi-rdetail">${k.detail}</div>
+      </div>
+      <div class="kpi-rtrack"><div class="kpi-rfill ${c}" style="width:${k.score||0}%"></div></div>
+      <div class="kpi-rscore ${c}">${k.score !== null ? k.score : '—'}</div>
+    </div>`;
+  });
+  document.getElementById('rows-warnings').innerHTML = html;
+
+  // Failures — what was NOT done / needs action
+  const fails = [];
+  d.kpis.forEach(k => {
+    if (k.status === 'critical' || k.status === 'warning') {
+      fails.push({ name: k.label, reason: k.detail, level: k.status });
+    }
+  });
+  // Add repeat offenders with active warnings
+  if (d.repeatOffenders && d.repeatOffenders.length) {
+    d.repeatOffenders.forEach(r => {
+      if (r.hasActive) {
+        fails.push({
+          name:   r.name,
+          reason: r.total + ' total warnings on record — currently has an active warning',
+          level:  'warning'
+        });
+      }
+    });
+  }
+  renderFails('fail-warnings', fails);
+
+  // Dept breakdown
+  if (d.deptBreakdown && d.deptBreakdown.length) {
+    const dg = document.getElementById('dept-warnings');
+    dg.style.display = 'grid';
+    dg.innerHTML = d.deptBreakdown.map(dep => {
+      const actCls  = dep.active > 1 ? 'c' : dep.active === 1 ? 'w' : 'g';
+      const finCls  = dep.final  > 0 ? 'c' : 'g';
+      return `<div class="dept-card">
+        <div class="dept-name">${dep.dept}</div>
+        <div class="dept-row"><span>Total warnings</span><span class="dv">${dep.total}</span></div>
+        <div class="dept-row"><span>Active</span><span class="dv ${actCls}">${dep.active}</span></div>
+        <div class="dept-row"><span>Final written</span><span class="dv ${finCls}">${dep.final}</span></div>
+      </div>`;
+    }).join('');
+  }
+
+  document.getElementById('kpi-ts').textContent =
+    'Last refreshed: ' + new Date().toLocaleString('en-PK', {
+      timeZone:'Asia/Karachi', day:'numeric', month:'short',
+      year:'numeric', hour:'2-digit', minute:'2-digit'
+    });
+}
+
+function setWarningsLoading() {
+  document.getElementById('ksc-score-warnings').textContent = '...';
+  document.getElementById('ksc-score-warnings').className   = 'ksc-score loading';
+  document.getElementById('ksc-bar-warnings').className     = 'ksc-fill loading';
+  document.getElementById('ksc-bar-warnings').style.width   = '25%';
+  document.getElementById('ksc-meta-warnings').textContent  = 'Fetching live data...';
+  document.getElementById('badge-warnings').textContent     = 'Loading...';
+  document.getElementById('badge-warnings').className       = 'score-badge loading';
+}
+
+function setWarningsError(msg) {
+  document.getElementById('ksc-score-warnings').textContent = 'Error';
+  document.getElementById('ksc-score-warnings').className   = 'ksc-score critical';
+  document.getElementById('ksc-bar-warnings').style.width   = '0%';
+  document.getElementById('ksc-bar-warnings').className     = 'ksc-fill critical';
+  document.getElementById('ksc-meta-warnings').textContent  = 'Connection failed';
+  document.getElementById('badge-warnings').textContent     = 'Connection error';
+  document.getElementById('badge-warnings').className       = 'score-badge critical';
+  document.getElementById('dot-warnings').style.background  = '#b93328';
+  document.getElementById('rows-warnings').innerHTML =
+    `<div class="kpi-error">
+      <strong>Could not connect to Warnings System script.</strong><br>
+      ${msg}<br><br>
+      Check that the GAS deployment is set to <em>Execute as: Me</em> and <em>Anyone</em> can access.
+      Then click ↻ Refresh above.
+    </div>`;
+}
+// ── CHAIRLIFT KPI FETCH ───────────────────────────────────
+async function fetchChairliftKpi() {
+  setChairliftLoading();
+  try {
+    const res  = await fetch(CHAIRLIFT_URL, {
+      method:  'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body:    JSON.stringify({ action: 'getKpiData' })
+    });
+    const data = await res.json();
+    if (data.status !== 'ok') throw new Error(data.message || 'Script returned error');
+    kpiState.chairlift = { status: 'loaded', score: data.overallScore, data: data };
+    renderChairliftKpi(data);
+    updatePortfolioScore();
+  } catch (err) {
+    kpiState.chairlift.status = 'error';
+    setChairliftError(err.message);
+  }
+}
+
+function renderChairliftKpi(d) {
+  const cls = scoreClass(d.overallScore);
+
+  // Source card
+  const sc = document.getElementById('ksc-score-chairlift');
+  sc.textContent = d.overallScore;
+  sc.className   = 'ksc-score ' + cls;
+  const bar = document.getElementById('ksc-bar-chairlift');
+  bar.style.width = d.overallScore + '%';
+  bar.className   = 'ksc-fill ' + cls;
+  const todayStatus = d.todayStart && d.todayClose ? 'Both checks done today'
+                    : d.todayStart ? 'Start done — close pending'
+                    : 'No checks today';
+  document.getElementById('ksc-meta-chairlift').textContent =
+    d.operatingDays + ' days · ' + todayStatus + ' · ' + fmtTime(d.asOf);
+  document.getElementById('dot-chairlift').style.background = dotColor(cls);
+
+  // Score badge
+  const badge = document.getElementById('badge-chairlift');
+  badge.textContent = d.overallScore + ' / 100';
+  badge.className   = 'score-badge ' + cls;
+
+  // KPI rows
+  let html = '';
+  d.kpis.forEach(k => {
+    const c = k.score === null ? 'pending' : k.status;
+    const pct = k.pct !== undefined ? k.pct : (k.score || 0);
+    html += `<div class="kpi-row">
+      <div class="kpi-rdot ${c}"></div>
+      <div class="kpi-rinner">
+        <div class="kpi-rlbl">${k.label}</div>
+        <div class="kpi-rdetail">${k.detail}</div>
+      </div>
+      <div class="kpi-rtrack"><div class="kpi-rfill ${c}" style="width:${Math.min(pct,100)}%"></div></div>
+      <div class="kpi-rscore ${c}">${k.score !== null ? k.score : '—'}</div>
+    </div>`;
+  });
+  document.getElementById('rows-chairlift').innerHTML = html;
+
+  // Failure list — show what was NOT done or flagged
+  const fails = [];
+  if (d.failures && d.failures.length) {
+    d.failures.forEach(f => fails.push({ name: f.label, reason: f.reason, level: f.level }));
+  }
+  // Also surface late days
+  if (d.lateDays && d.lateDays.length) {
+    d.lateDays.forEach(l => {
+      fails.push({
+        name:   l.type + ' — ' + l.date,
+        reason: 'Submitted at ' + l.submittedAt + ' (cutoff: ' + l.cutoff + ')',
+        level:  'warning'
+      });
+    });
+  }
+  // Surface duplicate days
+  if (d.duplicateDays && d.duplicateDays.length) {
+    d.duplicateDays.forEach(dup => {
+      fails.push({
+        name:   'Duplicate: ' + dup.type + ' check — ' + dup.date,
+        reason: dup.count + ' submissions on same date — only first counts, score penalised',
+        level:  'warning'
+      });
+    });
+  }
+  renderFails('fail-chairlift', fails);
+
+  // Maintenance breakdown tile
+  const mxKpi = d.kpis.find(k => k.id === 'chairlift_maintenance');
+  if (mxKpi && mxKpi.total > 0) {
+    const dg = document.getElementById('dept-chairlift');
+    dg.style.display = 'grid';
+    dg.innerHTML = `
+      <div class="dept-card">
+        <div class="dept-name">Maintenance Schedule</div>
+        <div class="dept-row"><span>Total tasks</span><span class="dv">${mxKpi.total}</span></div>
+        <div class="dept-row"><span>OK</span><span class="dv g">${mxKpi.value}</span></div>
+        <div class="dept-row"><span>Due soon</span><span class="dv w">${mxKpi.dueSoon}</span></div>
+        <div class="dept-row"><span>Overdue</span><span class="dv ${mxKpi.overdue > 0 ? 'c' : 'g'}">${mxKpi.overdue}</span></div>
+      </div>
+      <div class="dept-card">
+        <div class="dept-name">Today's Checks</div>
+        <div class="dept-row"><span>Start check</span><span class="dv ${d.todayStart ? 'g' : 'c'}">${d.todayStart ? 'Done' : 'Missing'}</span></div>
+        <div class="dept-row"><span>Start on time</span><span class="dv ${d.todayStartOnTime ? 'g' : 'w'}">${d.todayStart ? (d.todayStartOnTime ? 'Yes' : 'Late') : '—'}</span></div>
+        <div class="dept-row"><span>Close check</span><span class="dv ${d.todayClose ? 'g' : 'w'}">${d.todayClose ? 'Done' : 'Pending'}</span></div>
+        <div class="dept-row"><span>Close on time</span><span class="dv ${d.todayCloseOnTime ? 'g' : 'w'}">${d.todayClose ? (d.todayCloseOnTime ? 'Yes' : 'Late') : '—'}</span></div>
+      </div>
+      <div class="dept-card">
+        <div class="dept-name">Submission Quality</div>
+        <div class="dept-row"><span>Duplicates (30d)</span><span class="dv ${d.duplicatesLast30 > 0 ? 'w' : 'g'}">${d.duplicatesLast30}</span></div>
+        <div class="dept-row"><span>Operating days</span><span class="dv">${d.operatingDays}</span></div>
+        <div class="dept-row"><span>Meter hours</span><span class="dv">${d.currentMeterHrs}</span></div>
+      </div>`;
+  }
+
+  document.getElementById('kpi-ts').textContent =
+    'Last refreshed: ' + new Date().toLocaleString('en-PK', {
+      timeZone:'Asia/Karachi', day:'numeric', month:'short',
+      year:'numeric', hour:'2-digit', minute:'2-digit'
+    });
+}
+
+function setChairliftLoading() {
+  document.getElementById('ksc-score-chairlift').textContent = '...';
+  document.getElementById('ksc-score-chairlift').className   = 'ksc-score loading';
+  document.getElementById('ksc-bar-chairlift').className     = 'ksc-fill loading';
+  document.getElementById('ksc-bar-chairlift').style.width   = '25%';
+  document.getElementById('ksc-meta-chairlift').textContent  = 'Fetching live data...';
+  document.getElementById('badge-chairlift').textContent     = 'Loading...';
+  document.getElementById('badge-chairlift').className       = 'score-badge loading';
+}
+
+function setChairliftError(msg) {
+  document.getElementById('ksc-score-chairlift').textContent = 'Error';
+  document.getElementById('ksc-score-chairlift').className   = 'ksc-score critical';
+  document.getElementById('ksc-bar-chairlift').style.width   = '0%';
+  document.getElementById('ksc-bar-chairlift').className     = 'ksc-fill critical';
+  document.getElementById('ksc-meta-chairlift').textContent  = 'Connection failed';
+  document.getElementById('badge-chairlift').textContent     = 'Connection error';
+  document.getElementById('badge-chairlift').className       = 'score-badge critical';
+  document.getElementById('dot-chairlift').style.background  = '#b93328';
+  document.getElementById('rows-chairlift').innerHTML =
+    `<div class="kpi-error">
+      <strong>Could not connect to Chairlift Checks script.</strong><br>
+      ${msg}<br><br>
+      Check the GAS deployment is set to <em>Execute as: Me</em> and <em>Anyone</em> can access.
+    </div>`;
+}
+// ── DAILY READINESS KPI FETCH ─────────────────────────────
+async function fetchReadinessKpi() {
+  setReadinessLoading();
+  try {
+    const res  = await fetch(READINESS_URL, {
+      method:  'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body:    JSON.stringify({ action: 'getKpiData' })
+    });
+    const data = await res.json();
+    if (data.status !== 'ok') throw new Error(data.message || 'Script returned error');
+    kpiState.readiness = { status: 'loaded', score: data.overallScore, data: data };
+    renderReadinessKpi(data);
+    updatePortfolioScore();
+  } catch (err) {
+    kpiState.readiness.status = 'error';
+    setReadinessError(err.message);
+  }
+}
+
+function renderReadinessKpi(d) {
+  const cls = scoreClass(d.overallScore);
+
+  // Source card
+  const sc = document.getElementById('ksc-score-readiness');
+  sc.textContent = d.overallScore;
+  sc.className   = 'ksc-score ' + cls;
+  const bar = document.getElementById('ksc-bar-readiness');
+  bar.style.width = d.overallScore + '%';
+  bar.className   = 'ksc-fill ' + cls;
+  const todayTxt = d.submittedToday ? 'Submitted today' : 'Not yet submitted today';
+  document.getElementById('ksc-meta-readiness').textContent =
+    d.totalActivities + ' activities · ' + todayTxt + ' · ' + fmtTime(d.asOf);
+  document.getElementById('dot-readiness').style.background = dotColor(cls);
+
+  // Score badge
+  const badge = document.getElementById('badge-readiness');
+  badge.textContent = d.overallScore + ' / 100';
+  badge.className   = 'score-badge ' + cls;
+
+  // KPI rows
+  let html = '';
+  d.kpis.forEach(k => {
+    const c   = k.score === null ? 'pending' : k.status;
+    const pct = k.pct !== undefined ? k.pct : (k.value !== undefined ? Math.min(k.value, 100) : (k.score || 0));
+    html += `<div class="kpi-row">
+      <div class="kpi-rdot ${c}"></div>
+      <div class="kpi-rinner">
+        <div class="kpi-rlbl">${k.label}</div>
+        <div class="kpi-rdetail">${k.detail}</div>
+      </div>
+      <div class="kpi-rtrack"><div class="kpi-rfill ${c}" style="width:${Math.min(pct,100)}%"></div></div>
+      <div class="kpi-rscore ${c}">${k.score !== null ? k.score : '—'}</div>
+    </div>`;
+  });
+  document.getElementById('rows-readiness').innerHTML = html;
+
+  // Failure list
+  const fails = [];
+  if (d.failures && d.failures.length) {
+    d.failures.forEach(f => fails.push({ name: f.label, reason: f.reason, level: f.level }));
+  }
+  renderFails('fail-readiness', fails);
+
+  // Dept breakdown tiles
+  const dg = document.getElementById('dept-readiness');
+  dg.style.display = 'grid';
+  const certKpi = d.kpis.find(k => k.id === 'readiness_cert_compliance');
+  const egKpi   = d.kpis.find(k => k.id === 'readiness_egate_staffing');
+  const actKpi  = d.kpis.find(k => k.id === 'readiness_activity_ops');
+
+  let certRows = '';
+  if (certKpi && certKpi.certs) {
+    certKpi.certs.forEach(c => {
+      const sc = c.status === 'expired' ? 'c' : c.status === 'expiring' ? 'w' : 'g';
+      const label = c.status === 'expired' ? 'EXPIRED' : c.status === 'expiring' ? c.daysRemaining + 'd left' : 'Valid';
+      certRows += `<div class="dept-row"><span>${c.name}</span><span class="dv ${sc}">${label}</span></div>`;
+    });
+  }
+
+  let topInactiveRows = '';
+  if (d.topInactive && d.topInactive.length) {
+    d.topInactive.slice(0,3).forEach(a => {
+      topInactiveRows += `<div class="dept-row"><span>${a.name}</span><span class="dv ${a.days >= 5 ? 'w' : 'g'}">${a.days}d</span></div>`;
+    });
+  } else {
+    topInactiveRows = '<div class="dept-row"><span style="color:var(--text3)">No inactivity recorded</span></div>';
+  }
+
+  dg.innerHTML = `
+    <div class="dept-card">
+      <div class="dept-name">Certifications</div>
+      ${certRows || '<div class="dept-row"><span style="color:var(--text3)">No data</span></div>'}
+    </div>
+    <div class="dept-card">
+      <div class="dept-name">Egate Staffing (30d)</div>
+      <div class="dept-row"><span>Avg compliance</span><span class="dv ${egKpi && egKpi.value === 100 ? 'g' : 'w'}">${egKpi ? egKpi.value + '%' : '—'}</span></div>
+      <div class="dept-row"><span>Fail days</span><span class="dv ${egKpi && egKpi.failDays > 0 ? 'w' : 'g'}">${egKpi ? egKpi.failDays : '—'}</span></div>
+    </div>
+    <div class="dept-card">
+      <div class="dept-name">Top Inactive Activities</div>
+      ${topInactiveRows}
+    </div>
+    <div class="dept-card">
+      <div class="dept-name">Today's Status</div>
+      <div class="dept-row"><span>Submitted</span><span class="dv ${d.submittedToday ? 'g' : 'c'}">${d.submittedToday ? 'Yes' : 'No'}</span></div>
+      <div class="dept-row"><span>Avg ops rate</span><span class="dv ${actKpi && actKpi.value >= 85 ? 'g' : 'w'}">${actKpi ? actKpi.value + '%' : '—'}</span></div>
+    </div>`;
+
+  document.getElementById('kpi-ts').textContent =
+    'Last refreshed: ' + new Date().toLocaleString('en-PK', {
+      timeZone:'Asia/Karachi', day:'numeric', month:'short',
+      year:'numeric', hour:'2-digit', minute:'2-digit'
+    });
+}
+
+function setReadinessLoading() {
+  document.getElementById('ksc-score-readiness').textContent = '...';
+  document.getElementById('ksc-score-readiness').className   = 'ksc-score loading';
+  document.getElementById('ksc-bar-readiness').className     = 'ksc-fill loading';
+  document.getElementById('ksc-bar-readiness').style.width   = '25%';
+  document.getElementById('ksc-meta-readiness').textContent  = 'Fetching live data...';
+  document.getElementById('badge-readiness').textContent     = 'Loading...';
+  document.getElementById('badge-readiness').className       = 'score-badge loading';
+}
+
+function setReadinessError(msg) {
+  document.getElementById('ksc-score-readiness').textContent = 'Error';
+  document.getElementById('ksc-score-readiness').className   = 'ksc-score critical';
+  document.getElementById('ksc-bar-readiness').style.width   = '0%';
+  document.getElementById('ksc-bar-readiness').className     = 'ksc-fill critical';
+  document.getElementById('ksc-meta-readiness').textContent  = 'Connection failed';
+  document.getElementById('badge-readiness').textContent     = 'Connection error';
+  document.getElementById('badge-readiness').className       = 'score-badge critical';
+  document.getElementById('dot-readiness').style.background  = '#b93328';
+  document.getElementById('rows-readiness').innerHTML =
+    `<div class="kpi-error">
+      <strong>Could not connect to Daily Readiness script.</strong><br>
+      ${msg}<br><br>
+      Check the GAS deployment is set to <em>Execute as: Me</em> and <em>Anyone</em> can access.
+    </div>`;
+}
+// ── PR FUND KPI FETCH ─────────────────────────────────────
+async function fetchPrFundKpi() {
+  setPrFundLoading();
+  try {
+    const res  = await fetch(PRFUND_URL, {
+      method:  'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body:    JSON.stringify({ action: 'getKpiData' })
+    });
+    const data = await res.json();
+    if (data.status !== 'ok') throw new Error(data.message || 'Script returned error');
+    kpiState.prfund = { status: 'loaded', score: data.overallScore, data: data };
+    renderPrFundKpi(data);
+    updatePortfolioScore();
+  } catch (err) {
+    kpiState.prfund.status = 'error';
+    setPrFundError(err.message);
+  }
+}
+
+function renderPrFundKpi(d) {
+  const cls = scoreClass(d.overallScore);
+
+  // Source card
+  const sc = document.getElementById('ksc-score-prfund');
+  sc.textContent = d.overallScore;
+  sc.className   = 'ksc-score ' + cls;
+  const bar = document.getElementById('ksc-bar-prfund');
+  bar.style.width = d.overallScore + '%';
+  bar.className   = 'ksc-fill ' + cls;
+  document.getElementById('ksc-meta-prfund').textContent =
+    'PKR ' + (d.currentSpend || 0).toLocaleString() + ' of ' + (d.cap || 0).toLocaleString() +
+    ' · ' + d.currentPct + '% used · ' + fmtTime(d.asOf);
+  document.getElementById('dot-prfund').style.background = dotColor(cls);
+
+  // Score badge
+  const badge = document.getElementById('badge-prfund');
+  badge.textContent = d.overallScore + ' / 100';
+  badge.className   = 'score-badge ' + cls;
+
+  // KPI rows
+  let html = '';
+  d.kpis.forEach(k => {
+    const c   = k.score === null ? 'pending' : k.status;
+    const pct = k.pct !== undefined ? k.pct : Math.min(k.score || 0, 100);
+    html += `<div class="kpi-row">
+      <div class="kpi-rdot ${c}"></div>
+      <div class="kpi-rinner">
+        <div class="kpi-rlbl">${k.label}</div>
+        <div class="kpi-rdetail">${k.detail}</div>
+      </div>
+      <div class="kpi-rtrack"><div class="kpi-rfill ${c}" style="width:${Math.min(pct,100)}%"></div></div>
+      <div class="kpi-rscore ${c}">${k.score !== null ? k.score : '—'}</div>
+    </div>`;
+  });
+  document.getElementById('rows-prfund').innerHTML = html;
+
+  // Failure list
+  renderFails('fail-prfund', (d.failures || []).map(f => ({
+    name: f.label, reason: f.reason, level: f.level
+  })));
+
+  // Breakdown tiles — spend history + ISB IOU
+  const dg = document.getElementById('dept-prfund');
+  dg.style.display = 'grid';
+
+  // Spend history rows
+  let histRows = '';
+  if (d.spendHistory && d.spendHistory.length) {
+    d.spendHistory.slice(-4).forEach(h => {
+      const pctCls = h.isOver ? 'c' : h.pct >= 90 ? 'w' : 'g';
+      histRows += `<div class="dept-row">
+        <span>${h.label}</span>
+        <span class="dv ${pctCls}">PKR ${(h.spend || 0).toLocaleString()} <span style="font-weight:400;font-size:10px">(${h.pct}%)</span></span>
+      </div>`;
+    });
+  }
+
+  // IOU status
+  const iouKpi = d.kpis ? d.kpis.find(k => k.id === 'pr_isb_iou') : null;
+  let iouRows = '';
+  if (iouKpi && iouKpi.unpaidMonths && iouKpi.unpaidMonths.length) {
+    iouKpi.unpaidMonths.forEach(u => {
+      iouRows += `<div class="dept-row"><span>${u.label}</span><span class="dv c">PKR ${(u.amount||0).toLocaleString()}</span></div>`;
+    });
+  } else {
+    iouRows = '<div class="dept-row"><span style="color:var(--text3)">All ISB bills paid</span></div>';
+  }
+
+  // Late submissions
+  const timingKpi = d.kpis ? d.kpis.find(k => k.id === 'pr_submission_timing') : null;
+  let lateRows = '';
+  if (timingKpi && timingKpi.lateEntries && timingKpi.lateEntries.length) {
+    timingKpi.lateEntries.slice(0, 3).forEach(le => {
+      lateRows += `<div class="dept-row">
+        <span>${le.requester || le.prRef || '—'} (${le.entryDate})</span>
+        <span class="dv w">${Math.abs(le.gapDays)}d late</span>
+      </div>`;
+    });
+  } else {
+    lateRows = '<div class="dept-row"><span style="color:var(--text3)">All entries submitted on time</span></div>';
+  }
+
+  dg.innerHTML = `
+    <div class="dept-card">
+      <div class="dept-name">Spend History (last 4 months)</div>
+      ${histRows || '<div class="dept-row"><span style="color:var(--text3)">No data</span></div>'}
+    </div>
+    <div class="dept-card">
+      <div class="dept-name">ISB IOU Outstanding</div>
+      ${iouRows}
+    </div>
+    <div class="dept-card">
+      <div class="dept-name">Late Submissions</div>
+      ${lateRows}
+    </div>`;
+
+  document.getElementById('kpi-ts').textContent =
+    'Last refreshed: ' + new Date().toLocaleString('en-PK', {
+      timeZone:'Asia/Karachi', day:'numeric', month:'short',
+      year:'numeric', hour:'2-digit', minute:'2-digit'
+    });
+}
+
+function setPrFundLoading() {
+  document.getElementById('ksc-score-prfund').textContent = '...';
+  document.getElementById('ksc-score-prfund').className   = 'ksc-score loading';
+  document.getElementById('ksc-bar-prfund').className     = 'ksc-fill loading';
+  document.getElementById('ksc-bar-prfund').style.width   = '25%';
+  document.getElementById('ksc-meta-prfund').textContent  = 'Fetching live data...';
+  document.getElementById('badge-prfund').textContent     = 'Loading...';
+  document.getElementById('badge-prfund').className       = 'score-badge loading';
+}
+
+function setPrFundError(msg) {
+  document.getElementById('ksc-score-prfund').textContent = 'Error';
+  document.getElementById('ksc-score-prfund').className   = 'ksc-score critical';
+  document.getElementById('ksc-bar-prfund').style.width   = '0%';
+  document.getElementById('ksc-bar-prfund').className     = 'ksc-fill critical';
+  document.getElementById('ksc-meta-prfund').textContent  = 'Connection failed';
+  document.getElementById('badge-prfund').textContent     = 'Connection error';
+  document.getElementById('badge-prfund').className       = 'score-badge critical';
+  document.getElementById('dot-prfund').style.background  = '#b93328';
+  document.getElementById('rows-prfund').innerHTML =
+    `<div class="kpi-error">
+      <strong>Could not connect to PR Fund script.</strong><br>
+      ${msg}<br><br>
+      Check GAS deployment is set to <em>Execute as: Me</em> and <em>Anyone</em> can access.
+    </div>`;
+}
+// ── PROCUREMENT KPI FETCH ─────────────────────────────────
+async function fetchProcurementKpi() {
+  setProcurementLoading();
+  try {
+    const res  = await fetch(PROCUREMENT_URL, {
+      method:  'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body:    JSON.stringify({ action: 'getKpiData' })
+    });
+    const data = await res.json();
+    if (data.status !== 'ok') throw new Error(data.message || 'Script returned error');
+    kpiState.procurement = { status: 'loaded', score: data.overallScore, data: data };
+    renderProcurementKpi(data);
+    updatePortfolioScore();
+  } catch (err) {
+    kpiState.procurement.status = 'error';
+    setProcurementError(err.message);
+  }
+}
+
+function renderProcurementKpi(d) {
+  const cls = scoreClass(d.overallScore);
+
+  // Source card
+  const sc = document.getElementById('ksc-score-procurement');
+  sc.textContent = d.overallScore;
+  sc.className   = 'ksc-score ' + cls;
+  const bar = document.getElementById('ksc-bar-procurement');
+  bar.style.width = d.overallScore + '%';
+  bar.className   = 'ksc-fill ' + cls;
+  document.getElementById('ksc-meta-procurement').textContent =
+    (d.totalPrfs || 0) + ' PRFs · ' + (d.totalGrns || 0) + ' GRNs · ' +
+    (d.openPrfs || 0) + ' open · ' + fmtTime(d.asOf);
+  document.getElementById('dot-procurement').style.background = dotColor(cls);
+
+  // Score badge
+  const badge = document.getElementById('badge-procurement');
+  badge.textContent = d.overallScore + ' / 100';
+  badge.className   = 'score-badge ' + cls;
+
+  // KPI rows
+  let html = '';
+  d.kpis.forEach(k => {
+    const c   = k.score === null ? 'pending' : k.status;
+    const pct = k.pct !== undefined ? k.pct : Math.min(k.score || 0, 100);
+    html += `<div class="kpi-row">
+      <div class="kpi-rdot ${c}"></div>
+      <div class="kpi-rinner">
+        <div class="kpi-rlbl">${k.label}</div>
+        <div class="kpi-rdetail">${k.detail}</div>
+      </div>
+      <div class="kpi-rtrack"><div class="kpi-rfill ${c}" style="width:${Math.min(pct,100)}%"></div></div>
+      <div class="kpi-rscore ${c}">${k.score !== null ? k.score : '—'}</div>
+    </div>`;
+  });
+  document.getElementById('rows-procurement').innerHTML = html;
+
+  // Failure list
+  renderFails('fail-procurement', (d.failures || []).map(f => ({
+    name: f.label, reason: f.reason, level: f.level
+  })));
+
+  // Entity breakdown tiles
+  const dg = document.getElementById('dept-procurement');
+  dg.style.display = 'grid';
+
+  let entityRows = '';
+  if (d.entitySummary) {
+    Object.keys(d.entitySummary).forEach(ent => {
+      const e = d.entitySummary[ent];
+      const openCls = (e.openPrfs + e.openGrns) > 3 ? 'c' : (e.openPrfs + e.openGrns) > 0 ? 'w' : 'g';
+      entityRows += `<div class="dept-card">
+        <div class="dept-name">${ent}</div>
+        <div class="dept-row"><span>PRFs total</span><span class="dv">${e.prfs}</span></div>
+        <div class="dept-row"><span>GRNs total</span><span class="dv">${e.grns}</span></div>
+        <div class="dept-row"><span>Open PRFs</span><span class="dv ${e.openPrfs > 0 ? 'w' : 'g'}">${e.openPrfs}</span></div>
+        <div class="dept-row"><span>Open GRNs</span><span class="dv ${e.openGrns > 0 ? 'w' : 'g'}">${e.openGrns}</span></div>
+      </div>`;
+    });
+  }
+
+  // Late submissions summary
+  const timingKpi = d.kpis ? d.kpis.find(k => k.id === 'proc_submission_timing') : null;
+  let lateRows = '';
+  if (timingKpi && timingKpi.lateEntries && timingKpi.lateEntries.length) {
+    timingKpi.lateEntries.slice(0, 4).forEach(le => {
+      lateRows += `<div class="dept-row">
+        <span>${le.type}: ${le.ref} — ${le.name || '—'} (${le.dept || '—'})</span>
+        <span class="dv ${Math.abs(le.gapDays) >= 3 ? 'c' : 'w'}">${Math.abs(le.gapDays)}d late</span>
+      </div>`;
+    });
+  } else {
+    lateRows = '<div class="dept-row"><span style="color:var(--text3)">All documents submitted on time</span></div>';
+  }
+
+  dg.innerHTML = (entityRows || '<div class="dept-card"><div class="dept-name" style="color:var(--text3)">No entity data</div></div>') +
+    `<div class="dept-card" style="grid-column:1/-1">
+      <div class="dept-name">Late Submissions (by Person / Dept)</div>
+      ${lateRows}
+    </div>`;
+
+  document.getElementById('kpi-ts').textContent =
+    'Last refreshed: ' + new Date().toLocaleString('en-PK', {
+      timeZone:'Asia/Karachi', day:'numeric', month:'short',
+      year:'numeric', hour:'2-digit', minute:'2-digit'
+    });
+}
+
+function setProcurementLoading() {
+  document.getElementById('ksc-score-procurement').textContent = '...';
+  document.getElementById('ksc-score-procurement').className   = 'ksc-score loading';
+  document.getElementById('ksc-bar-procurement').className     = 'ksc-fill loading';
+  document.getElementById('ksc-bar-procurement').style.width   = '25%';
+  document.getElementById('ksc-meta-procurement').textContent  = 'Fetching live data...';
+  document.getElementById('badge-procurement').textContent     = 'Loading...';
+  document.getElementById('badge-procurement').className       = 'score-badge loading';
+}
+
+function setProcurementError(msg) {
+  document.getElementById('ksc-score-procurement').textContent = 'Error';
+  document.getElementById('ksc-score-procurement').className   = 'ksc-score critical';
+  document.getElementById('ksc-bar-procurement').style.width   = '0%';
+  document.getElementById('ksc-bar-procurement').className     = 'ksc-fill critical';
+  document.getElementById('ksc-meta-procurement').textContent  = 'Connection failed';
+  document.getElementById('badge-procurement').textContent     = 'Connection error';
+  document.getElementById('badge-procurement').className       = 'score-badge critical';
+  document.getElementById('dot-procurement').style.background  = '#b93328';
+  document.getElementById('rows-procurement').innerHTML =
+    `<div class="kpi-error">
+      <strong>Could not connect to Procurement Hub script.</strong><br>
+      ${msg}<br><br>
+      Check GAS deployment is set to <em>Execute as: Me</em> and <em>Anyone</em> can access.
+    </div>`;
+}
+// ── ADVENTURE CHECKS KPI FETCH ────────────────────────────
+async function fetchAdventureKpi() {
+  setAdventureLoading();
+  try {
+    const res  = await fetch(ADVENTURE_URL, {
+      method:  'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body:    JSON.stringify({ action: 'getKpiData' })
+    });
+    const data = await res.json();
+    if (data.status !== 'ok') throw new Error(data.message || 'Script returned error');
+    kpiState.adventure = { status: 'loaded', score: data.overallScore, data: data };
+    renderAdventureKpi(data);
+    updatePortfolioScore();
+  } catch (err) {
+    kpiState.adventure.status = 'error';
+    setAdventureError(err.message);
+  }
+}
+
+function renderAdventureKpi(d) {
+  const cls = scoreClass(d.overallScore);
+
+  // Source card
+  const sc = document.getElementById('ksc-score-adventure');
+  sc.textContent = d.overallScore;
+  sc.className   = 'ksc-score ' + cls;
+  const bar = document.getElementById('ksc-bar-adventure');
+  bar.style.width = d.overallScore + '%';
+  bar.className   = 'ksc-fill ' + cls;
+  document.getElementById('ksc-meta-adventure').textContent =
+    (d.submittedToday || 0) + '/4 today · ' +
+    (d.certValid || 0) + '/' + (d.certTotal || 30) + ' certs valid · ' +
+    fmtTime(d.asOf);
+  document.getElementById('dot-adventure').style.background = dotColor(cls);
+
+  // Score badge
+  const badge = document.getElementById('badge-adventure');
+  badge.textContent = d.overallScore + ' / 100';
+  badge.className   = 'score-badge ' + cls;
+
+  // KPI rows
+  let html = '';
+  d.kpis.forEach(k => {
+    const c   = k.score === null ? 'pending' : k.status;
+    const pct = k.pct !== undefined ? k.pct : Math.min(k.score || 0, 100);
+    html += `<div class="kpi-row">
+      <div class="kpi-rdot ${c}"></div>
+      <div class="kpi-rinner">
+        <div class="kpi-rlbl">${k.label}</div>
+        <div class="kpi-rdetail">${k.detail}</div>
+      </div>
+      <div class="kpi-rtrack"><div class="kpi-rfill ${c}" style="width:${Math.min(pct,100)}%"></div></div>
+      <div class="kpi-rscore ${c}">${k.score !== null ? k.score : '—'}</div>
+    </div>`;
+  });
+  document.getElementById('rows-adventure').innerHTML = html;
+
+  // Failure list
+  renderFails('fail-adventure', (d.failures || []).map(f => ({
+    name: f.label, reason: f.reason, level: f.level
+  })));
+
+  // Breakdown tiles
+  const dg = document.getElementById('dept-adventure');
+  dg.style.display = 'grid';
+
+  // Activity pass rates
+  const rateKpi = d.kpis ? d.kpis.find(k => k.id === 'adv_pass_rate') : null;
+  let actRows = '';
+  if (rateKpi && rateKpi.activityRates) {
+    rateKpi.activityRates.forEach(a => {
+      const rateCls = a.rate === null ? '' : a.rate >= 90 ? 'g' : a.rate >= 70 ? 'w' : 'c';
+      actRows += `<div class="dept-row">
+        <span>${a.label}</span>
+        <span class="dv ${rateCls}">${a.rate !== null ? a.rate + '%' : '—'} <span style="font-weight:400;font-size:10px">(${a.clear}/${a.total})</span></span>
+      </div>`;
+    });
+  }
+
+  // Cert status
+  const certKpi = d.kpis ? d.kpis.find(k => k.id === 'adv_cert_compliance') : null;
+  let certRows = '';
+  if (certKpi) {
+    if (certKpi.expiredList && certKpi.expiredList.length) {
+      certKpi.expiredList.forEach(c => {
+        certRows += `<div class="dept-row"><span>${c.activity} — ${c.component}</span><span class="dv c">EXPIRED</span></div>`;
+      });
+    }
+    if (certKpi.criticalList && certKpi.criticalList.length) {
+      certKpi.criticalList.forEach(c => {
+        certRows += `<div class="dept-row"><span>${c.activity} — ${c.component}</span><span class="dv c">${c.days}d left</span></div>`;
+      });
+    }
+    if (certKpi.dueSoonList && certKpi.dueSoonList.length) {
+      certKpi.dueSoonList.slice(0,3).forEach(c => {
+        certRows += `<div class="dept-row"><span>${c.activity} — ${c.component}</span><span class="dv w">${c.days}d left</span></div>`;
+      });
+    }
+    if (!certRows) certRows = `<div class="dept-row"><span style="color:var(--text3)">${certKpi.pending === certKpi.total ? 'Expiry dates not yet entered' : certKpi.value + ' of ' + certKpi.total + ' certs valid'}</span></div>`;
+  }
+
+  // Today status per activity
+  const todayKpi = d.kpis ? d.kpis.find(k => k.id === 'adv_today_completion') : null;
+  const actionKpi = d.kpis ? d.kpis.find(k => k.id === 'adv_action_required') : null;
+  let todayRows = '';
+  const actLabels = ['Zipline','Giant Swing','Slingshot','Chairlift Rescue'];
+  const notSub = todayKpi ? (todayKpi.notSubmitted || []) : [];
+  actLabels.forEach(a => {
+    const isNot = notSub.includes(a);
+    const actionItem = actionKpi ? (actionKpi.actionRequired || []).find(x => x.label === a) : null;
+    const cls = isNot ? 'c' : actionItem ? 'w' : 'g';
+    const label = isNot ? 'Not submitted' : actionItem ? 'ACTION REQUIRED' : 'ALL CLEAR';
+    todayRows += `<div class="dept-row"><span>${a}</span><span class="dv ${cls}">${label}</span></div>`;
+  });
+
+  dg.innerHTML = `
+    <div class="dept-card">
+      <div class="dept-name">Pass Rate by Activity</div>
+      ${actRows || '<div class="dept-row"><span style="color:var(--text3)">No data</span></div>'}
+    </div>
+    <div class="dept-card">
+      <div class="dept-name">Certification Alerts</div>
+      ${certRows}
+    </div>
+    <div class="dept-card" style="grid-column:1/-1">
+      <div class="dept-name">Today's Status — All Activities</div>
+      ${todayRows}
+    </div>`;
+
+  document.getElementById('kpi-ts').textContent =
+    'Last refreshed: ' + new Date().toLocaleString('en-PK', {
+      timeZone:'Asia/Karachi', day:'numeric', month:'short',
+      year:'numeric', hour:'2-digit', minute:'2-digit'
+    });
+}
+
+function setAdventureLoading() {
+  document.getElementById('ksc-score-adventure').textContent = '...';
+  document.getElementById('ksc-score-adventure').className   = 'ksc-score loading';
+  document.getElementById('ksc-bar-adventure').className     = 'ksc-fill loading';
+  document.getElementById('ksc-bar-adventure').style.width   = '25%';
+  document.getElementById('ksc-meta-adventure').textContent  = 'Fetching live data...';
+  document.getElementById('badge-adventure').textContent     = 'Loading...';
+  document.getElementById('badge-adventure').className       = 'score-badge loading';
+}
+
+function setAdventureError(msg) {
+  document.getElementById('ksc-score-adventure').textContent = 'Error';
+  document.getElementById('ksc-score-adventure').className   = 'ksc-score critical';
+  document.getElementById('ksc-bar-adventure').style.width   = '0%';
+  document.getElementById('ksc-bar-adventure').className     = 'ksc-fill critical';
+  document.getElementById('ksc-meta-adventure').textContent  = 'Connection failed';
+  document.getElementById('badge-adventure').textContent     = 'Connection error';
+  document.getElementById('badge-adventure').className       = 'score-badge critical';
+  document.getElementById('dot-adventure').style.background  = '#b93328';
+  document.getElementById('rows-adventure').innerHTML =
+    `<div class="kpi-error">
+      <strong>Could not connect to Adventure Checks script.</strong><br>
+      ${msg}<br><br>
+      Check GAS deployment is set to <em>Execute as: Me</em> and <em>Anyone</em> can access.
+    </div>`;
+}
+const SOP_URL = 'https://script.google.com/macros/s/AKfycby41Z-4TJt0SHjDpvlYb8hwLi_CTjQ-ru7mukMMlJLS1xSpr3uAx1Nps7xwkojx8YvD/exec';
+
+// ── SOP STATE ─────────────────────────────────────────────
+let sopData = [];
+
+async function loadSops() {
+  if (!SOP_URL) {
+    document.getElementById('sop-error').style.display = 'block';
+    document.getElementById('sop-error-msg').textContent = 'SOP_URL not configured — paste the GAS exec URL into index.html.';
+    document.getElementById('sop-stats').textContent = '';
+    return;
+  }
+  document.getElementById('sop-stats').textContent = 'Loading...';
+  document.getElementById('sop-error').style.display  = 'none';
+  document.getElementById('sop-empty').style.display  = 'none';
+  document.getElementById('sop-grid').innerHTML = `
+    <div class="card" style="animation:pulse 1.5s infinite"><div class="skel" style="height:14px;width:60%;margin-bottom:8px"></div><div class="skel" style="height:10px;width:40%"></div></div>
+    <div class="card" style="animation:pulse 1.5s infinite"><div class="skel" style="height:14px;width:70%;margin-bottom:8px"></div><div class="skel" style="height:10px;width:50%"></div></div>
+    <div class="card" style="animation:pulse 1.5s infinite"><div class="skel" style="height:14px;width:55%;margin-bottom:8px"></div><div class="skel" style="height:10px;width:45%"></div></div>`;
+  try {
+    const res  = await fetch(SOP_URL, {
+      method:  'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body:    JSON.stringify({ action: 'getSops' })
+    });
+    const data = await res.json();
+    if (data.status !== 'ok') throw new Error(data.message || 'Script error');
+    sopData = data.sops || [];
+
+    // Populate filter dropdowns
+    const sysSel  = document.getElementById('sop-filter-system');
+    const deptSel = document.getElementById('sop-filter-dept');
+    sysSel.innerHTML  = '<option value="">All Systems</option>';
+    deptSel.innerHTML = '<option value="">All Departments</option>';
+    (data.systems || []).forEach(s => { sysSel.innerHTML  += `<option value="${s}">${s}</option>`; });
+    (data.depts   || []).forEach(d => { deptSel.innerHTML += `<option value="${d}">${d}</option>`; });
+
+    filterSops();
+  } catch(err) {
+    document.getElementById('sop-grid').innerHTML = '';
+    document.getElementById('sop-error').style.display = 'block';
+    document.getElementById('sop-error-msg').textContent = err.message;
+    document.getElementById('sop-stats').textContent = '';
+  }
+}
+
+function filterSops() {
+  const q       = (document.getElementById('sop-search').value || '').toLowerCase().trim();
+  const system  = document.getElementById('sop-filter-system').value;
+  const dept    = document.getElementById('sop-filter-dept').value;
+
+  const filtered = sopData.filter(s => {
+    const matchQ = !q ||
+      s.title.toLowerCase().includes(q) ||
+      s.system.toLowerCase().includes(q) ||
+      s.dept.toLowerCase().includes(q) ||
+      s.desc.toLowerCase().includes(q);
+    const matchSys  = !system || s.system === system;
+    const matchDept = !dept   || s.dept   === dept;
+    return matchQ && matchSys && matchDept;
+  });
+
+  document.getElementById('sop-stats').textContent =
+    filtered.length + ' of ' + sopData.length + ' document' + (sopData.length !== 1 ? 's' : '') +
+    (q || system || dept ? ' (filtered)' : '');
+
+  const grid = document.getElementById('sop-grid');
+  const empty = document.getElementById('sop-empty');
+
+  if (filtered.length === 0) {
+    grid.innerHTML = '';
+    empty.style.display = 'block';
+    return;
+  }
+  empty.style.display = 'none';
+
+  // Group by system
+  const grouped = {};
+  filtered.forEach(s => {
+    const key = s.system || 'General';
+    if (!grouped[key]) grouped[key] = [];
+    grouped[key].push(s);
+  });
+
+  let html = '';
+  Object.keys(grouped).sort().forEach(sys => {
+    grouped[sys].forEach(s => {
+      const hasFile = !!s.fileId;
+      html += `
+        <div class="card" style="padding:14px 16px;display:flex;flex-direction:column;gap:8px">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
+            <div style="font-size:13px;font-weight:600;color:var(--text);line-height:1.3">${s.title}</div>
+            <span style="flex-shrink:0;font-size:10px;font-weight:700;padding:2px 7px;border-radius:10px;background:var(--green3);color:var(--green)">${s.version || '—'}</span>
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap">
+            ${s.system ? `<span style="font-size:10px;padding:2px 8px;border-radius:10px;background:#eff6ff;color:#1660a0;font-weight:600">${s.system}</span>` : ''}
+            ${s.dept   ? `<span style="font-size:10px;padding:2px 8px;border-radius:10px;background:var(--surface2);color:var(--text2)">${s.dept}</span>` : ''}
+          </div>
+          ${s.desc ? `<div style="font-size:11px;color:var(--text3);line-height:1.4">${s.desc}</div>` : ''}
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:4px">
+            <div style="font-size:10px;color:var(--text3)">${s.date || ''}</div>
+            <div style="display:flex;gap:6px">
+              ${hasFile
+                ? `<a href="${s.viewUrl}" target="_blank" style="font-size:11px;font-weight:600;padding:4px 10px;border-radius:5px;background:var(--green);color:#fff;text-decoration:none">Open ↗</a>
+                   <a href="${s.downloadUrl}" target="_blank" style="font-size:11px;font-weight:600;padding:4px 10px;border-radius:5px;background:var(--surface2);color:var(--text2);text-decoration:none">↓</a>`
+                : `<span style="font-size:11px;color:var(--text3);font-style:italic">No file linked</span>`
+              }
+            </div>
+          </div>
+        </div>`;
+    });
+  });
+  grid.innerHTML = html;
+}
+// ── PISTENBULLY KPI FETCH ─────────────────────────────────
+async function fetchPistenBullyKpi() {
+  setPistenBullyLoading();
+  try {
+    const res  = await fetch(PISTENBULLY_URL, {
+      method:  'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body:    JSON.stringify({ action: 'getKpiData' })
+    });
+    const data = await res.json();
+    if (data.status !== 'ok') throw new Error(data.message || 'Script returned error');
+    kpiState.pistenbully = { status: 'loaded', score: data.overallScore, data: data };
+    renderPistenBullyKpi(data);
+    updatePortfolioScore();
+  } catch (err) {
+    kpiState.pistenbully.status = 'error';
+    setPistenBullyError(err.message);
+  }
+}
+
+function renderPistenBullyKpi(d) {
+  const cls = scoreClass(d.overallScore);
+
+  // Source card
+  const sc = document.getElementById('ksc-score-pistenbully');
+  sc.textContent = d.overallScore;
+  sc.className   = 'ksc-score ' + cls;
+  const bar = document.getElementById('ksc-bar-pistenbully');
+  bar.style.width = d.overallScore + '%';
+  bar.className   = 'ksc-fill ' + cls;
+  document.getElementById('ksc-meta-pistenbully').textContent =
+    (d.currentHours || 0).toFixed(1) + ' hrs · ' +
+    (d.opToday ? 'Op submitted' : 'Op NOT submitted') + ' · ' +
+    fmtTime(d.asOf);
+  document.getElementById('dot-pistenbully').style.background = dotColor(cls);
+
+  // Score badge
+  const badge = document.getElementById('badge-pistenbully');
+  badge.textContent = d.overallScore + ' / 100';
+  badge.className   = 'score-badge ' + cls;
+
+  // KPI rows
+  let html = '';
+  d.kpis.forEach(k => {
+    const c   = k.score === null ? 'pending' : k.status;
+    const pct = k.pct !== undefined ? k.pct : Math.min(k.score || 0, 100);
+    html += `<div class="kpi-row">
+      <div class="kpi-rdot ${c}"></div>
+      <div class="kpi-rinner">
+        <div class="kpi-rlbl">${k.label}</div>
+        <div class="kpi-rdetail">${k.detail}</div>
+      </div>
+      <div class="kpi-rtrack"><div class="kpi-rfill ${c}" style="width:${Math.min(pct,100)}%"></div></div>
+      <div class="kpi-rscore ${c}">${k.score !== null ? k.score : '—'}</div>
+    </div>`;
+  });
+  document.getElementById('rows-pistenbully').innerHTML = html;
+
+  // Failure list
+  renderFails('fail-pistenbully', (d.failures || []).map(f => ({
+    name: f.label, reason: f.reason, level: f.level
+  })));
+
+  // Breakdown tiles
+  const dg = document.getElementById('dept-pistenbully');
+  dg.style.display = 'grid';
+
+  // Maintenance tasks
+  const maintKpi = d.kpis ? d.kpis.find(k => k.id === 'pb_maintenance_compliance') : null;
+  let maintRows = '';
+  if (maintKpi && d.maintTasks) {
+    d.maintTasks.forEach(t => {
+      const cls2 = t.status === 'DUE' ? (t.remaining <= 0 ? 'c' : 'w') : t.status === 'SOON' ? 'w' : 'g';
+      const label = t.remaining <= 0 ? 'OVERDUE ' + Math.abs(t.remaining).toFixed(0) + 'h' : t.remaining.toFixed(0) + 'h left';
+      maintRows += `<div class="dept-row"><span>${t.name}</span><span class="dv ${cls2}">${label}</span></div>`;
+    });
+  }
+
+  // Fault list
+  const faultKpi = d.kpis ? d.kpis.find(k => k.id === 'pb_fault_rate') : null;
+  let faultRows = '';
+  if (faultKpi && faultKpi.faultList && faultKpi.faultList.length) {
+    faultKpi.faultList.slice(0,3).forEach(f => {
+      faultRows += `<div class="dept-row" style="flex-direction:column;align-items:flex-start;gap:2px">
+        <span style="font-weight:600">${f.operator} — ${f.date}</span>
+        <span style="font-size:11px;color:var(--text3)">${f.notes}</span>
+      </div>`;
+    });
+  } else {
+    faultRows = '<div class="dept-row"><span style="color:var(--text3)">No faults reported in last 30 days</span></div>';
+  }
+
+  // Machine status
+  const machKpi = d.kpis ? d.kpis.find(k => k.id === 'pb_machine_status') : null;
+  const machCls = machKpi && machKpi.status === 'critical' ? 'c' : machKpi && machKpi.status === 'warning' ? 'w' : 'g';
+
+  dg.innerHTML = `
+    <div class="dept-card" style="grid-column:1/-1">
+      <div class="dept-name">Scheduled Maintenance — All 7 Tasks</div>
+      ${maintRows || '<div class="dept-row"><span style="color:var(--text3)">No maintenance config data</span></div>'}
+    </div>
+    <div class="dept-card">
+      <div class="dept-name">Machine Status</div>
+      <div class="dept-row"><span>Operational status</span><span class="dv ${machCls}">${d.machineStatus || '—'}</span></div>
+      <div class="dept-row"><span>Hour meter</span><span class="dv">${(d.currentHours||0).toFixed(1)} hrs</span></div>
+      <div class="dept-row"><span>Open follow-ups</span><span class="dv ${(d.openFollowups||0) > 0 ? 'w' : 'g'}">${d.openFollowups||0}</span></div>
+      <div class="dept-row"><span>Total service records</span><span class="dv">${d.totalServices||0}</span></div>
+    </div>
+    <div class="dept-card">
+      <div class="dept-name">Recent Fault Reports (last 30d)</div>
+      ${faultRows}
+    </div>`;
+
+  document.getElementById('kpi-ts').textContent =
+    'Last refreshed: ' + new Date().toLocaleString('en-PK', {
+      timeZone:'Asia/Karachi', day:'numeric', month:'short',
+      year:'numeric', hour:'2-digit', minute:'2-digit'
+    });
+}
+
+function setPistenBullyLoading() {
+  document.getElementById('ksc-score-pistenbully').textContent = '...';
+  document.getElementById('ksc-score-pistenbully').className   = 'ksc-score loading';
+  document.getElementById('ksc-bar-pistenbully').className     = 'ksc-fill loading';
+  document.getElementById('ksc-bar-pistenbully').style.width   = '25%';
+  document.getElementById('ksc-meta-pistenbully').textContent  = 'Fetching live data...';
+  document.getElementById('badge-pistenbully').textContent     = 'Loading...';
+  document.getElementById('badge-pistenbully').className       = 'score-badge loading';
+}
+
+function setPistenBullyError(msg) {
+  document.getElementById('ksc-score-pistenbully').textContent = 'Error';
+  document.getElementById('ksc-score-pistenbully').className   = 'ksc-score critical';
+  document.getElementById('ksc-bar-pistenbully').style.width   = '0%';
+  document.getElementById('ksc-bar-pistenbully').className     = 'ksc-fill critical';
+  document.getElementById('ksc-meta-pistenbully').textContent  = 'Connection failed';
+  document.getElementById('badge-pistenbully').textContent     = 'Connection error';
+  document.getElementById('badge-pistenbully').className       = 'score-badge critical';
+  document.getElementById('dot-pistenbully').style.background  = '#b93328';
+  document.getElementById('rows-pistenbully').innerHTML =
+    `<div class="kpi-error">
+      <strong>Could not connect to PistenBully script.</strong><br>
+      ${msg}<br><br>
+      Check GAS deployment is set to <em>Execute as: Me</em> and <em>Anyone</em> can access.
+    </div>`;
+}
+
+// ── Medical Stock KPI ──────────────────────────────────────────────────────
+async function fetchMedicalKpi() {
+  setMedicalLoading();
+  try {
+    const res = await fetch(MEDICAL_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body: JSON.stringify({ action: 'getKpiData' })
+    });
+    const data = await res.json();
+    if (data.status !== 'ok') throw new Error(data.message || 'Script returned error');
+    kpiState.medical = { status: 'loaded', score: data.overallScore, data: data };
+    renderMedicalKpi(data);
+    updatePortfolioScore();
+  } catch(err) {
+    kpiState.medical.status = 'error';
+    setMedicalError(err.message);
+  }
+}
+
+function renderMedicalKpi(d) {
+  const cls = scoreClass(d.overallScore);
+  document.getElementById('ksc-score-medical').textContent = d.overallScore;
+  document.getElementById('ksc-score-medical').className = 'ksc-score ' + cls;
+  document.getElementById('ksc-bar-medical').style.width = d.overallScore + '%';
+  document.getElementById('ksc-bar-medical').className = 'ksc-fill ' + cls;
+  document.getElementById('ksc-meta-medical').textContent =
+    d.totalSkus + ' SKUs · ' + d.outOfStock + ' out · ' + d.critical + ' critical · ' + fmtTime(d.asOf);
+  document.getElementById('dot-medical').style.background = dotColor(cls);
+
+  const badge = document.getElementById('badge-medical');
+  badge.textContent = d.overallScore + ' / 100';
+  badge.className = 'score-badge ' + cls;
+
+  let html = '';
+  d.kpis.forEach(k => {
+    const c = k.score === null ? 'pending' : k.status;
+    const pct = k.pct !== undefined ? k.pct : Math.min(k.score || 0, 100);
+    html += `<div class="kpi-row">
+      <div class="kpi-rdot ${c}"></div>
+      <div class="kpi-rinner">
+        <div class="kpi-rlbl">${k.label}</div>
+        <div class="kpi-rdetail">${k.detail}</div>
+      </div>
+      <div class="kpi-rtrack"><div class="kpi-rfill ${c}" style="width:${Math.min(pct,100)}%"></div></div>
+      <div class="kpi-rscore ${c}">${k.score !== null ? k.score : '—'}</div>
+    </div>`;
+  });
+  document.getElementById('rows-medical').innerHTML = html;
+
+  renderFails('fail-medical', (d.failures || []).map(f => ({ name: f.label, reason: f.reason, level: f.level })));
+
+  const dg = document.getElementById('dept-medical');
+  dg.style.display = 'grid';
+
+  const stockKpi = d.kpis.find(k => k.id === 'med_stock_compliance');
+  let critRows = '<div class="dept-row"><span style="color:var(--text3)">All medicines adequately stocked</span></div>';
+  if (stockKpi && stockKpi.criticalList && stockKpi.criticalList.length > 0) {
+    critRows = stockKpi.criticalList.slice(0,6).map(i =>
+      `<div class="dept-row"><span>${i.name}</span><span class="dv c">Bal: ${i.balance} / Min: ${i.min}</span></div>`
+    ).join('');
+  }
+
+  const expiryKpi = d.kpis.find(k => k.id === 'med_expiry_alerts');
+  let expRows = '<div class="dept-row"><span style="color:var(--text3)">No expiry flags</span></div>';
+  if (expiryKpi && expiryKpi.expiryList && expiryKpi.expiryList.length > 0) {
+    expRows = expiryKpi.expiryList.slice(0,6).map(i =>
+      `<div class="dept-row"><span>${i.name}</span><span class="dv w">${i.flag} (bal: ${i.balance})</span></div>`
+    ).join('');
+  }
+
+  const visitKpi = d.kpis.find(k => k.id === 'med_visit_activity');
+  const visitSummary = visitKpi
+    ? `<div class="dept-row"><span>Visits today</span><span class="dv g">${d.visitsToday}</span></div>
+       <div class="dept-row"><span>Visits this week</span><span class="dv g">${d.visitsWeek}</span></div>
+       <div class="dept-row"><span>Follow-ups pending</span><span class="dv ${visitKpi.followUpPending > 0 ? 'w' : 'g'}">${visitKpi.followUpPending}</span></div>`
+    : '';
+
+  dg.innerHTML = `
+    <div class="dept-card">
+      <div class="dept-name">Critical / Out of Stock (${d.outOfStock + d.critical} items)</div>
+      ${critRows}
+    </div>
+    <div class="dept-card">
+      <div class="dept-name">Expiry Alerts (${d.expiryCount} flagged)</div>
+      ${expRows}
+    </div>
+    <div class="dept-card">
+      <div class="dept-name">Visit Activity</div>
+      ${visitSummary}
+    </div>`;
+
+  document.getElementById('kpi-medical').textContent =
+    'Last refreshed: ' + new Date().toLocaleString('en-PK', {
+      timeZone:'Asia/Karachi', day:'numeric', month:'short',
+      year:'numeric', hour:'2-digit', minute:'2-digit'
+    });
+}
+
+function setMedicalLoading() {
+  document.getElementById('ksc-score-medical').textContent = '...';
+  document.getElementById('ksc-score-medical').className = 'ksc-score loading';
+  document.getElementById('ksc-bar-medical').className = 'ksc-fill loading';
+  document.getElementById('ksc-meta-medical').textContent = 'Fetching live data...';
+  const badge = document.getElementById('badge-medical');
+  if (badge) { badge.textContent = 'Loading...'; badge.className = 'score-badge loading'; }
+}
+
+function setMedicalError(msg) {
+  document.getElementById('ksc-score-medical').textContent = 'Error';
+  document.getElementById('ksc-score-medical').className = 'ksc-score critical';
+  document.getElementById('ksc-bar-medical').className = 'ksc-fill critical';
+  document.getElementById('ksc-meta-medical').textContent = 'Connection failed';
+  const badge = document.getElementById('badge-medical');
+  if (badge) { badge.textContent = 'Error'; badge.className = 'score-badge critical'; }
+}
+
+
+// -- HEAVY MACHINERY KPI FETCH -------------------------------------------
+async function fetchHeavyMachKpi() {
+  setHeavyMachLoading();
+  try {
+    const res  = await fetch(HEAVYMACH_URL, {
+      method:  'POST',
+      headers: { 'Content-Type': 'text/plain' },
+      body:    JSON.stringify({ action: 'getKpiData' })
+    });
+    const data = await res.json();
+    if (data.status !== 'ok') throw new Error(data.message || 'Script returned error');
+    kpiState.heavymach = { status: 'loaded', score: data.overallScore, data: data };
+    renderHeavyMachKpi(data);
+    updatePortfolioScore();
+  } catch(err) {
+    kpiState.heavymach.status = 'error';
+    setHeavyMachError(err.message);
+  }
+}
+
+function renderHeavyMachKpi(d) {
+  const cls = scoreClass(d.overallScore);
+
+  // Source card
+  const sc = document.getElementById('ksc-score-heavymach');
+  sc.textContent = d.overallScore;
+  sc.className   = 'ksc-score ' + cls;
+  const bar = document.getElementById('ksc-bar-heavymach');
+  bar.style.width = d.overallScore + '%';
+  bar.className   = 'ksc-fill ' + cls;
+  document.getElementById('ksc-meta-heavymach').textContent =
+    'FL-01: ' + d.fl01Hours + 'hrs \u00b7 TB-01: ' + d.tb01Hours + 'hrs \u00b7 ' +
+    (d.overdueCount > 0 ? d.overdueCount + ' OVERDUE \u00b7 ' : '') +
+    (d.soonCount > 0 ? d.soonCount + ' due soon \u00b7 ' : '') +
+    fmtTime(d.asOf);
+  if (document.getElementById('dot-heavymach'))
+    document.getElementById('dot-heavymach').style.background = dotColor(cls);
+
+  // Score badge
+  const badge = document.getElementById('badge-heavymach');
+  badge.textContent = d.overallScore + ' / 100';
+  badge.className   = 'score-badge ' + cls;
+
+  // KPI rows
+  let html = '';
+  d.kpis.forEach(k => {
+    const c   = k.score === null ? 'pending' : k.status;
+    const pct = k.pct !== undefined ? k.pct : Math.min(k.score || 0, 100);
+    html += '<div class="kpi-row">' +
+      '<div class="kpi-rdot ' + c + '"></div>' +
+      '<div class="kpi-rinner">' +
+        '<div class="kpi-rlbl">' + k.label + '</div>' +
+        '<div class="kpi-rdetail">' + k.detail + '</div>' +
+      '</div>' +
+      '<div class="kpi-rtrack"><div class="kpi-rfill ' + c + '" style="width:' + Math.min(pct,100) + '%"></div></div>' +
+      '<div class="kpi-rscore ' + c + '">' + (k.score !== null ? k.score : '\u2014') + '</div>' +
+    '</div>';
+  });
+  document.getElementById('rows-heavymach').innerHTML = html;
+
+  // Failure list
+  renderFails('fail-heavymach', (d.failures || []).map(function(f) {
+    return { name: f.label, reason: f.reason, level: f.level };
+  }));
+
+  // Breakdown tiles
+  const dg = document.getElementById('dept-heavymach');
+  dg.style.display = 'grid';
+
+  const maintKpi = d.kpis ? d.kpis.find(function(k){ return k.id === 'hm_maintenance_compliance'; }) : null;
+
+  var flRows = '<div class="dept-row"><span style="color:var(--text3)">All tasks on schedule</span></div>';
+  var tbRows = '<div class="dept-row"><span style="color:var(--text3)">All tasks on schedule</span></div>';
+
+  if (maintKpi && maintKpi.overdueList && maintKpi.overdueList.length) {
+    const flItems = maintKpi.overdueList.filter(function(i){ return i.machine === 'FL-01'; });
+    const tbItems = maintKpi.overdueList.filter(function(i){ return i.machine === 'TB-01'; });
+    if (flItems.length) flRows = flItems.slice(0,4).map(function(i){
+      return '<div class="dept-row"><span>' + i.task + '</span><span class="dv ' + (i.remaining<=0?'c':'w') + '">' + Math.abs(i.remaining) + 'h ' + (i.remaining<=0?'overdue':'left') + '</span></div>';
+    }).join('');
+    if (tbItems.length) tbRows = tbItems.slice(0,4).map(function(i){
+      return '<div class="dept-row"><span>' + i.task + '</span><span class="dv ' + (i.remaining<=0?'c':'w') + '">' + Math.abs(i.remaining) + 'h ' + (i.remaining<=0?'overdue':'left') + '</span></div>';
+    }).join('');
+  }
+
+  // Also show soon items if no overdue
+  if (maintKpi && maintKpi.soonList && maintKpi.soonList.length && (!maintKpi.overdueList || !maintKpi.overdueList.length)) {
+    const flSoon = maintKpi.soonList.filter(function(i){ return i.machine === 'FL-01'; });
+    const tbSoon = maintKpi.soonList.filter(function(i){ return i.machine === 'TB-01'; });
+    if (flSoon.length) flRows = flSoon.slice(0,4).map(function(i){
+      return '<div class="dept-row"><span>' + i.task + '</span><span class="dv w">' + i.remaining + 'h left</span></div>';
+    }).join('');
+    if (tbSoon.length) tbRows = tbSoon.slice(0,4).map(function(i){
+      return '<div class="dept-row"><span>' + i.task + '</span><span class="dv w">' + i.remaining + 'h left</span></div>';
+    }).join('');
+  }
+
+  const hoursKpi = d.kpis ? d.kpis.find(function(k){ return k.id === 'hm_hour_meter'; }) : null;
+  var hoursIssueRows = '';
+  if (hoursKpi && hoursKpi.issues && hoursKpi.issues.length) {
+    hoursIssueRows = hoursKpi.issues.map(function(i){ return '<div class="dept-row"><span style="color:var(--amber)">' + i + '</span></div>'; }).join('');
+  }
+
+  const maintCompKpi = d.kpis ? d.kpis.find(function(k){ return k.id === 'hm_maint_completion'; }) : null;
+
+  dg.innerHTML =
+    '<div class="dept-card">' +
+      '<div class="dept-name">FL-01 Front Loader</div>' +
+      '<div class="dept-row"><span>Hour meter</span><span class="dv">' + d.fl01Hours + ' hrs</span></div>' +
+      flRows +
+    '</div>' +
+    '<div class="dept-card">' +
+      '<div class="dept-name">TB-01 Snow Blower</div>' +
+      '<div class="dept-row"><span>Hour meter</span><span class="dv">' + d.tb01Hours + ' hrs</span></div>' +
+      tbRows +
+    '</div>' +
+    '<div class="dept-card" style="grid-column:1/-1">' +
+      '<div class="dept-name">Maintenance Records on File</div>' +
+      '<div class="dept-row"><span>Tasks logged at least once</span><span class="dv ' + (maintCompKpi && maintCompKpi.pct >= 70 ? 'g' : 'w') + '">' + (maintCompKpi ? maintCompKpi.value + ' of ' + maintCompKpi.total : '—') + '</span></div>' +
+      '<div class="dept-row"><span>Last maintenance logged</span><span class="dv">' + (maintCompKpi ? maintCompKpi.lastMaintDate : '—') + '</span></div>' +
+      '<div class="dept-row"><span>Last task</span><span class="dv" style="font-size:10px">' + (maintCompKpi ? maintCompKpi.lastMaintTask : '—') + '</span></div>' +
+      hoursIssueRows +
+    '</div>';
+
+  document.getElementById('kpi-ts').textContent =
+    'Last refreshed: ' + new Date().toLocaleString('en-PK', {
+      timeZone:'Asia/Karachi', day:'numeric', month:'short',
+      year:'numeric', hour:'2-digit', minute:'2-digit'
+    });
+}
+
+function setHeavyMachLoading() {
+  document.getElementById('ksc-score-heavymach').textContent = '...';
+  document.getElementById('ksc-score-heavymach').className   = 'ksc-score loading';
+  document.getElementById('ksc-bar-heavymach').className     = 'ksc-fill loading';
+  document.getElementById('ksc-bar-heavymach').style.width   = '25%';
+  document.getElementById('ksc-meta-heavymach').textContent  = 'Fetching live data...';
+  document.getElementById('badge-heavymach').textContent     = 'Loading...';
+  document.getElementById('badge-heavymach').className       = 'score-badge loading';
+}
+
+function setHeavyMachError(msg) {
+  document.getElementById('ksc-score-heavymach').textContent = 'Error';
+  document.getElementById('ksc-score-heavymach').className   = 'ksc-score critical';
+  document.getElementById('ksc-bar-heavymach').style.width   = '0%';
+  document.getElementById('ksc-bar-heavymach').className     = 'ksc-fill critical';
+  document.getElementById('ksc-meta-heavymach').textContent  = 'Connection failed';
+  document.getElementById('badge-heavymach').textContent     = 'Connection error';
+  document.getElementById('badge-heavymach').className       = 'score-badge critical';
+  if (document.getElementById('dot-heavymach'))
+    document.getElementById('dot-heavymach').style.background = '#b93328';
+  document.getElementById('rows-heavymach').innerHTML =
+    '<div class="kpi-error"><strong>Could not connect to Heavy Machinery script.</strong><br>' + msg + '</div>';
+}
+
+</script>
+</body>
+</html>
